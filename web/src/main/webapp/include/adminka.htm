@@ -1,0 +1,39 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" xmlns:c="http://www.w3.org/1999/XSL/Transform">
+    <a class="navbar-brand" href="do?command=index">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <c:if test="${admin != null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=Profile">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=GetShippingList">Просмотреть список поставок</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=AddCatalogItem">Добавить позицию в каталог</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=EditCatalog">Редактировать каталог</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=EditUsers">Редактировать Юзеров</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=EditOrders">Редактировать заказы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=Profile">Выход</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="do?command=Reset">Сброс Базы</a>
+                </li>
+            </c:if>
+        </ul>
+    </div>
+</nav>
+
