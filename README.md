@@ -1,1 +1,1 @@
-Test readme for JD02 project
+Readme for JD02 project (GIT)
