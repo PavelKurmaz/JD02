@@ -1,11 +1,12 @@
-package com.gmail.kurmazpavel;
+package cmd;
 
+import util.ActionResult;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 class CmdError extends Cmd {
     @Override
-    ActionResult execute(HttpServletRequest req , HttpServletResponse resp) {
+    public ActionResult execute(HttpServletRequest req , HttpServletResponse resp) {
         return null;
     }
 }

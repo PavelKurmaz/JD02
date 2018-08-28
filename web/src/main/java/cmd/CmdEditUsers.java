@@ -1,16 +1,19 @@
-package com.gmail.kurmazpavel;
+package cmd;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.UserService;
 import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.impl.UserServiceImpl;
+import util.ActionResult;
+import util.Util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 
 class CmdEditUsers extends Cmd {
+    private UserService service = new UserServiceImpl();
     @Override
-    ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        DAO dao = DAO.getDao();
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         if (Util.isPost(req)) {
             int id = Util.getInteger(req, "id");
             String login = Util.getString(req, "login");
@@ -20,12 +23,12 @@ class CmdEditUsers extends Cmd {
             String carma = Util.getString(req, "carma");
             User user = new User(id, login, password, email, phone, carma, 2);
             if (req.getParameter("Update") != null) {
-                dao.user.update(user);
+                service.update(user);
             } else if (req.getParameter("Delete") != null) {
-                dao.user.delete(user);
+                service.delete(user);
             }
         }
-        List<User> users = dao.user.getAll("");
+        List<User> users = service.getAll("");
         req.setAttribute("users", users);
         return null;
     }

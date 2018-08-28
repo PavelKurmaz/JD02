@@ -1,15 +1,18 @@
-package com.gmail.kurmazpavel;
+package cmd;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.CatalogService;
 import com.gmail.kurmazpavel.beans.Catalog;
+import com.gmail.kurmazpavel.impl.CatalogServiceImpl;
+import util.ActionResult;
+import util.Util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 class CmdEditCatalog extends Cmd {
+    private CatalogService service = new CatalogServiceImpl();
     @Override
-    ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        DAO dao = DAO.getDao();
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (Util.isPost(req)) {
             int id = Util.getInteger(req, "id");
             int amount = Util.getInteger(req, "amount");
@@ -17,12 +20,12 @@ class CmdEditCatalog extends Cmd {
             String name = Util.getString(req, "name");
             Catalog catalog = new Catalog(id, amount, name, price);
             if (req.getParameter("Update") != null) {
-                dao.catalog.update(catalog);
+                service.update(catalog);
             } else if (req.getParameter("Delete") != null) {
-                dao.catalog.delete(catalog);
+                service.delete(catalog);
             }
         }
-        List<Catalog> items = dao.catalog.getAll("");
+        List<Catalog> items = service.getAll("");
         req.setAttribute("items", items);
         return null;
     }

@@ -1,10 +1,8 @@
 package controller;
 
-import com.gmail.kurmazpavel.ActionResult;
-import com.gmail.kurmazpavel.Actions;
-import com.gmail.kurmazpavel.Service;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import cmd.Actions;
+import util.ActionFactory;
+import util.ActionResult;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,13 +13,12 @@ import java.io.IOException;
 
 public class FrontController extends HttpServlet {
 
-    private Service service;
+    private ActionFactory actionFactory;
     private ServletContext servletContext;
-    private final Logger logger = LogManager.getLogger(FrontController.class);
 
     @Override
     public void init(){
-        service = Service.getService();
+        actionFactory = new ActionFactory();
         servletContext = getServletContext();
     }
 
@@ -37,19 +34,16 @@ public class FrontController extends HttpServlet {
 
     private void serv (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            ActionResult result = service.doService(req, resp);
+            Actions action = actionFactory.defineAction(req);
+            ActionResult result = action.cmd.execute(req, resp);
             if (result == null) {
-                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(service.getAction().jsp);
+                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(action.jsp);
                 requestDispatcher.forward(req, resp);
-            } else if (result.getAction() == null) {
+            } else if (result.getNextAction() == null) {
                 RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(result.getJsp());
                 requestDispatcher.forward(req, resp);
-                logger.info(result.getJsp());
-                System.out.println("log test");
             } else {
-                resp.sendRedirect("do?command=" + result.getAction().toString().toLowerCase());
-                logger.info(result.getJsp());
-
+                resp.sendRedirect("do?command=" + result.getNextAction().toString().toLowerCase());
             }
         }
         catch (Exception e) {
@@ -58,10 +52,9 @@ public class FrontController extends HttpServlet {
             StackTraceElement[] stackTrace = e.getStackTrace();
             for (StackTraceElement stackTraceElement : stackTrace) {
                 sb.append(stackTraceElement).append("<br>");
-                if (stackTraceElement.toString().contains("controller.FrontController"))
+                if (stackTraceElement.toString().contains("FrontController"))
                     break;
             }
-            logger.error(e.getMessage(), e);
             req.setAttribute("stack", sb.toString());
             RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(Actions.ERROR.jsp);
             requestDispatcher.forward(req, resp);

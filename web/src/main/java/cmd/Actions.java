@@ -1,4 +1,5 @@
-package com.gmail.kurmazpavel;
+package cmd;
+
 public enum Actions {
     INDEX {
         {
@@ -83,8 +84,6 @@ public enum Actions {
         }
     };
 
-    Cmd cmd = new CmdError();
-
+    public Cmd cmd = new CmdError();
     public String jsp="/" + this.toString().toLowerCase() + ".jsp";
-
 }

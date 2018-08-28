@@ -1,4 +1,6 @@
-package com.gmail.kurmazpavel;
+package util;
+
+import cmd.Actions;
 
 public class ActionResult {
     private Actions nextAction;
@@ -17,11 +19,11 @@ public class ActionResult {
         this.jsp = "/" + jsp + ".jsp";
     }
 
-    public String getJsp() {
-        return jsp;
+    public Actions getNextAction () {
+        return nextAction;
     }
 
-    public Actions getAction () {
-        return nextAction;
+    public String getJsp() {
+        return jsp;
     }
 }

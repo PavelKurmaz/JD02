@@ -3,38 +3,38 @@
 <%@ include file="include/head.htm" %>
 <body>
 <div class="container">
-    <form class="form-horizontal"  method="post" action="do?command=index">
-    <fieldset>
+    <form class="form-horizontal" method="post" action="do?command=index">
+        <fieldset>
 
-    <!-- Form Name -->
-    <legend>Select Profile Type</legend>
+            <!-- Form Name -->
+            <legend>Select Profile Type</legend>
 
-    <!-- Select Basic -->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="select">Select Profile Type</label>
-      <div class="col-md-4">
-        <select id="select" name="select" class="form-control">
-          <option value="admin">Admin</option>
-          <option value="user">User</option>
-        </select>
-      </div>
-    </div>
+            <!-- Select Basic -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="select">Select Profile Type</label>
+                <div class="col-md-4">
+                    <select id="select" name="select" class="form-control">
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                    </select>
+                </div>
+            </div>
 
-    <!-- Button -->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="singlebutton">Select</label>
-      <div class="col-md-4">
-        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Press here</button>
-      </div>
-    </div>
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="singlebutton">Select</label>
+                <div class="col-md-4">
+                    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Press here</button>
+                </div>
+            </div>
 
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="data">Create database</label>
-      <div class="col-md-4">
-        <button id="data" name="data" class="btn btn-secondary">Press here</button>
-      </div>
-    </div>
-    </fieldset>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="data">Create database</label>
+                <div class="col-md-4">
+                    <button id="data" name="data" class="btn btn-secondary">Press here</button>
+                </div>
+            </div>
+        </fieldset>
     </form>
 </div>
 </body>

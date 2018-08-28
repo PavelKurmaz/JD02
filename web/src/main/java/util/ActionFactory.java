@@ -1,11 +1,14 @@
-package com.gmail.kurmazpavel;
+package util;
+
+import cmd.Actions;
 
 import javax.servlet.http.HttpServletRequest;
 
-class ActionFactory {
-    Actions defineAction(HttpServletRequest req) {
+public class ActionFactory {
+    public Actions defineAction(HttpServletRequest req) {
         String command = req.getParameter("command");
         if (command!=null && !command.isEmpty()) {
+            System.out.println(command);
             return Actions.valueOf(command.toUpperCase());
         }
         else

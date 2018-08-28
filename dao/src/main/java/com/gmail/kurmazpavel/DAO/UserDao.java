@@ -13,8 +13,8 @@ import java.util.Locale;
 public class UserDao extends AbstractDAO  implements DaoInterface<User>{
 
     @Override
-    public User read(long id) throws SQLException {
-        List<User> all = getAll("where id=" + id);
+    public User read(long id, Connection connection) throws SQLException {
+        List<User> all = getAll("where id=" + id, connection);
         if (all.size() > 0)
             return all.get(0);
         else
@@ -22,11 +22,11 @@ public class UserDao extends AbstractDAO  implements DaoInterface<User>{
     }
 
     @Override
-    public boolean create(User user) throws SQLException {
+    public boolean create(User user, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"INSERT INTO `users`(`Login`, `Password`, `Email`, `Phone`, `Carma`, `Roles_ID`)" +
                         "VALUES ('%s','%s','%s','%s','%s', %d)",
                 user.getLogin(), user.getPassword(), user.getEmail(), user.getPhone(), user.getCarma(), user.getRoles_id());
-        long id = executeUpdate(sql);
+        long id = executeUpdate(sql, connection);
         if (id > 0) {
             user.setId(id);
             return true;
@@ -35,24 +35,23 @@ public class UserDao extends AbstractDAO  implements DaoInterface<User>{
     }
 
     @Override
-    public boolean update(User user) throws SQLException {
+    public boolean update(User user, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,
                 "UPDATE `users` SET `Login`='%s', `Password`='%s', `Email`='%s', `Phone`='%s', `Carma`='%s', `Roles_ID`='%d' WHERE id=%d",
                 user.getLogin(), user.getPassword(), user.getEmail(), user.getPhone(), user.getCarma(), user.getRoles_id(), user.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public boolean delete(User user) throws SQLException {
+    public boolean delete(User user, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"DELETE FROM `users` WHERE id=%d", user.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public List<User> getAll(String whereAndOrder) throws SQLException {
+    public List<User> getAll(String whereAndOrder, Connection connection) throws SQLException {
         List<User> users = new ArrayList<>();
-        try (Connection connection = dbConnection.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String sql = String.format(Locale.US, "" +
                     "SELECT `ID`, `Login`, `Password`, `Email`, `Phone`, `Carma`, `Roles_ID` FROM `users` %s",
                     whereAndOrder);

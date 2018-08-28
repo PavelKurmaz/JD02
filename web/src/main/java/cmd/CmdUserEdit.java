@@ -1,21 +1,27 @@
-package com.gmail.kurmazpavel;
+package cmd;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.AddressService;
+import com.gmail.kurmazpavel.UserService;
 import com.gmail.kurmazpavel.beans.Address;
 import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.impl.AddressServiceImpl;
+import com.gmail.kurmazpavel.impl.UserServiceImpl;
+import util.ActionResult;
+import util.Util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 class CmdUserEdit extends Cmd {
+    private AddressService addressService = new AddressServiceImpl();
+    private UserService service = new UserServiceImpl();
     @Override
-    ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        DAO dao = DAO.getDao();
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         if (Util.isPost(req)) {
             if (req.getParameter("Delete") != null) {
-                dao.user.delete(user);
+                service.delete(user);
                 session.invalidate();
                 return new ActionResult(Actions.INDEX);
             }
@@ -28,7 +34,7 @@ class CmdUserEdit extends Cmd {
                 user.setEmail(email);
                 user.setLogin(login);
                 user.setPhone(phone);
-                dao.user.update(user);
+                service.update(user);
                 return null;
             }
             else if (req.getParameter("AddUpdate") != null) {
@@ -45,7 +51,7 @@ class CmdUserEdit extends Cmd {
                 address.setStreet(street);
                 address.setCountry(country);
                 address.setZip(zip);
-                dao.address.update(address);
+                addressService.update(address);
                 return null;
             }
         }

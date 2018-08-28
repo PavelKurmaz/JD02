@@ -11,8 +11,8 @@ import java.util.Locale;
 
 public class CatalogDAO extends AbstractDAO implements DaoInterface<Catalog> {
     @Override
-    public Catalog read(long id) throws SQLException {
-        List<Catalog> all = getAll("where id=" + id);
+    public Catalog read(long id, Connection connection) throws SQLException {
+        List<Catalog> all = getAll("where id=" + id, connection);
         if (all.size() > 0)
             return all.get(0);
         else
@@ -20,11 +20,11 @@ public class CatalogDAO extends AbstractDAO implements DaoInterface<Catalog> {
     }
 
     @Override
-    public boolean create(Catalog cat) throws SQLException {
+    public boolean create(Catalog cat, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"INSERT INTO `catalog`(`AmountLeft`, `Name`, `Price`)" +
                         "VALUES ('%d','%s', %f)",
                 cat.getAmount(), cat.getName(), cat.getPrice());
-        long id = executeUpdate(sql);
+        long id = executeUpdate(sql, connection);
         if (id > 0) {
             cat.setID(id);
             return true;
@@ -33,24 +33,23 @@ public class CatalogDAO extends AbstractDAO implements DaoInterface<Catalog> {
     }
 
     @Override
-    public boolean update(Catalog cat) throws SQLException {
+    public boolean update(Catalog cat, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,
                 "UPDATE `catalog` SET `AmountLeft`=%d, `Name`='%s', `Price`=%f WHERE id=%d",
                 cat.getAmount(), cat.getName(), cat.getPrice(), cat.getID());
-        return (executeUpdate(sql)> 0);
+        return (executeUpdate(sql, connection)> 0);
     }
 
     @Override
-    public boolean delete(Catalog cat) throws SQLException {
+    public boolean delete(Catalog cat, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"DELETE FROM `catalog` WHERE id=%d", cat.getID());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public List<Catalog> getAll(String whereAndOrder) throws SQLException {
+    public List<Catalog> getAll(String whereAndOrder, Connection connection) throws SQLException {
         List<Catalog> catalogs = new ArrayList<>();
-        try (Connection connection = dbConnection.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String sql = String.format(Locale.US, "" + "SELECT `ID`, `AmountLeft`, `Name`, `Price` FROM `catalog` %s", whereAndOrder);
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {

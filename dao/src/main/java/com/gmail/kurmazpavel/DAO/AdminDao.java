@@ -12,8 +12,8 @@ import java.util.Locale;
 public class AdminDao extends AbstractDAO implements DaoInterface<Admin> {
 
     @Override
-    public Admin read(long id) throws SQLException {
-        List<Admin> all = getAll("where id=" + id);
+    public Admin read(long id, Connection connection) throws SQLException {
+        List<Admin> all = getAll("where id=" + id, connection);
         if (all.size() > 0)
             return all.get(0);
         else
@@ -21,11 +21,11 @@ public class AdminDao extends AbstractDAO implements DaoInterface<Admin> {
     }
 
     @Override
-    public boolean create(Admin admin) throws SQLException {
+    public boolean create(Admin admin, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"INSERT INTO `admins`(`Login`, `Password`, `Email`, `Phone`, `Roles_ID`)" +
                         "VALUES ('%s','%s','%s','%s', %d)",
                 admin.getLogin(), admin.getPassword(), admin.getEmail(), admin.getPhone(), admin.getRoles_id());
-        long id = executeUpdate(sql);
+        long id = executeUpdate(sql, connection);
         if (id > 0) {
             admin.setId(id);
             return true;
@@ -34,24 +34,23 @@ public class AdminDao extends AbstractDAO implements DaoInterface<Admin> {
     }
 
     @Override
-    public boolean update(Admin admin) throws SQLException {
+    public boolean update(Admin admin, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,
                 "UPDATE `admins` SET `Login`='%s', `Password`='%s', `Email`='%s', `Phone`='%s', `Roles_ID`='%d' WHERE id=%d",
                 admin.getLogin(), admin.getPassword(), admin.getEmail(), admin.getPhone(), admin.getRoles_id(), admin.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public boolean delete(Admin admin) throws SQLException {
+    public boolean delete(Admin admin, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"DELETE FROM `admins` WHERE id=%d", admin.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public List<Admin> getAll(String whereAndOrder) throws SQLException {
+    public List<Admin> getAll(String whereAndOrder, Connection connection) throws SQLException {
         List<Admin> admins = new ArrayList<>();
-        try (Connection connection = dbConnection.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String sql = String.format(Locale.US, "" +
                             "SELECT `ID`, `Login`, `Password`, `Email`, `Phone`, `Roles_ID` FROM `admins` %s",
                     whereAndOrder);

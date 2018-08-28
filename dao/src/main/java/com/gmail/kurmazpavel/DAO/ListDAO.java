@@ -13,8 +13,8 @@ import java.util.Locale;
 public class ListDAO extends AbstractDAO implements DaoInterface<ShippingList> {
 
     @Override
-    public ShippingList read(long id) throws SQLException {
-        List<ShippingList> all = getAll("where id=" + id);
+    public ShippingList read(long id, Connection connection) throws SQLException {
+        List<ShippingList> all = getAll("where id=" + id, connection);
         if (all.size() > 0)
             return all.get(0);
         else
@@ -22,11 +22,11 @@ public class ListDAO extends AbstractDAO implements DaoInterface<ShippingList> {
     }
 
     @Override
-    public boolean create(ShippingList list) throws SQLException {
+    public boolean create(ShippingList list, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"INSERT INTO `shippinglist`(`Quantity`, `Catalog_ID`, `Orders_ID`)" +
                         "VALUES ('%s','%d', %d)",
                 list.getQuantity(), list.getCatalog_ID(), list.getOrder_ID());
-        long id = executeUpdate(sql);
+        long id = executeUpdate(sql, connection);
         if (id > 0) {
             list.setId(id);
             return true;
@@ -35,24 +35,23 @@ public class ListDAO extends AbstractDAO implements DaoInterface<ShippingList> {
     }
 
     @Override
-    public boolean update(ShippingList list) throws SQLException {
+    public boolean update(ShippingList list, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,
                 "UPDATE `shippinglist` SET `Quantity`=%s, `Catalog_ID`=%d, `Orders_ID`=%d WHERE id=%d",
                 list.getQuantity(), list.getCatalog_ID(), list.getOrder_ID(), list.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public boolean delete(ShippingList list) throws SQLException {
+    public boolean delete(ShippingList list, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"DELETE FROM `shippinglist` WHERE id=%d", list.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public List<ShippingList> getAll(String whereAndOrder) throws SQLException {
+    public List<ShippingList> getAll(String whereAndOrder, Connection connection) throws SQLException {
         List<ShippingList> lists = new ArrayList<>();
-        try (Connection connection = dbConnection.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String sql = String.format(Locale.US, "" + "SELECT `ID`, `Quantity`, `Catalog_ID`, `Orders_ID` FROM `shippinglist` %s", whereAndOrder);
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {

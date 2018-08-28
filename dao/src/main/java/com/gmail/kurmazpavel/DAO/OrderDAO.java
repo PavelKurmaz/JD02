@@ -13,8 +13,8 @@ import java.util.Locale;
 public class OrderDAO extends AbstractDAO implements DaoInterface<Order> {
 
     @Override
-    public Order read(long id) throws SQLException {
-        List<Order> all = getAll("where id=" + id);
+    public Order read(long id, Connection connection) throws SQLException {
+        List<Order> all = getAll("where id=" + id, connection);
         if (all.size() > 0)
             return all.get(0);
         else
@@ -22,11 +22,11 @@ public class OrderDAO extends AbstractDAO implements DaoInterface<Order> {
     }
 
     @Override
-    public boolean create(Order order) throws SQLException {
+    public boolean create(Order order, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"INSERT INTO `orders`(`Completed`, `Users_ID`)" +
                         "VALUES ('%d','%d')",
                 order.getCompleted(), order.getUsers_ID());
-        long id = executeUpdate(sql);
+        long id = executeUpdate(sql, connection);
         if (id > 0) {
             order.setId(id);
             return true;
@@ -35,24 +35,23 @@ public class OrderDAO extends AbstractDAO implements DaoInterface<Order> {
     }
 
     @Override
-    public boolean update(Order order) throws SQLException {
+    public boolean update(Order order, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,
                 "UPDATE `orders` SET `Completed`=%d, `Users_ID`=%d WHERE id=%d",
                 order.getCompleted(), order.getUsers_ID(), order.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public boolean delete(Order order) throws SQLException {
+    public boolean delete(Order order, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"DELETE FROM `orders` WHERE id=%d", order.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public List<Order> getAll(String whereAndOrder) throws SQLException {
+    public List<Order> getAll(String whereAndOrder, Connection connection) throws SQLException {
         List<Order> orders = new ArrayList<>();
-        try (Connection connection = dbConnection.getConnection();
-            Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String sql = String.format(Locale.US, "" + "SELECT `ID`, `Completed`, `Users_ID` FROM `orders` %s", whereAndOrder);
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {

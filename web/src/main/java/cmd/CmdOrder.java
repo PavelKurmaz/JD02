@@ -1,10 +1,17 @@
-package com.gmail.kurmazpavel;
+package cmd;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.CatalogService;
+import com.gmail.kurmazpavel.ListService;
+import com.gmail.kurmazpavel.OrderService;
 import com.gmail.kurmazpavel.beans.Catalog;
 import com.gmail.kurmazpavel.beans.Order;
 import com.gmail.kurmazpavel.beans.ShippingList;
 import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.impl.CatalogServiceImpl;
+import com.gmail.kurmazpavel.impl.ListServiceImpl;
+import com.gmail.kurmazpavel.impl.OrderServiceImpl;
+import util.ActionResult;
+import util.Util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,8 +21,11 @@ import java.util.List;
 import java.util.Locale;
 
 class CmdOrder extends Cmd {
+    private OrderService orderService = new OrderServiceImpl();
+    private CatalogService catalogService = new CatalogServiceImpl();
+    private ListService listService = new ListServiceImpl();
     @Override
-    ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException{
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException{
         HttpSession session = req.getSession();
         if (session.getAttribute("admin") != null)
             return new ActionResult(Actions.INDEX);
@@ -33,27 +43,27 @@ class CmdOrder extends Cmd {
                 int item_id = Util.getInteger(req, "id");
                 int amount = Util.getInteger(req, "amount");
                 String where = String.format(Locale.US, "WHERE ID='%d'", item_id);
-                List<Catalog> items = DAO.getDao().catalog.getAll(where);
+                List<Catalog> items =  catalogService.getAll(where);
                 Catalog item = items.get(0);
                 Catalog orderItem = new Catalog(item_id, amount, item.getName(), item.getPrice());
                 orderList.add(orderItem);
                 item.setAmount(item.getAmount() - amount);
-                DAO.getDao().catalog.update(item);
+                catalogService.update(item);
             }
             if (req.getParameter("create") != null) {
                 Order order = new Order(0, 0, user_id);
-                DAO.getDao().order.create(order);
+                orderService.create(order);
                 session.setAttribute("order", order);
                 order_id = order.getId();
                 for (Catalog catalog : orderList) {
                     ShippingList list = new ShippingList(0, String.valueOf(catalog.getAmount()), (int) catalog.getID(), (int) order_id);
-                    DAO.getDao().shippingList.create(list);
+                    listService.create(list);
                 }
                 orderList.clear();
                 return new ActionResult(Actions.LISTORDERS);
             }
         }
-        List<Catalog> items = DAO.getDao().catalog.getAll("");
+        List<Catalog> items = catalogService.getAll("");
         req.setAttribute("catalogitems", items);
         return null;
     }

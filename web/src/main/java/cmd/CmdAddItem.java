@@ -1,15 +1,19 @@
-package com.gmail.kurmazpavel;
+package cmd;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.CatalogService;
 import com.gmail.kurmazpavel.beans.Catalog;
+import com.gmail.kurmazpavel.impl.CatalogServiceImpl;
+import util.ActionResult;
+import util.Util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 class CmdAddItem extends Cmd {
+    private CatalogService service = new CatalogServiceImpl();
     @Override
-    ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         HttpSession session = req.getSession();
         Object object = session.getAttribute("admin");
         if (object == null)
@@ -20,7 +24,7 @@ class CmdAddItem extends Cmd {
             int amount = Util.getInteger(req, "amount");
             if (name != null) {
                 Catalog item = new Catalog(0, amount, name, price);
-                DAO.getDao().catalog.create(item);
+                service.create(item);
                 if (item.getID() > 0)
                     return new ActionResult("addcatalogitem");
             }

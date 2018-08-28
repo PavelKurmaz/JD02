@@ -1,15 +1,19 @@
-package com.gmail.kurmazpavel;
+package cmd;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.AddressService;
 import com.gmail.kurmazpavel.beans.Address;
+import com.gmail.kurmazpavel.impl.AddressServiceImpl;
+import util.ActionResult;
+import util.Util;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 class CmdAddress extends Cmd {
+    private AddressService service = new AddressServiceImpl();
 
     @Override
-    ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (Util.isPost(req)) {
             String country = Util.getString(req,"country");
             String city = Util.getString(req,"city");
@@ -24,7 +28,7 @@ class CmdAddress extends Cmd {
                         id = Integer.parseInt(cookie.getValue());
                 }
                 Address address = new Address(0, country, city, street, building, apt, zip, id);
-                DAO.getDao().address.create(address);
+                service.create(address);
                 if (address.getId() > 0) {
                     return new ActionResult(Actions.LOGIN);
                 }

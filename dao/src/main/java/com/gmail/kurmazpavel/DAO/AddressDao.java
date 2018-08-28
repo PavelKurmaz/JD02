@@ -1,8 +1,6 @@
 package com.gmail.kurmazpavel.DAO;
 
 import com.gmail.kurmazpavel.beans.Address;
-import com.gmail.kurmazpavel.connection.dbConnection;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,8 +13,8 @@ public class AddressDao extends AbstractDAO implements DaoInterface<Address>{
 
 
     @Override
-    public Address read(long id) throws SQLException {
-        List<Address> all = getAll("where id=" + id);
+    public Address read(long id, Connection connection) throws SQLException {
+        List<Address> all = getAll("where id=" + id, connection);
         if (all.size() > 0)
             return all.get(0);
         else
@@ -24,11 +22,11 @@ public class AddressDao extends AbstractDAO implements DaoInterface<Address>{
     }
 
     @Override
-    public boolean create(Address address) throws SQLException {
+    public boolean create(Address address,Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"INSERT INTO `address`(`Country`, `City`, `Street`, `Building`, `Apt`, `ZIP`,  `Users_ID`)" +
                         "VALUES ('%s','%s','%s','%s','%s', '%s', %d)",
                 address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding(), address.getApt(), address.getZip(), address.getUsers_id());
-        long id = executeUpdate(sql);
+        long id = executeUpdate(sql, connection);
         if (id > 0) {
             address.setId(id);
             return true;
@@ -37,24 +35,23 @@ public class AddressDao extends AbstractDAO implements DaoInterface<Address>{
     }
 
     @Override
-    public boolean update(Address address) throws SQLException {
+    public boolean update(Address address, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,
                 "UPDATE `address` SET `Country`='%s', `City`='%s', `Street`='%s', `Building`='%s', `Apt`='%s', ZIP='%s', `Users_ID`='%d' WHERE ID=%d",
                 address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding(), address.getApt(), address.getZip(), address.getUsers_id(), address.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public boolean delete(Address address) throws SQLException {
+    public boolean delete(Address address, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"DELETE FROM `address` WHERE id=%d", address.getId());
-        return (executeUpdate(sql) > 0);
+        return (executeUpdate(sql, connection) > 0);
     }
 
     @Override
-    public List<Address> getAll(String whereAndOrder) throws SQLException {
+    public List<Address> getAll(String whereAndOrder, Connection connection) throws SQLException {
         List<Address> addresses = new ArrayList<>();
-        try (Connection connection = dbConnection.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String sql = String.format(Locale.US, "" + "SELECT `ID`, `Country`, `City`, `Street`, `Building`, `Apt`, `ZIP`,  `Users_ID` FROM `address` %s", whereAndOrder);
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {

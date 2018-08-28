@@ -1,11 +1,14 @@
-package com.gmail.kurmazpavel;
+package cmd;
+
+import util.ActionResult;
+import util.Util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
 class CmdIndex extends Cmd {
     @Override
-    ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
         if (Util.isPost(req)) {
             if(req.getParameter("data") != null)
                 return new ActionResult(Actions.RESET);
