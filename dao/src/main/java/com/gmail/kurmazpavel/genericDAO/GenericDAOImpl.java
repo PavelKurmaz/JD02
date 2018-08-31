@@ -12,7 +12,7 @@ public class GenericDAOImpl<T extends  Serializable> implements GenericDAO<T> {
     private Class<T> aClass;
     private SessionFactory sessionFactory;
 
-    public GenericDAOImpl(Class<T> aClass){
+    GenericDAOImpl(Class<T> aClass){
         this.aClass = aClass;
         sessionFactory = HibernateUtil.getSessionFactory(aClass);
     }
