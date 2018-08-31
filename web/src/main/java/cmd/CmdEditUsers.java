@@ -2,6 +2,9 @@ package cmd;
 
 import com.gmail.kurmazpavel.UserService;
 import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.beans.dto.AuditDTO;
+import com.gmail.kurmazpavel.impl.AuditService;
+import com.gmail.kurmazpavel.impl.AuditServiceImpl;
 import com.gmail.kurmazpavel.impl.UserServiceImpl;
 import util.ActionResult;
 import util.Util;
@@ -12,6 +15,7 @@ import java.util.List;
 
 class CmdEditUsers extends Cmd {
     private UserService service = new UserServiceImpl();
+    private AuditService auditService = new AuditServiceImpl();
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         if (Util.isPost(req)) {
@@ -29,6 +33,8 @@ class CmdEditUsers extends Cmd {
             }
         }
         List<User> users = service.getAll("");
+        List<AuditDTO> list = auditService.getAll();
+        System.out.println(list.toString());
         req.setAttribute("users", users);
         return null;
     }

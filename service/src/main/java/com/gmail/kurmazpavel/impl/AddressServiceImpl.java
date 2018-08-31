@@ -14,7 +14,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public boolean create (Address address) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.address.create(address, connection);
@@ -33,7 +33,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     public boolean update (Address address) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.address.update(address, connection);
@@ -52,7 +52,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     public boolean delete (Address address) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.address.delete(address, connection);
@@ -72,7 +72,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<Address> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 List<Address> address = dao.address.getAll(where, connection);

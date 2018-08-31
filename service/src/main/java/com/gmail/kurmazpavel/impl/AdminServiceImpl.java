@@ -15,7 +15,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean create (Admin admin) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.admin.create(admin, connection);
@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public boolean update (Admin admin) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.admin.update(admin, connection);
@@ -53,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public boolean delete (Admin admin) throws SQLException {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = dbConnection.getInstance().getConnection();
         try {
                 connection.setAutoCommit(false);
                 boolean created = dao.admin.delete(admin, connection);
@@ -72,7 +72,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Admin> getAll(String where) throws SQLException {
-        Connection connection = dbConnection.getConnection();
+        Connection connection = dbConnection.getInstance().getConnection();
             try {
                 connection.setAutoCommit(false);
                 List<Admin> admins = dao.admin.getAll(where, connection);

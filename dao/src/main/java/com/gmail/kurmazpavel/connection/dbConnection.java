@@ -1,34 +1,46 @@
 package com.gmail.kurmazpavel.connection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.gmail.kurmazpavel.config.ConfigurationManager;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+
+
 public class dbConnection {
 
-    static {
-        final Logger logger = LogManager.getLogger(dbConnection.class);
+    private static dbConnection instance;
+
+    private Connection connection;
+
+    private dbConnection() {
+        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
         try {
-        Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(configurationManager.getProperty(ConfigurationManager.DATABASE_DRIVER_NAME));
         } catch (ClassNotFoundException e) {
-            logger.error("Error loading driver: ", e);
+            e.printStackTrace();
         }
     }
 
-    private dbConnection() {}
-    private static final String dbURL = "jdbc:mysql://127.0.0.1:3306/kurmaz" + "?useUnicode=true&characterEncoding=UTF-8" + "&useLegacyDatetimeCode=false&serverTimezone=Europe/Minsk";
-    private static final String dbUser = "root";
-    private static final String dbPassword = "root";
-    private static Connection connection;
-
-    public static Connection getConnection() throws SQLException {
-        if (connection == null || connection.isClosed()) {
-            synchronized (dbConnection.class) {
-                if (connection == null || connection.isClosed()) {
-                    connection = DriverManager.getConnection(dbURL, dbUser, dbPassword);
-                }
-            }
+    public static dbConnection getInstance() {
+        if (instance == null) {
+            instance = new dbConnection();
         }
-        return connection;
+        return instance;
+    }
+
+    public Connection getConnection() {
+        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+        try {
+            Properties properties = new Properties();
+            properties.setProperty("user", configurationManager.getProperty(ConfigurationManager.DATABASE_USERNAME));
+            properties.setProperty("password", configurationManager.getProperty(ConfigurationManager.DATABASE_PWD));
+            connection = DriverManager.getConnection(
+                    configurationManager.getProperty(ConfigurationManager.DATABASE_URL),
+                    properties
+            );
+            return connection;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 }

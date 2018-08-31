@@ -15,7 +15,7 @@ public class ListServiceImpl implements ListService {
 
     @Override
     public boolean create (ShippingList list) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.shippingList.create(list, connection);
@@ -34,7 +34,7 @@ public class ListServiceImpl implements ListService {
     }
 
     public boolean update (ShippingList list) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.shippingList.update(list, connection);
@@ -53,7 +53,7 @@ public class ListServiceImpl implements ListService {
     }
 
     public boolean delete (ShippingList list) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.shippingList.delete(list, connection);
@@ -73,7 +73,7 @@ public class ListServiceImpl implements ListService {
 
     @Override
     public List<ShippingList> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 List<ShippingList> list = dao.shippingList.getAll(where, connection);

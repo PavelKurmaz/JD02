@@ -15,7 +15,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean create (Order order) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.order.create(order, connection);
@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public boolean update (Order order) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.order.update(order, connection);
@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public boolean delete (Order order) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.order.delete(order, connection);
@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 List<Order> orders = dao.order.getAll(where, connection);

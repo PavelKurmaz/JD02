@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean create (User user) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = userDao.user.create(user, connection);
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean update (User user) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = userDao.user.update(user, connection);
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean delete (User user) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = userDao.user.delete(user, connection);
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 List<User> users = userDao.user.getAll(where, connection);

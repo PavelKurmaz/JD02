@@ -1,7 +1,5 @@
 package com.gmail.kurmazpavel.DAO;
 
-import com.gmail.kurmazpavel.connection.dbConnection;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

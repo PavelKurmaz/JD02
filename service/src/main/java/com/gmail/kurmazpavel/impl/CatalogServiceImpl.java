@@ -15,7 +15,7 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public boolean create (Catalog catalog) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.catalog.create(catalog, connection);
@@ -34,7 +34,7 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     public boolean update (Catalog catalog) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.catalog.update(catalog, connection);
@@ -53,7 +53,7 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     public boolean delete (Catalog catalog) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.catalog.delete(catalog, connection);
@@ -73,7 +73,7 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public List<Catalog> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 List<Catalog> catalogs = dao.catalog.getAll(where, connection);

@@ -17,7 +17,7 @@ class Table_Init {
                     "  PRIMARY KEY (`ID`))\n" +
                     "ENGINE = InnoDB;");
             statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Users` (\n" +
-                    "  `ID` INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
                     "  `Login` VARCHAR(45) NULL,\n" +
                     "  `Password` VARCHAR(45) NULL,\n" +
                     "  `Email` VARCHAR(45) NULL,\n" +
@@ -40,10 +40,23 @@ class Table_Init {
                     "  `Building` VARCHAR(45) NULL,\n" +
                     "  `Apt` VARCHAR(45) NULL,\n" +
                     "  `ZIP` VARCHAR(45) NULL,\n" +
-                    "  `Users_ID` INT NOT NULL,\n" +
+                    "  `Users_ID` BIGINT NOT NULL,\n" +
                     "  PRIMARY KEY (`ID`),\n" +
                     "  INDEX `fk_Address_Users1_idx` (`Users_ID` ASC),\n" +
                     "  CONSTRAINT `fk_Address_Users1`\n" +
+                    "    FOREIGN KEY (`Users_ID`)\n" +
+                    "    REFERENCES `kurmaz`.`Users` (`ID`)\n" +
+                    "    ON DELETE CASCADE\n" +
+                    "    ON UPDATE RESTRICT)\n" +
+                    "ENGINE = InnoDB;");
+            statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Audit` (\n" +
+                    "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `Users_ID` BIGINT NOT NULL,\n" +
+                    "  `EVENT_TYPE` VARCHAR(20) NULL,\n" +
+                    "  `CREATED` DATETIME NULL,\n" +
+                    "  PRIMARY KEY (`ID`),\n" +
+                    "  INDEX `fk_Audit_Users1_idx` (`Users_ID` ASC),\n" +
+                    "  CONSTRAINT `fk_Audit_Users1`\n" +
                     "    FOREIGN KEY (`Users_ID`)\n" +
                     "    REFERENCES `kurmaz`.`Users` (`ID`)\n" +
                     "    ON DELETE CASCADE\n" +
@@ -67,7 +80,7 @@ class Table_Init {
             statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Orders` (\n" +
                     "  `ID` INT NOT NULL AUTO_INCREMENT,\n" +
                     "  `Completed` TINYINT(1) NULL,\n" +
-                    "  `Users_ID` INT NOT NULL,\n" +
+                    "  `Users_ID` BIGINT NOT NULL,\n" +
                     "  PRIMARY KEY (`ID`),\n" +
                     "  INDEX `fk_Order_Users1_idx` (`Users_ID` ASC),\n" +
                     "  CONSTRAINT `fk_Order_Users1`\n" +

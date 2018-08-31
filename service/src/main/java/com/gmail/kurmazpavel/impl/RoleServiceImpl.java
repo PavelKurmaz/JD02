@@ -15,7 +15,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean create (Role role) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.roles.create(role, connection);
@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public boolean update (Role role) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.roles.update(role, connection);
@@ -53,7 +53,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public boolean delete (Role role) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 boolean created = dao.roles.delete(role, connection);
@@ -73,7 +73,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getConnection()) {
+        try (Connection connection = dbConnection.getInstance().getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 List<Role> roles = dao.roles.getAll(where, connection);
