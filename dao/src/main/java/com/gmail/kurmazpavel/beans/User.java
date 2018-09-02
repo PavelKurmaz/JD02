@@ -1,13 +1,40 @@
 package com.gmail.kurmazpavel.beans;
 
-public class User {
-    private long id;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name="users")
+public class User implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", updatable = false, nullable = false)
+    private Long id;
+    @Column(name = "LOGIN", nullable = false)
     private String login;
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
+    @Column(name = "EMAIL", nullable = false)
     private String email;
+    @Column(name = "PHONE", nullable = false)
     private String phone;
+    @Column(name = "CARMA", nullable = false)
     private String carma;
+    @Column(name = "ROLES_ID", nullable = false)
     private long roles_id;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Audit audit;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Address address;
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setAudit(Audit audit) {
+        this.audit = audit;
+    }
 
     public User(long id, String login, String password, String email, String phone, String carma, long roles_id) {
         this.id = id;
@@ -33,7 +60,7 @@ public class User {
                 '}';
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,16 +1,13 @@
 package com.gmail.kurmazpavel;
 
-import com.gmail.kurmazpavel.beans.Admin;
-import java.sql.SQLException;
+import com.gmail.kurmazpavel.beans.dto.AdminDTO;
 import java.util.List;
 
 public interface AdminService {
 
-    boolean create(Admin admin) throws SQLException;
-
-    boolean update(Admin admin) throws SQLException;
-
-    boolean delete(Admin admin) throws SQLException;
-
-    List<Admin> getAll(String where) throws SQLException;
+    AdminDTO read(Long entityID);
+    AdminDTO create(AdminDTO adminDTO);
+    AdminDTO update(AdminDTO adminDTO);
+    AdminDTO delete (AdminDTO adminDTO);
+    List<AdminDTO> getAll();
 }

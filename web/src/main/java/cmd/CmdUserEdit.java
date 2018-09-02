@@ -2,8 +2,8 @@ package cmd;
 
 import com.gmail.kurmazpavel.AddressService;
 import com.gmail.kurmazpavel.UserService;
-import com.gmail.kurmazpavel.beans.Address;
-import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.beans.dto.AddressDTO;
+import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.impl.AddressServiceImpl;
 import com.gmail.kurmazpavel.impl.UserServiceImpl;
 import util.ActionResult;
@@ -18,7 +18,7 @@ class CmdUserEdit extends Cmd {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("user");
+        UserDTO user = (UserDTO) session.getAttribute("user");
         if (Util.isPost(req)) {
             if (req.getParameter("Delete") != null) {
                 service.delete(user);
@@ -38,7 +38,7 @@ class CmdUserEdit extends Cmd {
                 return null;
             }
             else if (req.getParameter("AddUpdate") != null) {
-                Address address = (Address) session.getAttribute("address");
+                AddressDTO address = (AddressDTO) session.getAttribute("address");
                 String country = Util.getString(req, "country");
                 String city = Util.getString(req, "city");
                 String street = Util.getString(req, "street");

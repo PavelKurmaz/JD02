@@ -1,16 +1,40 @@
 package com.gmail.kurmazpavel.beans;
 
-public class Address {
-    private long id;
-    private String country;
-    private String city;
-    private String street;
-    private String building;
-    private String apt;
-    private String zip;
-    private long users_id;
+import org.hibernate.annotations.GenericGenerator;
 
-    public Address(long id, String country, String city, String street, String building, String apt, String zip, long users_id) {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "address")
+public class Address implements Serializable {
+
+    @GenericGenerator(name = "generator", strategy = "foreign", parameters = @org.hibernate.annotations.Parameter(name = "property", value = "user"))
+    @Id
+    @GeneratedValue(generator = "generator")
+    @Column(name = "ID", unique = true, nullable = false)
+    private Long id;
+    @Column(name = "COUNTRY")
+    private String country;
+    @Column(name = "CITY")
+    private String city;
+    @Column(name = "STREET")
+    private String street;
+    @Column(name = "BUILDING")
+    private String building;
+    @Column(name = "APT")
+    private String apt;
+    @Column(name = "ZIP")
+    private String zip;
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Address(long id, String country, String city, String street, String building, String apt, String zip) {
         this.id = id;
         this.country = country;
         this.city = city;
@@ -18,7 +42,6 @@ public class Address {
         this.building = building;
         this.apt = apt;
         this.zip = zip;
-        this.users_id = users_id;
     }
 
     public Address() {}
@@ -33,9 +56,13 @@ public class Address {
                 ", building='" + building + '\'' +
                 ", apt='" + apt + '\'' +
                 ", zip='" + zip + '\'' +
-                ", users_id=" + users_id +
                 '}';
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public void setId(long id) {
         this.id = id;
@@ -63,10 +90,6 @@ public class Address {
 
     public void setZip(String zip) {
         this.zip = zip;
-    }
-
-    public void setUsers_id(long users_id) {
-        this.users_id = users_id;
     }
 
     public long getId() {
@@ -97,7 +120,4 @@ public class Address {
         return zip;
     }
 
-    public long getUsers_id() {
-        return users_id;
-    }
 }

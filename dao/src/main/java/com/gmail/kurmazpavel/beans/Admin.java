@@ -1,11 +1,24 @@
 package com.gmail.kurmazpavel.beans;
 
-public class Admin {
-    private long id;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name="admins")
+public class Admin implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", updatable = false, nullable = false)
+    private Long id;
+    @Column(name = "LOGIN", nullable = false)
     private String login;
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
+    @Column(name = "EMAIL", nullable = false)
     private String email;
+    @Column(name = "PHONE", nullable = false)
     private String phone;
+    @Column(name = "ROLES_ID", nullable = false)
     private long roles_id;
 
     public Admin(long id, String login, String password, String email, String phone, long roles_id) {
@@ -38,10 +51,6 @@ public class Admin {
         return phone;
     }
 
-    public long getRoles_id() {
-        return roles_id;
-    }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -60,6 +69,14 @@ public class Admin {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public long getRoles_id() {
+        return roles_id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setRoles_id(long roles_id) {

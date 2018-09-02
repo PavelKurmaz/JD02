@@ -1,17 +1,12 @@
 package com.gmail.kurmazpavel;
 
-import com.gmail.kurmazpavel.beans.User;
-
-import java.sql.SQLException;
+import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import java.util.List;
 
 public interface UserService {
-
-    boolean create (User user) throws SQLException;
-
-    boolean update (User user) throws SQLException;
-
-    boolean delete (User user) throws SQLException;
-
-    List<User> getAll(String where) throws SQLException;
+    UserDTO read(Long entityID);
+    UserDTO create(UserDTO userDTO);
+    UserDTO update(UserDTO userDTO);
+    UserDTO delete (UserDTO userDTO);
+    List<UserDTO> getAll();
 }

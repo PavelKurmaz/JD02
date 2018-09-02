@@ -1,92 +1,59 @@
 package com.gmail.kurmazpavel.impl;
 
 import com.gmail.kurmazpavel.AddressService;
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.DTOConverter.AddressDTOConverter;
 import com.gmail.kurmazpavel.beans.Address;
-import com.gmail.kurmazpavel.connection.dbConnection;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import com.gmail.kurmazpavel.beans.dto.AddressDTO;
+import com.gmail.kurmazpavel.converter.AddressConverter;
+import com.gmail.kurmazpavel.genericDAO.AddressDAOImpl;
+import com.gmail.kurmazpavel.genericDAO.GenericDAOImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class AddressServiceImpl implements AddressService {
-    private DAO dao = DAO.getDao();
+    private static final Logger logger = LogManager.getLogger(AddressServiceImpl.class);
+    private GenericDAOImpl dao = new AddressDAOImpl(Address.class);
+    private AddressConverter converter = new AddressConverter();
+    private AddressDTOConverter dtoConverter = new AddressDTOConverter();
 
     @Override
-    public boolean create (Address address) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                boolean created = dao.address.create(address, connection);
-                connection.commit();
-                return created;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+    public AddressDTO read(Long entityID) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Address address = (Address) dao.read(entityID);
+            transaction.commit();
+            return dtoConverter.toDTO(address);
         }
-        return false;
-    }
-
-    public boolean update (Address address) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                boolean created = dao.address.update(address, connection);
-                connection.commit();
-                return created;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to read address!", e);
         }
-        return false;
-    }
-
-    public boolean delete (Address address) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                boolean created = dao.address.delete(address, connection);
-                connection.commit();
-                return created;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        return false;
+        return null;
     }
 
     @Override
-    public List<Address> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                List<Address> address = dao.address.getAll(where, connection);
-                connection.commit();
-                return address;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+    public AddressDTO update(AddressDTO addressDTO) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Address address = converter.toEntity(addressDTO);
+            dao.update(address);
+            transaction.commit();
+            return dtoConverter.toDTO(address);
         }
-        return new ArrayList<>();
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to update address!", e);
+        }
+        return addressDTO;
     }
 }

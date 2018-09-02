@@ -1,16 +1,12 @@
 package com.gmail.kurmazpavel;
 
-import com.gmail.kurmazpavel.beans.Order;
-import java.sql.SQLException;
+import com.gmail.kurmazpavel.beans.dto.OrderDTO;
 import java.util.List;
 
 public interface OrderService {
-
-    boolean create(Order order) throws SQLException;
-
-    boolean update(Order order) throws SQLException;
-
-    boolean delete(Order order) throws SQLException;
-
-    List<Order> getAll(String where) throws SQLException;
+    OrderDTO read(Long entityID);
+    OrderDTO create(OrderDTO orderDTO);
+    OrderDTO update(OrderDTO orderDTO);
+    OrderDTO delete (OrderDTO orderDTO);
+    List<OrderDTO> getAll();
 }

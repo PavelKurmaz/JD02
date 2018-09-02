@@ -1,11 +1,21 @@
 package com.gmail.kurmazpavel.beans;
 
-public class ShippingList {
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private long id;
+@Entity
+@Table(name="shippinglist")
+public class ShippingList implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", updatable = false, nullable = false)
+    private Long id;
+    @Column(name = "QUANTITY", nullable = false)
     private String quantity;
-    private int catalog_ID;
-    private int order_ID;
+    @Column(name = "CATALOG_ID")
+    private long catalog_ID;
+    @Column(name = "ORDERS_ID")
+    private long order_ID;
 
     public ShippingList(long id, String quantity, int catalog_ID, int order_ID) {
         this.id = id;
@@ -16,7 +26,7 @@ public class ShippingList {
 
     public ShippingList() {}
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -24,15 +34,15 @@ public class ShippingList {
         return quantity;
     }
 
-    public int getCatalog_ID() {
+    public long getCatalog_ID() {
         return catalog_ID;
     }
 
-    public int getOrder_ID() {
+    public long getOrder_ID() {
         return order_ID;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,11 +50,11 @@ public class ShippingList {
         this.quantity = quantity;
     }
 
-    public void setCatalog_ID(int catalog_ID) {
+    public void setCatalog_ID(long catalog_ID) {
         this.catalog_ID = catalog_ID;
     }
 
-    public void setOrder_ID(int order_ID) {
+    public void setOrder_ID(long order_ID) {
         this.order_ID = order_ID;
     }
 

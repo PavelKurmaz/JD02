@@ -3,7 +3,11 @@ package cmd;
 import com.gmail.kurmazpavel.CatalogService;
 import com.gmail.kurmazpavel.ListService;
 import com.gmail.kurmazpavel.OrderService;
-import com.gmail.kurmazpavel.beans.*;
+import com.gmail.kurmazpavel.beans.ShippingItem;
+import com.gmail.kurmazpavel.beans.dto.CatalogDTO;
+import com.gmail.kurmazpavel.beans.dto.OrderDTO;
+import com.gmail.kurmazpavel.beans.dto.ShippingListDTO;
+import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.impl.CatalogServiceImpl;
 import com.gmail.kurmazpavel.impl.ListServiceImpl;
 import com.gmail.kurmazpavel.impl.OrderServiceImpl;
@@ -14,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 class CmdShippingList extends Cmd {
     private ListService listService = new ListServiceImpl();
@@ -25,27 +28,37 @@ class CmdShippingList extends Cmd {
         HttpSession session = req.getSession();
         Object isUser = session.getAttribute("user");
         Object isAdmin = session.getAttribute("admin");
-        String where;
+        int user_id;
+        List<OrderDTO> allOrderList = orderService.getAll();
+        List<OrderDTO> orderList = new ArrayList<>();
         if (isUser == null && isAdmin == null)
             return new ActionResult(Actions.INDEX);
-        else if (isAdmin != null)
-            where = "WHERE Completed = 0";
-        else {
-            User user = (User) isUser;
-            int user_ID = (int) user.getId();
-            where = String.format(Locale.US, "WHERE Completed = 0 AND Users_ID='%d'", user_ID);
+        else if (isUser != null) {
+            UserDTO user = (UserDTO) isUser;
+            user_id = (int) user.getId();
+            for (OrderDTO order: allOrderList) {
+                if ((order.getCompleted() == 0) && (order.getUsers_ID()== user_id))
+                    orderList.add(order);
             }
-        List<Order> orderList = orderService.getAll(where);
+        }
+        else {
+            for (OrderDTO order : allOrderList) {
+                if (order.getCompleted() == 0)
+                    orderList.add(order);
+            }
+        }
         List<ShippingItem> itemList = new ArrayList<>();
-        for (Order order: orderList) {
-            int order_id = (int) order.getId();
-            where = String.format(Locale.US, "WHERE Orders_ID='%d'", order_id);
-            List<ShippingList> list = listService.getAll(where);
-            for (ShippingList ship : list) {
-                int catalogID = ship.getCatalog_ID();
-                where = String.format(Locale.US, "WHERE ID='%d'", catalogID);
-                List<Catalog> catalogList = catalogService.getAll(where);
-                Catalog catalogItem = catalogList.get(0);
+        for (OrderDTO order: orderList) {
+            long order_id = order.getId();
+            List<ShippingListDTO> allList = listService.getAll();
+            List<ShippingListDTO> list = new ArrayList<>();
+            for (ShippingListDTO item: allList) {
+                if (item.getOrder_ID()== order_id)
+                    list.add(item);
+            }
+            for (ShippingListDTO ship : list) {
+                Long catalogID = ship.getCatalog_ID();
+                CatalogDTO catalogItem = catalogService.read(catalogID);
                 ShippingItem item = new ShippingItem(catalogItem.getName(), Integer.parseInt(ship.getQuantity()), catalogItem.getPrice(), ship.getOrder_ID());
                 itemList.add(item);
             }

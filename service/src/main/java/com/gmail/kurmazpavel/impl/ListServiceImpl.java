@@ -1,93 +1,121 @@
 package com.gmail.kurmazpavel.impl;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.DTOConverter.ShippinglistDTOConverter;
 import com.gmail.kurmazpavel.ListService;
 import com.gmail.kurmazpavel.beans.ShippingList;
-import com.gmail.kurmazpavel.connection.dbConnection;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import com.gmail.kurmazpavel.beans.dto.ShippingListDTO;
+import com.gmail.kurmazpavel.converter.ShippinglistConverter;
+import com.gmail.kurmazpavel.genericDAO.GenericDAOImpl;
+import com.gmail.kurmazpavel.genericDAO.ShippinglistDAOImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import java.util.List;
 
 public class ListServiceImpl implements ListService {
 
-    private DAO dao = DAO.getDao();
+    private static final Logger logger = LogManager.getLogger(ListServiceImpl.class);
+    private GenericDAOImpl dao = new ShippinglistDAOImpl(ShippingList.class);
+    private ShippinglistConverter converter = new ShippinglistConverter();
+    private ShippinglistDTOConverter dtoConverter = new ShippinglistDTOConverter();
 
     @Override
-    public boolean create (ShippingList list) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                boolean created = dao.shippingList.create(list, connection);
-                connection.commit();
-                return created;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+    public ShippingListDTO read(Long entityID) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            ShippingList shippingList = (ShippingList) dao.read(entityID);
+            transaction.commit();
+            return dtoConverter.toDTO(shippingList);
         }
-        return false;
-    }
-
-    public boolean update (ShippingList list) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                boolean created = dao.shippingList.update(list, connection);
-                connection.commit();
-                return created;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to read shippingList type!", e);
         }
-        return false;
-    }
-
-    public boolean delete (ShippingList list) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                boolean created = dao.shippingList.delete(list, connection);
-                connection.commit();
-                return created;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        return false;
+        return null;
     }
 
     @Override
-    public List<ShippingList> getAll(String where) throws SQLException {
-        try (Connection connection = dbConnection.getInstance().getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                List<ShippingList> list = dao.shippingList.getAll(where, connection);
-                connection.commit();
-                return list;
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                try {
-                    connection.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+    public ShippingListDTO create(ShippingListDTO shippingListDTO) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            ShippingList shippingList = converter.toEntity(shippingListDTO);
+            shippingList.setId(null);
+            dao.create(shippingList);
+            transaction.commit();
+            return dtoConverter.toDTO(shippingList);
         }
-        return new ArrayList<>();
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to create shippingList type!", e);
+        }
+        return shippingListDTO;
+    }
+
+    @Override
+    public ShippingListDTO update(ShippingListDTO shippingListDTO) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            ShippingList shippingList = converter.toEntity(shippingListDTO);
+            dao.update(shippingList);
+            transaction.commit();
+            return dtoConverter.toDTO(shippingList);
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to update shippingList type!", e);
+        }
+        return shippingListDTO;
+    }
+
+    @Override
+    public ShippingListDTO delete(ShippingListDTO shippingListDTO) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            ShippingList shippingList = converter.toEntity(shippingListDTO);
+            dao.delete(shippingList);
+            transaction.commit();
+            return dtoConverter.toDTO(shippingList);
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to delete shippingList type!", e);
+        }
+        return shippingListDTO;
+    }
+
+    @Override
+    public List<ShippingListDTO> getAll() {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            List<ShippingList> list = dao.getAll();
+            transaction.commit();
+            return dtoConverter.toDTOList(list);
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to list shippingLists!", e);
+        }
+        return null;
     }
 }

@@ -5,7 +5,6 @@ import util.Util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 class CmdIndex extends Cmd {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {

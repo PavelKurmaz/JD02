@@ -11,7 +11,6 @@ public class AuditDTOConverter implements DTOConverter<AuditDTO, Audit> {
     public AuditDTO toDTO(Audit entity) {
         AuditDTO auditDTO = new AuditDTO();
         auditDTO.setID(entity.getId());
-        auditDTO.setUsers_ID(entity.getUsers_ID());
         auditDTO.setEvent_type(entity.getEvent_type());
         auditDTO.setLocalDateTime(entity.getCreated());
         return auditDTO;

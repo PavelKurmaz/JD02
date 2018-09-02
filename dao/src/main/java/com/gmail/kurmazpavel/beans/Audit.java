@@ -1,18 +1,23 @@
 package com.gmail.kurmazpavel.beans;
 
+import org.hibernate.annotations.*;
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="audit")
 public class Audit implements Serializable{
+    @GenericGenerator(name = "generator", strategy = "foreign", parameters = @org.hibernate.annotations.Parameter(name = "property", value = "user"))
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "generator")
     @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
-    @Column(name = "Users_ID", nullable = false)
-    private Long users_ID;
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private User user;
     @Column (name = "EVENT_TYPE")
     private String event_type;
     @Column(name = "CREATED")
@@ -21,12 +26,17 @@ public class Audit implements Serializable{
     public Long getId() {
         return id;
     }
-    public Long setId(long id) {
-        return id;
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getUsers_ID() {
-        return users_ID;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public String getEvent_type() {
@@ -35,10 +45,6 @@ public class Audit implements Serializable{
 
     public LocalDateTime getCreated() {
         return created;
-    }
-
-    public void setUsers_ID(Long users_ID) {
-        this.users_ID = users_ID;
     }
 
     public void setEvent_type(String event_type) {

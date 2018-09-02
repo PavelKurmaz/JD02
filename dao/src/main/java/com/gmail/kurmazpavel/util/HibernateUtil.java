@@ -1,6 +1,6 @@
 package com.gmail.kurmazpavel.util;
 
-import com.gmail.kurmazpavel.beans.Audit;
+import com.gmail.kurmazpavel.beans.*;
 import com.gmail.kurmazpavel.config.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +19,7 @@ public class HibernateUtil {
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory(Class cl) {
+    public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
                 StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
@@ -35,7 +35,13 @@ public class HibernateUtil {
                 registry = registryBuilder.build();
                 logger.info("Hibernamte Registry builder created");
 
-                MetadataSources sources = new MetadataSources(registry).addAnnotatedClass(cl);
+                MetadataSources sources = new MetadataSources(registry).addAnnotatedClass(User.class)
+                        .addAnnotatedClass(Audit.class)
+                        .addAnnotatedClass(Address.class)
+                        .addAnnotatedClass(Admin.class)
+                        .addAnnotatedClass(Catalog.class)
+                        .addAnnotatedClass(Order.class)
+                        .addAnnotatedClass(ShippingList.class);
                 Metadata metadata = sources.getMetadataBuilder().build();
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
                 logger.info("SessionFactory created");

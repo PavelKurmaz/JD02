@@ -1,7 +1,7 @@
 package cmd;
 
 import com.gmail.kurmazpavel.OrderService;
-import com.gmail.kurmazpavel.beans.Order;
+import com.gmail.kurmazpavel.beans.dto.OrderDTO;
 import com.gmail.kurmazpavel.impl.OrderServiceImpl;
 import util.ActionResult;
 import util.Util;
@@ -14,17 +14,17 @@ class CmdEditOrders extends Cmd {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (Util.isPost(req)) {
-            int order_id = Util.getInteger(req, "id");
+            Long order_id = (long)Util.getInteger(req, "id");
             int completed = Util.getInteger(req, "completed");
             int user_id = Util.getInteger(req, "users_id");
-            Order order= new Order(order_id, completed, user_id);
+            OrderDTO order= new OrderDTO(order_id, completed, user_id);
             if (req.getParameter("Update") != null) {
                 service.update(order);
             } else if (req.getParameter("Delete") != null) {
                 service.delete(order);
             }
         }
-        List<Order> orders = service.getAll("");
+        List<OrderDTO> orders = service.getAll();
         req.setAttribute("orders", orders);
         return null;
     }

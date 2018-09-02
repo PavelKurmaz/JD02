@@ -1,7 +1,7 @@
 package cmd;
 
 import com.gmail.kurmazpavel.AddressService;
-import com.gmail.kurmazpavel.beans.Address;
+import com.gmail.kurmazpavel.beans.dto.AddressDTO;
 import com.gmail.kurmazpavel.impl.AddressServiceImpl;
 import util.ActionResult;
 import util.Util;
@@ -27,9 +27,9 @@ class CmdAddress extends Cmd {
                     if (cookie.getName().equals("user_id"))
                         id = Integer.parseInt(cookie.getValue());
                 }
-                Address address = new Address(0, country, city, street, building, apt, zip, id);
-                service.create(address);
-                if (address.getId() > 0) {
+                AddressDTO address = new AddressDTO(id, country, city, street, building, apt, zip);
+                address = service.update(address);
+                if (address.getId() != 0) {
                     return new ActionResult(Actions.LOGIN);
                 }
             }

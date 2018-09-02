@@ -4,16 +4,11 @@ import java.time.LocalDateTime;
 
 public class AuditDTO {
     private long ID;
-    private long Users_ID;
     private String event_type;
     private LocalDateTime localDateTime;
 
     public void setID(long ID) {
         this.ID = ID;
-    }
-
-    public void setUsers_ID(long users_ID) {
-        Users_ID = users_ID;
     }
 
     public void setEvent_type(String event_type) {
@@ -24,14 +19,7 @@ public class AuditDTO {
         this.localDateTime = localDateTime;
     }
 
-    public long getID() {
-
-        return ID;
-    }
-
-    public long getUsers_ID() {
-        return Users_ID;
-    }
+    public long getID() {  return ID;  }
 
     public String getEvent_type() {
         return event_type;
@@ -42,6 +30,6 @@ public class AuditDTO {
     }
 
     public String toString() {
-        return "ID: " + ID + ", User_ID: " + Users_ID + ", Event: " + event_type + ", Date&Time: " + localDateTime;
+        return "ID: " + ID + ", Event: " + event_type + ", Date&Time: " + localDateTime;
     }
 }

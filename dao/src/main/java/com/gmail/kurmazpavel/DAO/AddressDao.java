@@ -25,7 +25,7 @@ public class AddressDao extends AbstractDAO implements DaoInterface<Address>{
     public boolean create(Address address,Connection connection) throws SQLException {
         String sql = String.format(Locale.US,"INSERT INTO `address`(`Country`, `City`, `Street`, `Building`, `Apt`, `ZIP`,  `Users_ID`)" +
                         "VALUES ('%s','%s','%s','%s','%s', '%s', %d)",
-                address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding(), address.getApt(), address.getZip(), address.getUsers_id());
+                address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding(), address.getApt(), address.getZip());
         long id = executeUpdate(sql, connection);
         if (id > 0) {
             address.setId(id);
@@ -38,7 +38,7 @@ public class AddressDao extends AbstractDAO implements DaoInterface<Address>{
     public boolean update(Address address, Connection connection) throws SQLException {
         String sql = String.format(Locale.US,
                 "UPDATE `address` SET `Country`='%s', `City`='%s', `Street`='%s', `Building`='%s', `Apt`='%s', ZIP='%s', `Users_ID`='%d' WHERE ID=%d",
-                address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding(), address.getApt(), address.getZip(), address.getUsers_id(), address.getId());
+                address.getCountry(), address.getCity(), address.getStreet(), address.getBuilding(), address.getApt(), address.getZip(), address.getId());
         return (executeUpdate(sql, connection) > 0);
     }
 
@@ -62,8 +62,7 @@ public class AddressDao extends AbstractDAO implements DaoInterface<Address>{
                         resultSet.getString("Street"),
                         resultSet.getString("Building"),
                         resultSet.getString("Apt"),
-                        resultSet.getString("ZIP"),
-                        resultSet.getLong("Users_ID")
+                        resultSet.getString("ZIP")
                 );
                 addresses.add(address);
             }

@@ -1,7 +1,7 @@
 package cmd;
 
 import com.gmail.kurmazpavel.CatalogService;
-import com.gmail.kurmazpavel.beans.Catalog;
+import com.gmail.kurmazpavel.beans.dto.CatalogDTO;
 import com.gmail.kurmazpavel.impl.CatalogServiceImpl;
 import util.ActionResult;
 import util.Util;
@@ -23,8 +23,8 @@ class CmdAddItem extends Cmd {
             double price = Util.getDouble(req, "price");
             int amount = Util.getInteger(req, "amount");
             if (name != null) {
-                Catalog item = new Catalog(0, amount, name, price);
-                service.create(item);
+                CatalogDTO item = new CatalogDTO(0, amount, name, price);
+                item = service.create(item);
                 if (item.getID() > 0)
                     return new ActionResult("addcatalogitem");
             }

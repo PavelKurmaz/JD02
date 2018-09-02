@@ -1,16 +1,12 @@
 package com.gmail.kurmazpavel;
 
-import com.gmail.kurmazpavel.beans.ShippingList;
-import java.sql.SQLException;
+import com.gmail.kurmazpavel.beans.dto.ShippingListDTO;
 import java.util.List;
 
 public interface ListService {
-
-    boolean create(ShippingList list) throws SQLException;
-
-    boolean update(ShippingList list) throws SQLException;
-
-    boolean delete(ShippingList list) throws SQLException;
-
-    List<ShippingList> getAll(String where) throws SQLException;
+    ShippingListDTO read(Long entityID);
+    ShippingListDTO create(ShippingListDTO shippingListDTO);
+    ShippingListDTO update(ShippingListDTO shippingListDTO);
+    ShippingListDTO delete (ShippingListDTO shippingListDTO);
+    List<ShippingListDTO> getAll();
 }

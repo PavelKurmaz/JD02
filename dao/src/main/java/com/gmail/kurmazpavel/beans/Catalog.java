@@ -1,9 +1,20 @@
 package com.gmail.kurmazpavel.beans;
 
-public class Catalog {
-    private long ID;
-    private int amount;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name="catalog")
+public class Catalog implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", updatable = false, nullable = false)
+    private Long ID;
+    @Column(name = "AMOUNTLEFT", nullable = false)
+    private long amount;
+    @Column(name = "NAME", nullable = false)
     private String name;
+    @Column(name = "PRICE")
     private double price;
 
 
@@ -16,7 +27,7 @@ public class Catalog {
 
     public Catalog() {}
 
-    public long getID() {
+    public Long getID() {
         return ID;
     }
 
@@ -28,11 +39,15 @@ public class Catalog {
         return price;
     }
 
-    public int getAmount() {
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
+
+    public long getAmount() {
         return amount;
     }
 
-    public void setID(long ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

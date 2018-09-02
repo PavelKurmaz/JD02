@@ -1,8 +1,8 @@
 package cmd;
 
 import com.gmail.kurmazpavel.OrderService;
-import com.gmail.kurmazpavel.beans.Order;
-import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.beans.dto.OrderDTO;
+import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.impl.OrderServiceImpl;
 import util.ActionResult;
 import util.Util;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 class CmdListOrders extends Cmd {
     private OrderService service = new OrderServiceImpl();
@@ -23,11 +23,15 @@ class CmdListOrders extends Cmd {
         HttpSession session = req.getSession();
         Object object = session.getAttribute("user");
         if (object != null){
-            User user = (User) object;
+            UserDTO user = (UserDTO) object;
             int user_id = (int) user.getId();
-            String where = String.format(Locale.US, "WHERE users_ID='%d'", user_id);
-            List<Order> orders = service.getAll(where);
-            req.setAttribute("orders", orders);
+            List<OrderDTO> allOrders = service.getAll();
+            List<OrderDTO> userOrders = new ArrayList<>();
+            for (OrderDTO order: allOrders) {
+                if (order.getUsers_ID() == user_id)
+                    userOrders.add(order);
+            }
+            req.setAttribute("orders", userOrders);
         }
         return null;
     }

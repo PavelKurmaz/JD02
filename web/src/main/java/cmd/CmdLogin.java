@@ -2,8 +2,8 @@ package cmd;
 
 import com.gmail.kurmazpavel.AddressService;
 import com.gmail.kurmazpavel.UserService;
-import com.gmail.kurmazpavel.beans.Address;
-import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.beans.dto.AddressDTO;
+import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.impl.AddressServiceImpl;
 import com.gmail.kurmazpavel.impl.UserServiceImpl;
 import org.apache.commons.codec.DecoderException;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Locale;
 
 class CmdLogin extends Cmd {
     private UserService service = new UserServiceImpl();
@@ -26,25 +25,26 @@ class CmdLogin extends Cmd {
             String login = Util.getString(req,"login");
             String password = Util.getString(req,"password");
             if (login != null && password != null) {
-                String where = String.format(Locale.US,
-                        " WHERE login='%s'",
-                        login);
-                List<User> users = service.getAll(where);
+                UserDTO validateUser = null;
+                List<UserDTO> users = service.getAll();
                 if (users.size() > 0) {
-                    User user = users.get(0);
-                    BCodec codec = new BCodec();
-                    String decode = codec.decode(user.getPassword());
-                    if (!password.equals(decode)) {
-                        req.setAttribute("errmessage", "Wrong password");
-                        return new ActionResult(Actions.ERROR);
+                    for (UserDTO user : users) {
+                        if (user.getLogin().equals(login)) {
+                            BCodec codec = new BCodec();
+                            String decode = codec.decode(user.getPassword());
+                            if (!password.equals(decode)) {
+                                req.setAttribute("errmessage", "Wrong password");
+                                return new ActionResult(Actions.ERROR);
+                            }
+                            validateUser = user;
+                        }
                     }
-                    int user_id = (int)user.getId();
-                    where = String.format(Locale.US, "WHERE users_ID='%d'", user_id);
-                    List<Address> addresses = addressService.getAll(where);
-                    Address address = addresses.get(0);
+                }
+                if (validateUser != null) {
+                    AddressDTO address = addressService.read(validateUser.getId());
                     HttpSession session = req.getSession();
                     session.setAttribute("address", address);
-                    session.setAttribute("user", user);
+                    session.setAttribute("user", validateUser);
                     return new ActionResult(Actions.PROFILE);
                 }
             }

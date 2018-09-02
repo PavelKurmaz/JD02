@@ -1,7 +1,7 @@
 package cmd;
 
 import com.gmail.kurmazpavel.CatalogService;
-import com.gmail.kurmazpavel.beans.Catalog;
+import com.gmail.kurmazpavel.beans.dto.CatalogDTO;
 import com.gmail.kurmazpavel.impl.CatalogServiceImpl;
 import util.ActionResult;
 import util.Util;
@@ -18,14 +18,14 @@ class CmdEditCatalog extends Cmd {
             int amount = Util.getInteger(req, "amount");
             double price = Util.getDouble(req, "price");
             String name = Util.getString(req, "name");
-            Catalog catalog = new Catalog(id, amount, name, price);
+            CatalogDTO catalog = new CatalogDTO(id, amount, name, price);
             if (req.getParameter("Update") != null) {
                 service.update(catalog);
             } else if (req.getParameter("Delete") != null) {
                 service.delete(catalog);
             }
         }
-        List<Catalog> items = service.getAll("");
+        List<CatalogDTO> items = service.getAll();
         req.setAttribute("items", items);
         return null;
     }

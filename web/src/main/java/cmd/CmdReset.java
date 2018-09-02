@@ -1,6 +1,6 @@
 package cmd;
 
-import com.gmail.kurmazpavel.DAO.DAO;
+import com.gmail.kurmazpavel.resetDB.Runner;
 import util.ActionResult;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 class CmdReset extends Cmd {
     @Override
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) {
-        DAO.reset();
+        Runner.main(new String[]{});
         return new ActionResult(Actions.INDEX);
     }
 }

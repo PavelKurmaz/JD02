@@ -1,5 +1,6 @@
 package com.gmail.kurmazpavel.impl;
 
+import com.gmail.kurmazpavel.AuditService;
 import com.gmail.kurmazpavel.DTOConverter.AuditDTOConverter;
 import com.gmail.kurmazpavel.beans.Audit;
 import com.gmail.kurmazpavel.beans.dto.AuditDTO;
@@ -13,7 +14,7 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class AuditServiceImpl implements AuditService{
+public class AuditServiceImpl implements AuditService {
     private static final Logger logger = LogManager.getLogger(AuditServiceImpl.class);
     private GenericDAOImpl dao = new AuditDAOImpl(Audit.class);
     private AuditConverter converter = new AuditConverter();
@@ -33,7 +34,7 @@ public class AuditServiceImpl implements AuditService{
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to create user!", e);
+            logger.error("Failed to create audit type!", e);
         }
         return auditDTO;
     }
