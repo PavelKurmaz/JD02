@@ -10,7 +10,7 @@ public class CatalogDTOConverter implements DTOConverter<CatalogDTO, Catalog> {
     @Override
     public CatalogDTO toDTO(Catalog entity) {
         CatalogDTO catalog = new CatalogDTO();
-        catalog.setID(entity.getID());
+        catalog.setID(entity.getId());
         catalog.setAmount(entity.getAmount());
         catalog.setName(entity.getName());
         catalog.setPrice(entity.getPrice());

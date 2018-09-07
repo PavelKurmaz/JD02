@@ -1,48 +1,51 @@
 package com.gmail.kurmazpavel.beans.dto;
 
-public class OrderDTO {
-    private Long id;
-    private long completed;
-    private long users_ID;
+import java.time.LocalDateTime;
 
-    public OrderDTO(Long id, long completed, long users_ID) {
-        this.id = id;
-        this.completed = completed;
-        this.users_ID = users_ID;
+public class OrderDTO {
+    private Long userId;
+    private Long itemId;
+    private LocalDateTime created;
+    private int quantity;
+
+    public OrderDTO(long userId, long itemId, LocalDateTime created, int quantity) {
+        this.userId = userId;
+        this.itemId = itemId;
+        this.created = created;
+        this.quantity = quantity;
     }
 
     public OrderDTO() {}
 
-    public Long getId() {
-        return id;
+    public Long getUser_id() {
+        return userId;
     }
 
-    public long getCompleted() {
-        return completed;
+    public Long getItem_id() {
+        return itemId;
     }
 
-    public long getUsers_ID() {
-        return users_ID;
+    public void setUser_id(Long userId) {
+        this.userId = userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setItem_id(Long itemId) {
+        this.itemId = itemId;
     }
 
-    public void setCompleted(long completed) {
-        this.completed = completed;
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setUsers_ID(long users_ID) {
-        this.users_ID = users_ID;
+    public int getQuantity() {
+        return quantity;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", completed=" + completed +
-                ", users_ID=" + users_ID +
-                '}';
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

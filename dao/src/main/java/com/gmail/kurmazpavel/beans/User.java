@@ -1,10 +1,17 @@
 package com.gmail.kurmazpavel.beans;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="users")
+@Cacheable
+@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,29 +28,43 @@ public class User implements Serializable{
     @Column(name = "CARMA", nullable = false)
     private String carma;
     @Column(name = "ROLES_ID", nullable = false)
-    private long roles_id;
+    private long rolesId;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private Audit audit;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
     private Address address;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> items = new ArrayList<>();
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public List<Order> getItems() {
+        return items;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
 
     public void setAddress(Address address) {
         this.address = address;
     }
 
-    public void setAudit(Audit audit) {
-        this.audit = audit;
-    }
-
-    public User(long id, String login, String password, String email, String phone, String carma, long roles_id) {
+    public User(long id, String login, String password, String email, String phone, String carma, long rolesId) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.carma = carma;
-        this.roles_id = roles_id;
+        this.rolesId = rolesId;
     }
     public User() {}
 
@@ -56,7 +77,7 @@ public class User implements Serializable{
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", carma='" + carma + '\'' +
-                ", roles_id=" + roles_id +
+                ", rolesId=" + rolesId +
                 '}';
     }
 
@@ -84,11 +105,11 @@ public class User implements Serializable{
         this.carma = carma;
     }
 
-    public void setRoles_id(long roles_id) {
-        this.roles_id = roles_id;
+    public void setRoles_id(long rolesId) {
+        this.rolesId = rolesId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -113,6 +134,27 @@ public class User implements Serializable{
     }
 
     public long getRoles_id() {
-        return roles_id;
+        return rolesId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return rolesId == user.rolesId &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(carma, user.carma) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(items, user.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, email, phone, carma, rolesId, address, items);
     }
 }

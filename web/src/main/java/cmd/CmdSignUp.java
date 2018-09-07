@@ -16,7 +16,13 @@ class CmdSignUp extends Cmd {
     public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception{
         if (Util.isPost(req)) {
             String login = Util.getString(req,"login");
+            UserDTO validateUser = service.readByLogin(login);
+            if (validateUser != null)
+                return null;
             String email = Util.getEmail(req,"E-mail");
+            validateUser = service.readByEmail(email);
+            if (validateUser != null)
+                return null;
             String password = Util.getString(req,"password");
             String phone = Util.getString(req, "phone");
             BCodec codec = new BCodec();

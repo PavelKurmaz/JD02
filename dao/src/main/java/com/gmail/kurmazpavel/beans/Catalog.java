@@ -2,33 +2,47 @@ package com.gmail.kurmazpavel.beans;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name="catalog")
+@Table(name = "catalog")
 public class Catalog implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", updatable = false, nullable = false)
-    private Long ID;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
     @Column(name = "AMOUNTLEFT", nullable = false)
     private long amount;
     @Column(name = "NAME", nullable = false)
     private String name;
     @Column(name = "PRICE")
     private double price;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> users = new ArrayList<>();
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Catalog(long ID, int amount, String name, double price) {
-        this.ID = ID;
+    public Long getId() {
+
+        return id;
+    }
+
+    public List<Order> getUsers() {
+        return users;
+    }
+
+    public Catalog(long id, int amount, String name, double price) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.amount = amount;
     }
 
-    public Catalog() {}
-
-    public Long getID() {
-        return ID;
+    public Catalog() {
     }
 
     public String getName() {
@@ -47,10 +61,6 @@ public class Catalog implements Serializable {
         return amount;
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -66,10 +76,27 @@ public class Catalog implements Serializable {
     @Override
     public String toString() {
         return "Catalog{" +
-                "ID=" + ID +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", amount=" + amount +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Catalog)) return false;
+        Catalog catalog = (Catalog) o;
+        return amount == catalog.amount &&
+                Double.compare(catalog.price, price) == 0 &&
+                Objects.equals(id, catalog.id) &&
+                Objects.equals(name, catalog.name) &&
+                Objects.equals(users, catalog.users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, amount, name, price, users);
     }
 }

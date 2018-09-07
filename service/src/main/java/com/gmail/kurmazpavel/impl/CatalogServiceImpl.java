@@ -5,8 +5,8 @@ import com.gmail.kurmazpavel.DTOConverter.CatalogDTOConverter;
 import com.gmail.kurmazpavel.beans.Catalog;
 import com.gmail.kurmazpavel.beans.dto.CatalogDTO;
 import com.gmail.kurmazpavel.converter.CatalogConverter;
-import com.gmail.kurmazpavel.genericDAO.CatalogDAOImpl;
-import com.gmail.kurmazpavel.genericDAO.GenericDAOImpl;
+import com.gmail.kurmazpavel.genericDAO.impl.CatalogDAOImpl;
+import com.gmail.kurmazpavel.genericDAO.impl.GenericDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -47,7 +47,6 @@ public class CatalogServiceImpl implements CatalogService {
             if (!transaction.isActive())
                 session.beginTransaction();
             Catalog catalog = converter.toEntity(catalogDTO);
-            catalog.setID(null);
             dao.create(catalog);
             transaction.commit();
             return dtoConverter.toDTO(catalog);
@@ -67,7 +66,8 @@ public class CatalogServiceImpl implements CatalogService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Catalog catalog = converter.toEntity(catalogDTO);
+            Catalog catalog = (Catalog) dao.read(catalogDTO.getID());
+            catalog.setAmount(catalogDTO.getAmount());
             dao.update(catalog);
             transaction.commit();
             return dtoConverter.toDTO(catalog);
@@ -87,7 +87,7 @@ public class CatalogServiceImpl implements CatalogService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Catalog catalog = converter.toEntity(catalogDTO);
+            Catalog catalog = (Catalog) dao.read(catalogDTO.getID());
             dao.delete(catalog);
             transaction.commit();
             return dtoConverter.toDTO(catalog);

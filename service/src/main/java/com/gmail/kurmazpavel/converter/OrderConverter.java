@@ -9,9 +9,8 @@ public class OrderConverter implements Converter<OrderDTO, Order> {
     @Override
     public Order toEntity(OrderDTO dto) {
         Order order = new Order();
-        order.setId(dto.getId());
-        order.setCompleted(dto.getCompleted());
-        order.setUsers_ID(dto.getUsers_ID());
+        order.setCreated(dto.getCreated());
+        order.setQuantity(dto.getQuantity());
         return order;
     }
 

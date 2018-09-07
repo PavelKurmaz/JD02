@@ -2,6 +2,8 @@ package com.gmail.kurmazpavel.beans;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="admins")
@@ -20,6 +22,14 @@ public class Admin implements Serializable {
     private String phone;
     @Column(name = "ROLES_ID", nullable = false)
     private long roles_id;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<News> newsList = new ArrayList<>();
+
+    public List<News> getNewsList() {
+        return newsList;
+    }
 
     public Admin(long id, String login, String password, String email, String phone, long roles_id) {
         this.id = id;

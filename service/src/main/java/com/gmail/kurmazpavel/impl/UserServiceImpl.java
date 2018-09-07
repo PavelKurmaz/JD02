@@ -3,22 +3,21 @@ package com.gmail.kurmazpavel.impl;
 import com.gmail.kurmazpavel.DTOConverter.UserDTOConverter;
 import com.gmail.kurmazpavel.UserService;
 import com.gmail.kurmazpavel.beans.Address;
-import com.gmail.kurmazpavel.beans.Audit;
 import com.gmail.kurmazpavel.beans.User;
 import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.converter.UserConverter;
-import com.gmail.kurmazpavel.genericDAO.GenericDAOImpl;
-import com.gmail.kurmazpavel.genericDAO.UserDAOImpl;
+import com.gmail.kurmazpavel.genericDAO.UserDao;
+import com.gmail.kurmazpavel.genericDAO.impl.UserDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import java.time.LocalDateTime;
+import javax.persistence.Query;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
-    private GenericDAOImpl dao = new UserDAOImpl(User.class);
+    private UserDao dao = new UserDAOImpl(User.class);
     private UserConverter userConverter = new UserConverter();
     private UserDTOConverter userDtoConverter = new UserDTOConverter();
 
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            User user = (User) dao.read(entityID);
+            User user = dao.read(entityID);
             transaction.commit();
             return userDtoConverter.toDTO(user);
         }
@@ -48,16 +47,10 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Audit audit = new Audit();
-            audit.setEvent_type("User register");
-            audit.setCreated(LocalDateTime.now());
             Address address = new Address();
             User user = userConverter.toEntity(userDTO);
             user.setId(null);
-            user.setAudit(audit);
             user.setAddress(address);
-            address.setUser(user);
-            audit.setUser(user);
             dao.create(user);
             transaction.commit();
             return userDtoConverter.toDTO(user);
@@ -77,7 +70,7 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            User user = userConverter.toEntity(userDTO);
+            User user = dao.read(userDTO.getId());
             dao.update(user);
             transaction.commit();
             return userDtoConverter.toDTO(user);
@@ -125,6 +118,50 @@ public class UserServiceImpl implements UserService {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list users!", e);
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO readByLogin(String login) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Query query = session.createQuery("from User as U where U.login = :login");
+            query.setParameter("login", login);
+            User user = (User) query.getSingleResult();
+            transaction.commit();
+            if (user != null)
+                return userDtoConverter.toDTO(user);
+            return null;
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to read user type!", e);
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO readByEmail(String email) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Query query = session.createQuery("from User as U where U.email = :email");
+            query.setParameter("email", email);
+            User user = (User) query.getSingleResult();
+            transaction.commit();
+            return userDtoConverter.toDTO(user);
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to read user type!", e);
         }
         return null;
     }

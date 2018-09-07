@@ -4,14 +4,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "address")
 public class Address implements Serializable {
 
-    @GenericGenerator(name = "generator", strategy = "foreign", parameters = @org.hibernate.annotations.Parameter(name = "property", value = "user"))
     @Id
-    @GeneratedValue(generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true, nullable = false)
     private Long id;
     @Column(name = "COUNTRY")
@@ -26,13 +26,6 @@ public class Address implements Serializable {
     private String apt;
     @Column(name = "ZIP")
     private String zip;
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    private User user;
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Address(long id, String country, String city, String street, String building, String apt, String zip) {
         this.id = id;
@@ -62,7 +55,6 @@ public class Address implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public void setId(long id) {
         this.id = id;
@@ -120,4 +112,22 @@ public class Address implements Serializable {
         return zip;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) &&
+                Objects.equals(country, address.country) &&
+                Objects.equals(city, address.city) &&
+                Objects.equals(street, address.street) &&
+                Objects.equals(building, address.building) &&
+                Objects.equals(apt, address.apt) &&
+                Objects.equals(zip, address.zip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, country, city, street, building, apt, zip);
+    }
 }

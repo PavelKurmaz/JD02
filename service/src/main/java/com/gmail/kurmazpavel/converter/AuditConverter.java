@@ -14,6 +14,7 @@ public class AuditConverter implements Converter<AuditDTO, Audit> {
         audit.setId(dto.getID());
         audit.setEvent_type(dto.getEvent_type());
         audit.setCreated(dto.getLocalDateTime());
+        audit.setUser_id(dto.getUser_id());
         return audit;
     }
 

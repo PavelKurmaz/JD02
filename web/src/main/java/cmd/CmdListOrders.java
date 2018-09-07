@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 class CmdListOrders extends Cmd {
@@ -24,14 +23,13 @@ class CmdListOrders extends Cmd {
         Object object = session.getAttribute("user");
         if (object != null){
             UserDTO user = (UserDTO) object;
-            int user_id = (int) user.getId();
-            List<OrderDTO> allOrders = service.getAll();
-            List<OrderDTO> userOrders = new ArrayList<>();
-            for (OrderDTO order: allOrders) {
-                if (order.getUsers_ID() == user_id)
-                    userOrders.add(order);
-            }
-            req.setAttribute("orders", userOrders);
+            long user_id = (int) user.getId();
+            List<OrderDTO> orders = service.getById(user_id);
+            req.setAttribute("orders", orders);
+        }
+        else {
+            List<OrderDTO> orders = service.getAll();
+            req.setAttribute("orders", orders);
         }
         return null;
     }

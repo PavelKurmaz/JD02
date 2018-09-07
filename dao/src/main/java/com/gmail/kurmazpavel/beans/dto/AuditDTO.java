@@ -4,11 +4,20 @@ import java.time.LocalDateTime;
 
 public class AuditDTO {
     private long ID;
+    private long user_id;
     private String event_type;
     private LocalDateTime localDateTime;
 
     public void setID(long ID) {
         this.ID = ID;
+    }
+
+    public long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
     }
 
     public void setEvent_type(String event_type) {

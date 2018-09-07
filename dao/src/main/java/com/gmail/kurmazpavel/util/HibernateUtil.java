@@ -10,6 +10,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,23 +31,26 @@ public class HibernateUtil {
                 settings.put(Environment.PASS, ConfigurationManager.getInstance().getProperty(ConfigurationManager.DATABASE_PWD));
                 settings.put(Environment.HBM2DDL_AUTO, ConfigurationManager.getInstance().getProperty(Environment.HBM2DDL_AUTO));
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, ConfigurationManager.getInstance().getProperty(Environment.CURRENT_SESSION_CONTEXT_CLASS));
+                settings.put(Environment.USE_SECOND_LEVEL_CACHE, ConfigurationManager.getInstance().getProperty(Environment.USE_SECOND_LEVEL_CACHE));
+                settings.put(Environment.CACHE_REGION_FACTORY, ConfigurationManager.getInstance().getProperty(Environment.CACHE_REGION_FACTORY));
 
                 registryBuilder.applySettings(settings);
                 registry = registryBuilder.build();
                 logger.info("Hibernamte Registry builder created");
 
-                MetadataSources sources = new MetadataSources(registry).addAnnotatedClass(User.class)
+                MetadataSources sources = new MetadataSources(registry)
+                        .addAnnotatedClass(User.class)
                         .addAnnotatedClass(Audit.class)
                         .addAnnotatedClass(Address.class)
                         .addAnnotatedClass(Admin.class)
                         .addAnnotatedClass(Catalog.class)
                         .addAnnotatedClass(Order.class)
-                        .addAnnotatedClass(ShippingList.class);
+                        .addAnnotatedClass(News.class)
+                        .addAnnotatedClass(Comment.class);
                 Metadata metadata = sources.getMetadataBuilder().build();
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
                 logger.info("SessionFactory created");
-                }
-                catch (Exception e) {
+            } catch (Exception e) {
                 logger.error("Sessionfactory creation failed");
                 logger.error(e.getMessage(), e);
                 if (registry != null) {
@@ -54,6 +58,6 @@ public class HibernateUtil {
                 }
             }
         }
-        return  sessionFactory;
+        return sessionFactory;
     }
 }

@@ -44,8 +44,9 @@ class Table_Init {
                     "ENGINE = InnoDB;");
             statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Audit` (\n" +
                     "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `EVENT_TYPE` VARCHAR(20) NULL,\n" +
+                    "  `EVENT_TYPE` VARCHAR(40) NULL,\n" +
                     "  `CREATED` DATETIME NULL,\n" +
+                    "  `USER_ID` BIGINT,\n" +
                     "  PRIMARY KEY (`ID`))\n" +
                     "ENGINE = InnoDB;");
             statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Admins` (\n" +
@@ -64,17 +65,11 @@ class Table_Init {
                     "    ON UPDATE RESTRICT)\n" +
                     "ENGINE = InnoDB;");
             statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Orders` (\n" +
-                    "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `Completed` BIGINT NULL,\n" +
-                    "  `Users_ID` BIGINT NOT NULL,\n" +
-                    "  PRIMARY KEY (`ID`),\n" +
-                    "  INDEX `fk_Order_Users1_idx` (`Users_ID` ASC),\n" +
-                    "  CONSTRAINT `fk_Order_Users1`\n" +
-                    "    FOREIGN KEY (`Users_ID`)\n" +
-                    "    REFERENCES `kurmaz`.`Users` (`ID`)\n" +
-                    "    ON DELETE CASCADE\n" +
-                    "    ON UPDATE NO ACTION)\n" +
-                    "ENGINE = InnoDB;\n");
+                    "  `Item_ID` BIGINT NOT NULL,\n" +
+                    "  `User_ID` BIGINT NOT NULL,\n" +
+                    "  `CREATED` DATETIME NOT NULL,\n" +
+                    "  `Quantity` INT NULL)\n" +
+                    "ENGINE = InnoDB;");
             statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Catalog` (\n" +
                     "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
                     "  `AmountLeft` BIGINT NULL,\n" +
@@ -82,26 +77,28 @@ class Table_Init {
                     "  `Price` DOUBLE NULL,\n" +
                     "  PRIMARY KEY (`ID`))\n" +
                     "ENGINE = InnoDB;");
+            statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`News` (\n" +
+                    "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `Title` VARCHAR(45) NULL,\n" +
+                    "  `Content` VARCHAR(100) NULL,\n" +
+                    "  `CREATED` DATETIME NOT NULL,\n" +
+                    "  `User_Id` BIGINT NOT NULL,\n" +
+                    "  PRIMARY KEY (`ID`))\n" +
+                    "ENGINE = InnoDB;");
+            statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`Comment` (\n" +
+                    "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `Content` VARCHAR(100) NULL,\n" +
+                    "  `CREATED` DATETIME NOT NULL,\n" +
+                    "  `User_Id` BIGINT NOT NULL,\n" +
+                    "  `News_Id` BIGINT NOT NULL,\n" +
+                    "  PRIMARY KEY (`ID`))\n" +
+                    "ENGINE = InnoDB;");
             statement.execute("CREATE TABLE IF NOT EXISTS `kurmaz`.`ShippingList` (\n" +
                     "  `ID` BIGINT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `Quantity` VARCHAR(45) NULL,\n" +
-                    "  `Catalog_ID` BIGINT NULL,\n" +
-                    "  `Orders_ID` BIGINT NULL,\n" +
-                    "  PRIMARY KEY (`ID`),\n" +
-                    "  INDEX `fk_ShippingList_Catalog1_idx` (`Catalog_ID` ASC),\n" +
-                    "  INDEX `fk_ShippingList_Orders1_idx` (`Orders_ID` ASC),\n" +
-                    "  CONSTRAINT `fk_ShippingList_Catalog1`\n" +
-                    "    FOREIGN KEY (`Catalog_ID`)\n" +
-                    "    REFERENCES `kurmaz`.`Catalog` (`ID`)\n" +
-                    "    ON DELETE CASCADE\n" +
-                    "    ON UPDATE CASCADE,\n" +
-                    "  CONSTRAINT `fk_ShippingList_Orders1`\n" +
-                    "    FOREIGN KEY (`Orders_ID`)\n" +
-                    "    REFERENCES `kurmaz`.`Orders` (`ID`)\n" +
-                    "    ON DELETE CASCADE\n" +
-                    "    ON UPDATE CASCADE)\n" +
+                    "  `user_id` BIGINT NULL,\n" +
+                    "  `order_id` BIGINT NULL,\n" +
+                    "  PRIMARY KEY (`ID`))\n" +
                     "ENGINE = InnoDB;");
-
         } catch (SQLException e) {
             e.printStackTrace(); }
 

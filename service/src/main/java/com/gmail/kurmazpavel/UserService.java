@@ -9,4 +9,6 @@ public interface UserService {
     UserDTO update(UserDTO userDTO);
     UserDTO delete (UserDTO userDTO);
     List<UserDTO> getAll();
+    UserDTO readByLogin(String login);
+    UserDTO readByEmail(String email);
 }

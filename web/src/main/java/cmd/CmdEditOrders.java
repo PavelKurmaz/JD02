@@ -17,7 +17,7 @@ class CmdEditOrders extends Cmd {
             Long order_id = (long)Util.getInteger(req, "id");
             int completed = Util.getInteger(req, "completed");
             int user_id = Util.getInteger(req, "users_id");
-            OrderDTO order= new OrderDTO(order_id, completed, user_id);
+            OrderDTO order= new OrderDTO();
             if (req.getParameter("Update") != null) {
                 service.update(order);
             } else if (req.getParameter("Delete") != null) {

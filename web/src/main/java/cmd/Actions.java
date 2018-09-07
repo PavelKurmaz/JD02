@@ -6,6 +6,11 @@ public enum Actions {
             cmd = new CmdIndex();
         }
     },
+    EDITNEWS {
+        {
+            cmd = new CmdEditNews();
+        }
+    },
     LOGIN{
         {
             cmd = new CmdLogin();

@@ -1,58 +1,103 @@
 package com.gmail.kurmazpavel.beans;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Order implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", updatable = false, nullable = false)
-    private Long id;
-    @Column(name = "COMPLETED", nullable = false)
-    private long completed;
-    @Column(name = "USERS_ID", nullable = false)
-    private long users_ID;
 
-    public Order(long id, long completed, long users_ID) {
-        this.id = id;
-        this.completed = completed;
-        this.users_ID = users_ID;
+    @EmbeddedId
+    private OrderId orderId;
+    @Column(name = "CREATED", nullable = false)
+    private LocalDateTime created;
+    @Column(name = "QUANTITY", nullable = false)
+    private int quantity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("User_Id")
+    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("Item_Id")
+    private Catalog item;
+
+    public Order (User user, Catalog item) {
+        this.user = user;
+        this.item = item;
+        this.orderId = new OrderId(user.getId(), item.getId());
     }
 
-    public Order() {}
-
-    public long getId() {
-        return id;
+    public Order (User user, Catalog item, int quantity, LocalDateTime localDateTime) {
+        this.user = user;
+        this.quantity = quantity;
+        this.created = localDateTime;
+        this.item = item;
+        this.orderId = new OrderId(user.getId(), item.getId());
     }
 
-    public long getCompleted() {
-        return completed;
+    public Order () {}
+
+    public Catalog getItem() {
+        return item;
     }
 
-    public long getUsers_ID() {
-        return users_ID;
+    public void setItem(Catalog item) {
+        this.item = item;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setCompleted(long completed) {
-        this.completed = completed;
+    public void setId(OrderId id) {
+        this.orderId = id;
     }
 
-    public void setUsers_ID(long users_ID) {
-        this.users_ID = users_ID;
+    public User getUser() {
+        return user;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public OrderId getId() {
+        return orderId;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", completed=" + completed +
-                ", users_ID=" + users_ID +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return quantity == order.quantity &&
+                Objects.equals(orderId, order.orderId) &&
+                Objects.equals(created, order.created) &&
+                Objects.equals(user, order.user) &&
+                Objects.equals(item, order.item);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId, created, quantity, user, item);
     }
 }

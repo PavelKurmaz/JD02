@@ -15,19 +15,12 @@
                 <tbody>
                 <c:forEach items="${orders}" var="order">
                   <tr>
-                      <td>Order number</td>
-                      <td align="left">${order.id}</td>
+                      <td>Item number</td>
+                      <td align="left">${order.itemId}</td>
                   </tr>
                   <tr>
-                      <td>Order Status</td>
-                      <c:choose>
-                      <c:when test="${order.completed < 1}">
-                      <td align="left">Not completed</td>
-                      </c:when>
-                      <c:otherwise>
-                      <td align="left">Completed</td>
-                      </c:otherwise>
-                      </c:choose>
+                      <td>Quantity</td>
+                      <td align="left">${order.quantity}</td>
                   </tr>
                   </c:forEach>
                 </tbody>
