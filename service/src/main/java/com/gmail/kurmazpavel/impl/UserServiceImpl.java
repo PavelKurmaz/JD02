@@ -3,10 +3,14 @@ package com.gmail.kurmazpavel.impl;
 import com.gmail.kurmazpavel.DTOConverter.UserDTOConverter;
 import com.gmail.kurmazpavel.UserService;
 import com.gmail.kurmazpavel.beans.Address;
+import com.gmail.kurmazpavel.beans.Permission;
+import com.gmail.kurmazpavel.beans.Role;
 import com.gmail.kurmazpavel.beans.User;
 import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.converter.UserConverter;
+import com.gmail.kurmazpavel.genericDAO.RolesDao;
 import com.gmail.kurmazpavel.genericDAO.UserDao;
+import com.gmail.kurmazpavel.genericDAO.impl.RoleDAOImpl;
 import com.gmail.kurmazpavel.genericDAO.impl.UserDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     private UserDao dao = new UserDAOImpl(User.class);
     private UserConverter userConverter = new UserConverter();
+    private RolesDao rolesDao = new RoleDAOImpl(Role.class);
     private UserDTOConverter userDtoConverter = new UserDTOConverter();
 
     @Override
@@ -71,6 +76,11 @@ public class UserServiceImpl implements UserService {
             if (!transaction.isActive())
                 session.beginTransaction();
             User user = dao.read(userDTO.getId());
+            user.setPhone(userDTO.getPhone());
+            user.setPassword(userDTO.getPassword());
+            user.setLogin(userDTO.getLogin());
+            user.setEmail(userDTO.getEmail());
+            user.setCarma(userDTO.getCarma());
             dao.update(user);
             transaction.commit();
             return userDtoConverter.toDTO(user);
@@ -157,6 +167,30 @@ public class UserServiceImpl implements UserService {
             User user = (User) query.getSingleResult();
             transaction.commit();
             return userDtoConverter.toDTO(user);
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to read user type!", e);
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO checkPermission(UserDTO userDTO, String permissionName) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Role role = rolesDao.read(userDTO.getRoles_id());
+            transaction.commit();
+            List<Permission> permissions = role.getPermissions();
+            for (Permission permission: permissions) {
+                if (permission.getName().equals(permissionName))
+                    return userDTO;
+            }
+            return null;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())

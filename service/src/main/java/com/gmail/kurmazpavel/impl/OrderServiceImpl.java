@@ -9,7 +9,6 @@ import com.gmail.kurmazpavel.beans.dto.OrderDTO;
 import com.gmail.kurmazpavel.converter.OrderConverter;
 import com.gmail.kurmazpavel.genericDAO.*;
 import com.gmail.kurmazpavel.genericDAO.impl.CatalogDAOImpl;
-import com.gmail.kurmazpavel.genericDAO.impl.GenericDAOImpl;
 import com.gmail.kurmazpavel.genericDAO.impl.OrderDAOImpl;
 import com.gmail.kurmazpavel.genericDAO.impl.UserDAOImpl;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
 
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
     private OrderDao dao = new OrderDAOImpl(Order.class);
-    private GenericDAOImpl itemDao = new CatalogDAOImpl(Catalog.class);
+    private CatalogDao itemDao = new CatalogDAOImpl(Catalog.class);
     private UserDao userDao = new UserDAOImpl(User.class);
     private OrderConverter converter = new OrderConverter();
     private OrderDTOConverter dtoConverter = new OrderDTOConverter();
@@ -54,8 +53,8 @@ public class OrderServiceImpl implements OrderService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Catalog item = (Catalog) itemDao.read(orderDTO.getItem_id());
-            User user = userDao.read(orderDTO.getUser_id());
+            Catalog item = itemDao.read(orderDTO.getItemId());
+            User user = userDao.read(orderDTO.getUserId());
 
             Order order = new Order(user, item);
             order.setQuantity(orderDTO.getQuantity());

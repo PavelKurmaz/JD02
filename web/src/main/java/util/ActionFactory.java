@@ -1,7 +1,6 @@
 package util;
 
 import cmd.Actions;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class ActionFactory {

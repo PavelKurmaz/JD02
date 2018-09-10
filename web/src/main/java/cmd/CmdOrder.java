@@ -32,8 +32,8 @@ class CmdOrder extends Cmd {
                 long item_id = Util.getInteger(req, "id");
                 int amount = Util.getInteger(req, "amount");
                 OrderDTO orderDTO = new OrderDTO();
-                orderDTO.setItem_id(item_id);
-                orderDTO.setUser_id(user.getId());
+                orderDTO.setItemId(item_id);
+                orderDTO.setUserId(user.getId());
                 orderDTO.setQuantity(amount);
                 orderDTO.setCreated(LocalDateTime.now());
                 orderService.create(orderDTO);

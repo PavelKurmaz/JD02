@@ -1,6 +1,11 @@
 package util;
 
+import com.gmail.kurmazpavel.PermissionService;
+import com.gmail.kurmazpavel.beans.dto.RoleDTO;
+import com.gmail.kurmazpavel.impl.PermissionServiceImpl;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public class Util {
     private static final String POST = "post";
@@ -38,5 +43,15 @@ public class Util {
     public static Double getDouble(HttpServletRequest req, String field) {
         String value = getString(req, field, DOUBLE);
         return value == null ? 0 : Double.valueOf(value);
+    }
+
+    public static boolean checkPermission (String userType, String permissionType) {
+        PermissionService service = new PermissionServiceImpl();
+        List<RoleDTO> roleList = service.getRolesByName(permissionType);
+        for (RoleDTO role: roleList) {
+            if (role.getRole().equalsIgnoreCase(userType))
+                return true;
+        }
+        return false;
     }
 }

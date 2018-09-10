@@ -11,24 +11,52 @@ public enum Actions {
             cmd = new CmdEditNews();
         }
     },
+    EDITPERMISSION {
+        {
+            cmd = new CmdEditPermission();
+        }
+    },
+    CREATEPERMISSION {
+        {
+            cmd = new CmdCreatePermission();
+        }
+    },
+    CREATEROLE {
+        {
+            cmd = new CmdCreateRole();
+        }
+    },
     LOGIN{
         {
             cmd = new CmdLogin();
+        }
+    },
+    PERMISSIONS{
+        {
+            cmd = new CmdPermissions();
         }
     },
     ADMLOGIN{
         {
             cmd = new CmdAdminLogin();
         }
-    },SIGNUP{
+    },
+    SIGNUP{
         {
             cmd = new CmdSignUp();
         }
-    },ADDRESS{
+    },
+    ADMSIGNUP{
+        {
+            cmd = new CmdAdmSignUp();
+        }
+    },
+    ADDRESS{
         {
             cmd = new CmdAddress();
         }
-    }, ERROR{
+    },
+    ERROR{
         {
             cmd = new CmdError();
         }
@@ -81,11 +109,6 @@ public enum Actions {
     EDITORDERS{
         {
             cmd = new CmdEditOrders();
-        }
-    },
-    GETSHIPPINGLIST {
-        {
-            cmd = new CmdShippingList();
         }
     };
 

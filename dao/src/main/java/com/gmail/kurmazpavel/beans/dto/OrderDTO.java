@@ -17,19 +17,19 @@ public class OrderDTO {
 
     public OrderDTO() {}
 
-    public Long getUser_id() {
+    public Long getUserId() {
         return userId;
     }
 
-    public Long getItem_id() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setUser_id(Long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public void setItem_id(Long itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 

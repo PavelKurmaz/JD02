@@ -11,4 +11,5 @@ public interface UserService {
     List<UserDTO> getAll();
     UserDTO readByLogin(String login);
     UserDTO readByEmail(String email);
+    UserDTO checkPermission(UserDTO userDTO, String permissionName);
 }

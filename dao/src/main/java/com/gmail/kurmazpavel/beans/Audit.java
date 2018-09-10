@@ -19,7 +19,7 @@ public class Audit implements Serializable{
     private String event_type;
     @Column(name = "CREATED")
     private LocalDateTime created;
-    @Column(name = "user_id")
+    @Column(name = "user_id", insertable = false, updatable = false)
     private long user_id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

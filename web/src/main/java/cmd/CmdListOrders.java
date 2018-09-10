@@ -22,14 +22,13 @@ class CmdListOrders extends Cmd {
         HttpSession session = req.getSession();
         Object object = session.getAttribute("user");
         if (object != null){
-            UserDTO user = (UserDTO) object;
-            long user_id = (int) user.getId();
-            List<OrderDTO> orders = service.getById(user_id);
-            req.setAttribute("orders", orders);
+            UserDTO user = (UserDTO)object;
+            List<OrderDTO> orders = service.getById(user.getId());
+            session.setAttribute("orders", orders);
         }
         else {
             List<OrderDTO> orders = service.getAll();
-            req.setAttribute("orders", orders);
+            session.setAttribute("orders", orders);
         }
         return null;
     }

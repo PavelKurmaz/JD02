@@ -26,7 +26,7 @@ class CmdAddItem extends Cmd {
                 CatalogDTO item = new CatalogDTO(0, amount, name, price);
                 item = service.create(item);
                 if (item.getID() > 0)
-                    return new ActionResult("addcatalogitem");
+                    return new ActionResult(Actions.EDITCATALOG);
             }
         }
         return null;

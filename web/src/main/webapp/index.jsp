@@ -14,8 +14,9 @@
                 <label class="col-md-4 control-label" for="select">Select Profile Type</label>
                 <div class="col-md-4">
                     <select id="select" name="select" class="form-control">
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
+                        <c:forEach items="${roles}" var="item">
+                            <option value=${item.role}>${item.role}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>

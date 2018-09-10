@@ -1,16 +1,14 @@
 package com.gmail.kurmazpavel;
 
-import com.gmail.kurmazpavel.beans.Role;
-import java.sql.SQLException;
+import com.gmail.kurmazpavel.beans.dto.RoleDTO;
 import java.util.List;
 
 public interface RoleService {
 
-    boolean create(Role role) throws SQLException;
-
-    boolean update(Role role) throws SQLException;
-
-    boolean delete(Role role) throws SQLException;
-
-    List<Role> getAll(String where) throws SQLException;
+    RoleDTO read(Long entityID);
+    RoleDTO readByRole(String roleName);
+    void create(RoleDTO roleDTO);
+    RoleDTO update(RoleDTO roleDTO);
+    RoleDTO delete (RoleDTO roleDTO);
+    List<RoleDTO> getAll();
 }

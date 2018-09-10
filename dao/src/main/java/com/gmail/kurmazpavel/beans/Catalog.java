@@ -69,10 +69,6 @@ public class Catalog implements Serializable {
         this.price = price;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     @Override
     public String toString() {
         return "Catalog{" +

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="admins")
@@ -103,5 +104,24 @@ public class Admin implements Serializable {
                 ", phone='" + phone + '\'' +
                 ", roles_id=" + roles_id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Admin)) return false;
+        Admin admin = (Admin) o;
+        return roles_id == admin.roles_id &&
+                Objects.equals(id, admin.id) &&
+                Objects.equals(login, admin.login) &&
+                Objects.equals(password, admin.password) &&
+                Objects.equals(email, admin.email) &&
+                Objects.equals(phone, admin.phone) &&
+                Objects.equals(newsList, admin.newsList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, email, phone, roles_id, newsList);
     }
 }
