@@ -16,7 +16,8 @@ public class UserConverter implements Converter<UserDTO, User> {
         user.setLogin(dto.getLogin());
         user.setPassword(dto.getPassword());
         user.setPhone(dto.getPhone());
-        user.setRoles_id(dto.getRoles_id());
+        user.setRoles_id(dto.getRolesId());
+        user.setDisabled(dto.getDisabled());
         return user;
     }
 

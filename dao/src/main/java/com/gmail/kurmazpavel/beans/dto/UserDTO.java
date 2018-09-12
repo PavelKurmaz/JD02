@@ -8,8 +8,9 @@ public class UserDTO {
     private String phone;
     private String carma;
     private long rolesId;
+    private int disabled;
 
-    public UserDTO(long id, String login, String password, String email, String phone, String carma, long rolesId) {
+    public UserDTO(long id, String login, String password, String email, String phone, String carma, long rolesId, int disabled) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -17,6 +18,7 @@ public class UserDTO {
         this.phone = phone;
         this.carma = carma;
         this.rolesId = rolesId;
+        this.disabled = disabled;
     }
     public UserDTO() {}
 
@@ -33,8 +35,20 @@ public class UserDTO {
                 '}';
     }
 
+    public long getRolesId() {
+        return rolesId;
+    }
+
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(int disabled) {
+        this.disabled = disabled;
     }
 
     public void setLogin(String login) {
@@ -57,7 +71,7 @@ public class UserDTO {
         this.carma = carma;
     }
 
-    public void setRoles_id(long rolesId) {
+    public void setRolesId(long rolesId) {
         this.rolesId = rolesId;
     }
 
@@ -85,7 +99,4 @@ public class UserDTO {
         return carma;
     }
 
-    public long getRoles_id() {
-        return rolesId;
-    }
 }

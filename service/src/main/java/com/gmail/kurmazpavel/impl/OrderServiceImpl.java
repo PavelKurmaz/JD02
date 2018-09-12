@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Order order = (Order) dao.read(entityID);
+            Order order = dao.read(entityID);
             transaction.commit();
             return dtoConverter.toDTO(order);
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class OrderServiceImpl implements OrderService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Query query = session.createQuery("select U.items from User as U where id = :userId");
+            Query query = session.createQuery("select U.items from User as U where U.id = :userId");
             query.setParameter("userId", userId);
             List<Order> list = query.getResultList();
             transaction.commit();

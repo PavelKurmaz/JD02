@@ -27,16 +27,20 @@ class CmdLogin extends Cmd {
             if (login != null && password != null) {
                 validateUser = service.readByLogin(login);
                 if (validateUser != null) {
+                    if (validateUser.getDisabled() == 1) {
+                        req.setAttribute("errmessage", "Access denied");
+                        return new ActionResult("error");
+                    }
                     BCodec codec = new BCodec();
                     String decode = codec.decode(validateUser.getPassword());
                     if (!password.equals(decode)) {
                         req.setAttribute("errmessage", "Wrong password");
-                        return new ActionResult(Actions.ERROR);
+                        return new ActionResult("error");
                     }
                 }
                 else {
                     req.setAttribute("errmessage", "Wrong login");
-                    return new ActionResult(Actions.ERROR);
+                    return new ActionResult("error");
                 }
             }
             else

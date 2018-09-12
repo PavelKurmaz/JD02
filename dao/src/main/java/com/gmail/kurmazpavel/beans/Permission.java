@@ -21,7 +21,6 @@ public class Permission implements Serializable{
             joinColumns = @JoinColumn(name = "permission_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-
     private List<Role> roles = new ArrayList<>();
 
     public List<Role> getRoles() {

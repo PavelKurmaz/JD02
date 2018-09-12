@@ -97,7 +97,7 @@
     </column>
     <column id="34" parent="9" name="EVENT_TYPE">
       <Position>2</Position>
-      <DataType>varchar(40)|0</DataType>
+      <DataType>varchar(100)|0</DataType>
     </column>
     <column id="35" parent="9" name="CREATED">
       <Position>3</Position>
@@ -282,7 +282,12 @@
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <key id="74" parent="17" name="PRIMARY">
+    <column id="74" parent="17" name="disabled">
+      <Position>8</Position>
+      <DataType>int(11)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <key id="75" parent="17" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

@@ -76,11 +76,11 @@ public class UserServiceImpl implements UserService {
             if (!transaction.isActive())
                 session.beginTransaction();
             User user = dao.read(userDTO.getId());
-            user.setPhone(userDTO.getPhone());
             user.setPassword(userDTO.getPassword());
             user.setLogin(userDTO.getLogin());
-            user.setEmail(userDTO.getEmail());
             user.setCarma(userDTO.getCarma());
+            user.setRoles_id(userDTO.getRolesId());
+            user.setDisabled(userDTO.getDisabled());
             dao.update(user);
             transaction.commit();
             return userDtoConverter.toDTO(user);
@@ -167,30 +167,6 @@ public class UserServiceImpl implements UserService {
             User user = (User) query.getSingleResult();
             transaction.commit();
             return userDtoConverter.toDTO(user);
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to read user type!", e);
-        }
-        return null;
-    }
-
-    @Override
-    public UserDTO checkPermission(UserDTO userDTO, String permissionName) {
-        Session session = dao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Role role = rolesDao.read(userDTO.getRoles_id());
-            transaction.commit();
-            List<Permission> permissions = role.getPermissions();
-            for (Permission permission: permissions) {
-                if (permission.getName().equals(permissionName))
-                    return userDTO;
-            }
-            return null;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())

@@ -43,7 +43,7 @@ class CmdUserEdit extends Cmd {
                 AuditDTO auditDTO = new AuditDTO();
                 auditDTO.setUser_id(user.getId());
                 auditDTO.setLocalDateTime(LocalDateTime.now());
-                auditDTO.setEvent_type("User updated its data");
+                auditDTO.setEvent_type("User " + user.getLogin() + " updated its data");
                 auditService.create(auditDTO);
                 return null;
             }
@@ -65,7 +65,7 @@ class CmdUserEdit extends Cmd {
                 AuditDTO auditDTO = new AuditDTO();
                 auditDTO.setUser_id(user.getId());
                 auditDTO.setLocalDateTime(LocalDateTime.now());
-                auditDTO.setEvent_type("User updated address");
+                auditDTO.setEvent_type("User" + user.getLogin() + " updated address");
                 auditService.create(auditDTO);
                 return null;
             }

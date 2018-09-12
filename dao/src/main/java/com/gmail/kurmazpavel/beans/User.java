@@ -29,6 +29,8 @@ public class User implements Serializable{
     private String carma;
     @Column(name = "ROLES_ID", nullable = false)
     private long rolesId;
+    @Column(name = "disabled")
+    private int disabled;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -57,7 +59,15 @@ public class User implements Serializable{
         this.address = address;
     }
 
-    public User(long id, String login, String password, String email, String phone, String carma, long rolesId) {
+    public int getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(int disabled) {
+        this.disabled = disabled;
+    }
+
+    public User(long id, String login, String password, String email, String phone, String carma, long rolesId, int disabled) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -65,6 +75,7 @@ public class User implements Serializable{
         this.phone = phone;
         this.carma = carma;
         this.rolesId = rolesId;
+        this.disabled = disabled;
     }
     public User() {}
 

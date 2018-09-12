@@ -45,11 +45,11 @@ public class Util {
         return value == null ? 0 : Double.valueOf(value);
     }
 
-    public static boolean checkPermission (String userType, String permissionType) {
+    public static boolean checkPermission (long roleId, String permissionType) {
         PermissionService service = new PermissionServiceImpl();
         List<RoleDTO> roleList = service.getRolesByName(permissionType);
         for (RoleDTO role: roleList) {
-            if (role.getRole().equalsIgnoreCase(userType))
+            if (role.getId() == roleId)
                 return true;
         }
         return false;

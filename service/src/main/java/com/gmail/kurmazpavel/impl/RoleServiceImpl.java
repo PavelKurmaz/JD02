@@ -1,9 +1,11 @@
 package com.gmail.kurmazpavel.impl;
 
-
+import com.gmail.kurmazpavel.DTOConverter.PermissionDTOConverter;
 import com.gmail.kurmazpavel.DTOConverter.RoleDTOConverter;
 import com.gmail.kurmazpavel.RoleService;
+import com.gmail.kurmazpavel.beans.Permission;
 import com.gmail.kurmazpavel.beans.Role;
+import com.gmail.kurmazpavel.beans.dto.PermissionDTO;
 import com.gmail.kurmazpavel.beans.dto.RoleDTO;
 import com.gmail.kurmazpavel.converter.RoleConverter;
 import com.gmail.kurmazpavel.genericDAO.RolesDao;
@@ -21,6 +23,7 @@ public class RoleServiceImpl implements RoleService {
     private RolesDao rolesDao = new RoleDAOImpl(Role.class);
     private RoleConverter roleConverter = new RoleConverter();
     private RoleDTOConverter roleDTOConverter = new RoleDTOConverter();
+    private PermissionDTOConverter permissionDTOConverter = new PermissionDTOConverter();
 
     @Override
     public RoleDTO read(Long entityID) {
@@ -51,6 +54,26 @@ public class RoleServiceImpl implements RoleService {
             List<Role> list = rolesDao.getAll();
             transaction.commit();
             return roleDTOConverter.toDTOList(list);
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to list roles!", e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<PermissionDTO> getPermissions(Long id) {
+        Session session = rolesDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Role role = rolesDao.read(id);
+            List<Permission> permissions = role.getPermissions();
+            transaction.commit();
+            return permissionDTOConverter.toDTOList(permissions);
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())

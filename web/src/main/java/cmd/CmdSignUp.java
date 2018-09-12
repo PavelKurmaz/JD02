@@ -22,7 +22,7 @@ class CmdSignUp extends Cmd {
             BCodec codec = new BCodec();
             String encode = codec.encode(password);
             if (login != null && email != null && password != null && phone !=null) {
-                UserDTO user = new UserDTO(0, login, encode, email, phone, "regular", 2);
+                UserDTO user = new UserDTO(0, login, encode, email, phone, "regular", 2, (short) 0);
                 user = service.create(user);
                 if (user.getId() != 0) {
                     resp.addCookie(new Cookie("user_id", "" + user.getId()));
