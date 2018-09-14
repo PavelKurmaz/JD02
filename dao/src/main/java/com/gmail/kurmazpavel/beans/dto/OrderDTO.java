@@ -7,15 +7,17 @@ public class OrderDTO {
     private Long itemId;
     private LocalDateTime created;
     private int quantity;
-
-    public OrderDTO(long userId, long itemId, LocalDateTime created, int quantity) {
-        this.userId = userId;
-        this.itemId = itemId;
-        this.created = created;
-        this.quantity = quantity;
-    }
+    private Long bucketId;
 
     public OrderDTO() {}
+
+    public Long getBucketId() {
+        return bucketId;
+    }
+
+    public void setBucketId(Long bucketId) {
+        this.bucketId = bucketId;
+    }
 
     public Long getUserId() {
         return userId;
@@ -48,4 +50,5 @@ public class OrderDTO {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
 }

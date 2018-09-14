@@ -21,6 +21,8 @@ public class Order implements Serializable {
     private LocalDateTime created;
     @Column(name = "QUANTITY", nullable = false)
     private int quantity;
+    @Column(name = "BUCKET_ID")
+    private Long bucketId;
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("User_Id")
     private User user;
@@ -44,6 +46,22 @@ public class Order implements Serializable {
 
     public Order () {}
 
+    public Long getBucketId() {
+        return bucketId;
+    }
+
+    public void setBucketId(Long bucketId) {
+        this.bucketId = bucketId;
+    }
+
+    public OrderId getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(OrderId orderId) {
+        this.orderId = orderId;
+    }
+
     public Catalog getItem() {
         return item;
     }
@@ -56,10 +74,6 @@ public class Order implements Serializable {
         this.user = user;
     }
 
-    public void setId(OrderId id) {
-        this.orderId = id;
-    }
-
     public User getUser() {
         return user;
     }
@@ -70,10 +84,6 @@ public class Order implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public OrderId getId() {
-        return orderId;
     }
 
     public LocalDateTime getCreated() {
@@ -91,13 +101,11 @@ public class Order implements Serializable {
         Order order = (Order) o;
         return quantity == order.quantity &&
                 Objects.equals(orderId, order.orderId) &&
-                Objects.equals(created, order.created) &&
-                Objects.equals(user, order.user) &&
-                Objects.equals(item, order.item);
+                Objects.equals(created, order.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, created, quantity, user, item);
+        return Objects.hash(orderId, created, quantity);
     }
 }

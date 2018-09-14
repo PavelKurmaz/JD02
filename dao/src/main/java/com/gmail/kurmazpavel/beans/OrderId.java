@@ -12,7 +12,7 @@ public class OrderId implements Serializable{
     @Column(name = "Item_Id")
     private Long itemId;
 
-    OrderId(long userId, long itemId){
+    public OrderId(long userId, long itemId){
         this.userId = userId;
         this.itemId = itemId;
     }

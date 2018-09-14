@@ -11,6 +11,7 @@ public class OrderConverter implements Converter<OrderDTO, Order> {
         Order order = new Order();
         order.setCreated(dto.getCreated());
         order.setQuantity(dto.getQuantity());
+        order.setBucketId(order.getBucketId());
         return order;
     }
 

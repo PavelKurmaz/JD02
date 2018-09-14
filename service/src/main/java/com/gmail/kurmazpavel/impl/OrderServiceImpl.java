@@ -2,12 +2,11 @@ package com.gmail.kurmazpavel.impl;
 
 import com.gmail.kurmazpavel.DTOConverter.OrderDTOConverter;
 import com.gmail.kurmazpavel.OrderService;
-import com.gmail.kurmazpavel.beans.Catalog;
-import com.gmail.kurmazpavel.beans.Order;
-import com.gmail.kurmazpavel.beans.User;
+import com.gmail.kurmazpavel.beans.*;
 import com.gmail.kurmazpavel.beans.dto.OrderDTO;
 import com.gmail.kurmazpavel.converter.OrderConverter;
 import com.gmail.kurmazpavel.genericDAO.*;
+import com.gmail.kurmazpavel.genericDAO.impl.BucketDAOImpl;
 import com.gmail.kurmazpavel.genericDAO.impl.CatalogDAOImpl;
 import com.gmail.kurmazpavel.genericDAO.impl.OrderDAOImpl;
 import com.gmail.kurmazpavel.genericDAO.impl.UserDAOImpl;
@@ -17,6 +16,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import javax.persistence.Query;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
@@ -25,6 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao dao = new OrderDAOImpl(Order.class);
     private CatalogDao itemDao = new CatalogDAOImpl(Catalog.class);
     private UserDao userDao = new UserDAOImpl(User.class);
+    private BucketDao bucketDao = new BucketDAOImpl(Bucket.class);
     private OrderConverter converter = new OrderConverter();
     private OrderDTOConverter dtoConverter = new OrderDTOConverter();
 
@@ -47,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void create(OrderDTO orderDTO) {
+    public void create(OrderDTO orderDTO, Long bucketId) {
         Session session = userDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -57,8 +58,11 @@ public class OrderServiceImpl implements OrderService {
             User user = userDao.read(orderDTO.getUserId());
 
             Order order = new Order(user, item);
+            order.setCreated(LocalDateTime.now());
             order.setQuantity(orderDTO.getQuantity());
-            order.setCreated(orderDTO.getCreated());
+            Bucket bucket = bucketDao.read(bucketId);
+            bucket.getOrders().add(order);
+            bucketDao.update(bucket);
 
             user.getItems().add(order);
             item.getUsers().add(order);
@@ -71,44 +75,6 @@ public class OrderServiceImpl implements OrderService {
                 session.getTransaction().rollback();
             logger.error("Failed to create order type!", e);
         }
-    }
-
-    @Override
-    public OrderDTO update(OrderDTO orderDTO) {
-        Session session = dao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Order order = converter.toEntity(orderDTO);
-            dao.update(order);
-            transaction.commit();
-            return dtoConverter.toDTO(order);
-        } catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to update order type!", e);
-        }
-        return orderDTO;
-    }
-
-    @Override
-    public OrderDTO delete(OrderDTO orderDTO) {
-        Session session = dao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Order order = converter.toEntity(orderDTO);
-            dao.delete(order);
-            transaction.commit();
-            return dtoConverter.toDTO(order);
-        } catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to delete order type!", e);
-        }
-        return orderDTO;
     }
 
     @Override

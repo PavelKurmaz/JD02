@@ -5,9 +5,7 @@ import java.util.List;
 
 public interface OrderService {
     OrderDTO read(Long entityID);
-    void create(OrderDTO orderDTO);
-    OrderDTO update(OrderDTO orderDTO);
-    OrderDTO delete (OrderDTO orderDTO);
+    void create(OrderDTO orderDTO, Long bucketId);
     List<OrderDTO> getAll();
     List<OrderDTO> getById(Long userId);
 }

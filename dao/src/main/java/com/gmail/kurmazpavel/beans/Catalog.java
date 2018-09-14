@@ -87,12 +87,11 @@ public class Catalog implements Serializable {
         return amount == catalog.amount &&
                 Double.compare(catalog.price, price) == 0 &&
                 Objects.equals(id, catalog.id) &&
-                Objects.equals(name, catalog.name) &&
-                Objects.equals(users, catalog.users);
+                Objects.equals(name, catalog.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, name, price, users);
+        return Objects.hash(id, amount, name, price);
     }
 }
