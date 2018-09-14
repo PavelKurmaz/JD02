@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Admin admin = (Admin) dao.read(entityID);
+            Admin admin = dao.read(entityID);
             transaction.commit();
             return dtoConverter.toDTO(admin);
         }

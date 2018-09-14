@@ -1,5 +1,7 @@
 package com.gmail.kurmazpavel.beans.dto;
 
+import com.gmail.kurmazpavel.beans.Discount;
+
 public class UserDTO {
     private long id;
     private String login;
@@ -9,6 +11,7 @@ public class UserDTO {
     private String carma;
     private long rolesId;
     private int disabled;
+    private DiscountDTO discount;
 
     public UserDTO(long id, String login, String password, String email, String phone, String carma, long rolesId, int disabled) {
         this.id = id;
@@ -99,4 +102,11 @@ public class UserDTO {
         return carma;
     }
 
+    public DiscountDTO getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(DiscountDTO discount) {
+        this.discount = discount;
+    }
 }

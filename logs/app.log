@@ -1,0 +1,41 @@
+2018-09-258 01:20:34 [main] ERROR OrderServiceImpl:102 - Failed to create order type!
+java.lang.NullPointerException
+	at com.gmail.kurmazpavel.beans.Order.<init>(Order.java:36) ~[classes/:?]
+	at com.gmail.kurmazpavel.impl.OrderServiceImpl.simpleCreate(OrderServiceImpl.java:89) [classes/:?]
+	at Test.createOrders(Test.java:122) [classes/:?]
+	at Test.main(Test.java:29) [classes/:?]
+2018-09-258 01:42:26 [main] ERROR OrderServiceImpl:102 - Failed to create order type!
+java.lang.NullPointerException
+	at com.gmail.kurmazpavel.beans.Order.<init>(Order.java:36) ~[classes/:?]
+	at com.gmail.kurmazpavel.impl.OrderServiceImpl.simpleCreate(OrderServiceImpl.java:89) [classes/:?]
+	at Test.createOrders(Test.java:130) [classes/:?]
+	at Test.main(Test.java:30) [classes/:?]
+2018-09-258 01:44:31 [main] ERROR OrderServiceImpl:102 - Failed to create order type!
+java.lang.NullPointerException
+	at com.gmail.kurmazpavel.beans.Order.<init>(Order.java:36) ~[classes/:?]
+	at com.gmail.kurmazpavel.impl.OrderServiceImpl.simpleCreate(OrderServiceImpl.java:89) [classes/:?]
+	at Test.createOrders(Test.java:130) [classes/:?]
+	at Test.main(Test.java:30) [classes/:?]
+2018-09-258 01:45:48 [main] ERROR OrderServiceImpl:102 - Failed to create order type!
+java.lang.NullPointerException
+	at com.gmail.kurmazpavel.beans.Order.<init>(Order.java:36) ~[classes/:?]
+	at com.gmail.kurmazpavel.impl.OrderServiceImpl.simpleCreate(OrderServiceImpl.java:89) [classes/:?]
+	at Test.createOrders(Test.java:130) [classes/:?]
+	at Test.main(Test.java:30) [classes/:?]
+2018-09-258 01:45:48 [main] ERROR OrderServiceImpl:102 - Failed to create order type!
+java.lang.NullPointerException
+	at com.gmail.kurmazpavel.beans.Order.<init>(Order.java:36) ~[classes/:?]
+	at com.gmail.kurmazpavel.impl.OrderServiceImpl.simpleCreate(OrderServiceImpl.java:89) [classes/:?]
+	at Test.createOrders(Test.java:130) [classes/:?]
+	at Test.main(Test.java:30) [classes/:?]
+2018-09-258 01:45:48 [main] ERROR OrderServiceImpl:102 - Failed to create order type!
+java.lang.NullPointerException
+	at com.gmail.kurmazpavel.beans.Order.<init>(Order.java:36) ~[classes/:?]
+	at com.gmail.kurmazpavel.impl.OrderServiceImpl.simpleCreate(OrderServiceImpl.java:89) [classes/:?]
+	at Test.createOrders(Test.java:130) [classes/:?]
+	at Test.main(Test.java:30) [classes/:?]
+2018-09-258 01:54:33 [main] ERROR CatalogServiceImpl:145 - Failed to list catalogs!
+java.lang.ClassCastException: java.lang.Long cannot be cast to java.lang.Integer
+	at com.gmail.kurmazpavel.impl.CatalogServiceImpl.count(CatalogServiceImpl.java:140) [classes/:?]
+	at Test.createOrders(Test.java:128) [classes/:?]
+	at Test.main(Test.java:30) [classes/:?]

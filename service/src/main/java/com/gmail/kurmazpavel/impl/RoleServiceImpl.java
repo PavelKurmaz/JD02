@@ -84,7 +84,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void create(RoleDTO roleDTO) {
+    public RoleDTO create(RoleDTO roleDTO) {
         Session session = rolesDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -93,13 +93,16 @@ public class RoleServiceImpl implements RoleService {
             Role role = roleConverter.toEntity(roleDTO);
             role.setId(null);
             rolesDao.create(role);
+            roleDTO = roleDTOConverter.toDTO(role);
             transaction.commit();
+            return roleDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to create role type!", e);
         }
+        return roleDTO;
     }
 
     @Override

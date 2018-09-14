@@ -77,6 +77,33 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    public OrderDTO simpleCreate(OrderDTO orderDTO) {
+        Session session = userDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Catalog item = itemDao.read(orderDTO.getItemId());
+            User user = userDao.read(orderDTO.getUserId());
+
+            Order order = new Order(user, item);
+            order.setCreated(LocalDateTime.now());
+            order.setQuantity(orderDTO.getQuantity());
+
+            user.getItems().add(order);
+            item.getUsers().add(order);
+
+            itemDao.update(item);
+            userDao.update(user);
+            transaction.commit();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to create order type!", e);
+        }
+        return orderDTO;
+    }
+
     @Override
     public List<OrderDTO> getAll() {
         Session session = dao.getCurrentSession();

@@ -16,12 +16,14 @@ public class Role implements Serializable {
     @Column(name="Role", nullable = false)
     private String role;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "roles_id")
     private List<User> userList = new ArrayList<>();
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "roles_id")
     private List<Admin> adminList = new ArrayList<>();
+
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private List<Permission> permissions = new ArrayList<>();
 
@@ -39,7 +41,6 @@ public class Role implements Serializable {
     public List<Admin> getAdminList() {
         return adminList;
     }
-
 
     public List<Permission> getPermissions() {
         return permissions;

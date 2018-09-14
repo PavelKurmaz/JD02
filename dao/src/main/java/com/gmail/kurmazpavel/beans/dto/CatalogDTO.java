@@ -48,10 +48,6 @@ public class CatalogDTO {
         this.price = price;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     @Override
     public String toString() {
         return "Catalog{" +

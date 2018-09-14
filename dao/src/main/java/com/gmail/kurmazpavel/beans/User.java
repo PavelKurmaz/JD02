@@ -1,7 +1,6 @@
 package com.gmail.kurmazpavel.beans;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,6 +31,10 @@ public class User implements Serializable{
     @Column(name = "disabled")
     private int disabled;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Comment> commentList = new ArrayList<>();
@@ -42,30 +45,6 @@ public class User implements Serializable{
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> items = new ArrayList<>();
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public List<Order> getItems() {
-        return items;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public int getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(int disabled) {
-        this.disabled = disabled;
-    }
 
     public User(long id, String login, String password, String email, String phone, String carma, long rolesId, int disabled) {
         this.id = id;
@@ -90,6 +69,29 @@ public class User implements Serializable{
                 ", carma='" + carma + '\'' +
                 ", rolesId=" + rolesId +
                 '}';
+    }
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public List<Order> getItems() {
+        return items;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public int getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(int disabled) {
+        this.disabled = disabled;
     }
 
     public void setId(Long id) {
@@ -146,6 +148,14 @@ public class User implements Serializable{
 
     public long getRoles_id() {
         return rolesId;
+    }
+
+    public Discount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface RoleService {
 
     RoleDTO read(Long entityID);
     RoleDTO readByRole(String roleName);
-    void create(RoleDTO roleDTO);
+    RoleDTO create(RoleDTO roleDTO);
     RoleDTO update(RoleDTO roleDTO);
     RoleDTO delete (RoleDTO roleDTO);
     List<RoleDTO> getAll();

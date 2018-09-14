@@ -22,6 +22,9 @@ public class Catalog implements Serializable {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> users = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "discountItems", cascade = CascadeType.ALL)
+    private List<Discount> discounts = new ArrayList<>();
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -29,6 +32,14 @@ public class Catalog implements Serializable {
     public Long getId() {
 
         return id;
+    }
+
+    public List<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(List<Discount> discounts) {
+        this.discounts = discounts;
     }
 
     public List<Order> getUsers() {
