@@ -1,33 +1,49 @@
 package cmd;
 
 import com.gmail.kurmazpavel.UserService;
+import com.gmail.kurmazpavel.beans.dto.AddressDTO;
 import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.impl.UserServiceImpl;
 import org.apache.commons.codec.net.BCodec;
 import util.ActionResult;
 import util.Util;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 class CmdSignUp extends Cmd {
     private UserService service = new UserServiceImpl();
+
     @Override
-    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+    public ActionResult execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (Util.isPost(req)) {
-            String login = Util.getString(req,"login");
-            String email = Util.getEmail(req,"E-mail");
-            String password = Util.getString(req,"password");
+            String login = Util.getString(req, "login");
+            String email = Util.getEmail(req, "E-mail");
+            String password = Util.getString(req, "password");
+            if (service.readByLogin(login)!= null){
+                req.setAttribute("errmessage", "Login already exists");
+                return new ActionResult("error");
+            }
+            else if (service.readByEmail(email) != null) {
+                req.setAttribute("errmessage", "Email already exists");
+                return new ActionResult("error");
+            }
             String phone = Util.getString(req, "phone");
             BCodec codec = new BCodec();
             String encode = codec.encode(password);
-            if (login != null && email != null && password != null && phone !=null) {
-                UserDTO user = new UserDTO(0, login, encode, email, phone, "regular", 2, (short) 0);
-                user = service.create(user);
-                if (user.getId() != 0) {
-                    resp.addCookie(new Cookie("user_id", "" + user.getId()));
-                    return new ActionResult(Actions.ADDRESS);
-                }
+            UserDTO user = new UserDTO();
+            user.setLogin(login);
+            user.setPassword(encode);
+            user.setEmail(email);
+            user.setPhone(phone);
+            user.setAddress(new AddressDTO());
+            user.setDisabled(false);
+            service.create(user);
+            user = service.readByEmail(email);
+            if (user.getId() != null) {
+                HttpSession session = req.getSession();
+                session.setAttribute("user", user);
+                return new ActionResult(Actions.ADDRESS);
             }
         }
         return null;

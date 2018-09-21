@@ -3,7 +3,6 @@ package com.gmail.kurmazpavel.impl;
 import com.gmail.kurmazpavel.DTOConverter.PermissionDTOConverter;
 import com.gmail.kurmazpavel.DTOConverter.RoleDTOConverter;
 import com.gmail.kurmazpavel.RoleService;
-import com.gmail.kurmazpavel.beans.Permission;
 import com.gmail.kurmazpavel.beans.Role;
 import com.gmail.kurmazpavel.beans.dto.PermissionDTO;
 import com.gmail.kurmazpavel.beans.dto.RoleDTO;
@@ -14,8 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoleServiceImpl implements RoleService {
@@ -32,16 +31,15 @@ public class RoleServiceImpl implements RoleService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Role role = rolesDao.read(entityID);
+            RoleDTO role = roleDTOConverter.toDTO(rolesDao.read(entityID));
             transaction.commit();
-            return roleDTOConverter.toDTO(role);
-        }
-        catch (Exception e) {
+            return role;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read role type!", e);
         }
-        return null;
+        return new RoleDTO();
     }
 
     @Override
@@ -51,16 +49,15 @@ public class RoleServiceImpl implements RoleService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<Role> list = rolesDao.getAll();
+            List<RoleDTO> roles = roleDTOConverter.toDTOList(rolesDao.getAll());
             transaction.commit();
-            return roleDTOConverter.toDTOList(list);
-        }
-        catch (Exception e) {
+            return roles;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list roles!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -71,16 +68,15 @@ public class RoleServiceImpl implements RoleService {
             if (!transaction.isActive())
                 session.beginTransaction();
             Role role = rolesDao.read(id);
-            List<Permission> permissions = role.getPermissions();
+            List<PermissionDTO> permissions = permissionDTOConverter.toDTOList(role.getPermissions());
             transaction.commit();
-            return permissionDTOConverter.toDTOList(permissions);
-        }
-        catch (Exception e) {
+            return permissions;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to list roles!", e);
+            logger.error("Failed to list permissions!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -91,13 +87,11 @@ public class RoleServiceImpl implements RoleService {
             if (!transaction.isActive())
                 session.beginTransaction();
             Role role = roleConverter.toEntity(roleDTO);
-            role.setId(null);
             rolesDao.create(role);
             roleDTO = roleDTOConverter.toDTO(role);
             transaction.commit();
             return roleDTO;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to create role type!", e);
@@ -112,12 +106,12 @@ public class RoleServiceImpl implements RoleService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Role role = rolesDao.read(roleDTO.getId());
+            Role role = roleConverter.toEntity(roleDTO);
             rolesDao.update(role);
+            roleDTO = roleDTOConverter.toDTO(role);
             transaction.commit();
-            return roleDTOConverter.toDTO(role);
-        }
-        catch (Exception e) {
+            return roleDTO;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to update role type!", e);
@@ -134,16 +128,17 @@ public class RoleServiceImpl implements RoleService {
                 session.beginTransaction();
             Role role = roleConverter.toEntity(roleDTO);
             rolesDao.delete(role);
+            roleDTO = roleDTOConverter.toDTO(role);
             transaction.commit();
-            return roleDTOConverter.toDTO(role);
-        }
-        catch (Exception e) {
+            return roleDTO;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to delete user type!", e);
+            logger.error("Failed to delete role type!", e);
         }
         return roleDTO;
     }
+
     @Override
     public RoleDTO readByRole(String roleName) {
         Session session = rolesDao.getCurrentSession();
@@ -153,17 +148,14 @@ public class RoleServiceImpl implements RoleService {
                 session.beginTransaction();
             Query query = session.createQuery("from Role as R where R.role = :roleName");
             query.setParameter("roleName", roleName);
-            Role role = (Role) query.getSingleResult();
+            RoleDTO role = roleDTOConverter.toDTO((Role) query.getSingleResult());
             transaction.commit();
-            if (role != null)
-                return roleDTOConverter.toDTO(role);
-            return null;
-        }
-        catch (Exception e) {
+            return role;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to read user type!", e);
+            logger.error("Failed to read role type!", e);
         }
-        return null;
+        return new RoleDTO();
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NewsDTOConverter implements DTOConverter<NewsDTO, News> {
+    private CommentDTOConverter commentDTOConverter = new CommentDTOConverter();
 
     @Override
     public NewsDTO toDTO(News entity) {
@@ -14,7 +15,8 @@ public class NewsDTOConverter implements DTOConverter<NewsDTO, News> {
         newsDTO.setContent(entity.getContent());
         newsDTO.setTitle(entity.getTitle());
         newsDTO.setCreated(entity.getCreated());
-        newsDTO.setUser_id(entity.getUser_id());
+        newsDTO.setUserId(entity.getUserId());
+        newsDTO.setComments(commentDTOConverter.toDTOList(entity.getComments()));
         return newsDTO;
     }
 

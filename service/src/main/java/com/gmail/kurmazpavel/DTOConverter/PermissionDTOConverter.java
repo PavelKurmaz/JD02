@@ -2,7 +2,6 @@ package com.gmail.kurmazpavel.DTOConverter;
 
 import com.gmail.kurmazpavel.beans.Permission;
 import com.gmail.kurmazpavel.beans.dto.PermissionDTO;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -27,7 +27,7 @@ class CmdLogin extends Cmd {
             if (login != null && password != null) {
                 validateUser = service.readByLogin(login);
                 if (validateUser != null) {
-                    if (validateUser.getDisabled() == 1) {
+                    if (validateUser.isDisabled()) {
                         req.setAttribute("errmessage", "Access denied");
                         return new ActionResult("error");
                     }

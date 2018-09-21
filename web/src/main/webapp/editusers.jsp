@@ -8,7 +8,6 @@
         <div class="row">
             <div class=col-lg-2>Имя</div>
             <div class=col-lg-2>Пароль</div>
-            <div class=col-lg-2>Карма</div>
             <div class=col-lg-2>Отключить</div>
             <div class=col-lg-2>Роль</div>
         </div>
@@ -25,15 +24,6 @@
                     <div class=col-lg-2>
                         <input id="password" class="form-control input-md" name="password"
                                value="${user.password}"/>
-                    </div>
-                    <div class=col-lg-2>
-                        <select id="carma" name="carma" class="form-control">
-                          <option value="weak">weak</option>
-                          <option value="regular">regular</option>
-                          <option value="silver">silver</option>
-                          <option value="gold">gold</option>
-                          <option selected="${user.carma}">${user.carma}</option>
-                        </select>
                     </div>
                     <div class=col-lg-2>
                         <select id="disabled" name="disabled" class="form-control">

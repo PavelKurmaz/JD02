@@ -1,12 +1,13 @@
 package com.gmail.kurmazpavel.beans.dto;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DiscountDTO {
     private Long id;
     private String name;
-    private int percent;
+    private Integer percent;
     private LocalDateTime last;
 
     public Long getId() {
@@ -25,11 +26,11 @@ public class DiscountDTO {
         this.name = name;
     }
 
-    public int getPercent() {
+    public Integer getPercent() {
         return percent;
     }
 
-    public void setPercent(int percent) {
+    public void setPercent(Integer percent) {
         this.percent = percent;
     }
 
@@ -41,19 +42,4 @@ public class DiscountDTO {
         this.last = last;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DiscountDTO that = (DiscountDTO) o;
-        return percent == that.percent &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(last, that.last);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, percent, last);
-    }
 }

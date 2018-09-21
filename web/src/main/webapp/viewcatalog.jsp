@@ -17,7 +17,7 @@
          <tbody>
          <c:forEach items="${catalogItems}" var="item">
            <tr>
-             <th scope="row">${item.ID}</th>
+             <th scope="row">${item.id}</th>
              <td>${item.name}</td>
              <td>${item.amount}</td>
              <td>${item.price}</td>

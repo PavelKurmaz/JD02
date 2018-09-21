@@ -25,9 +25,9 @@ public class AddressServiceImpl implements AddressService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Address address = dao.read(entityID);
+            AddressDTO addressDTO = dtoConverter.toDTO(dao.read(entityID));
             transaction.commit();
-            return dtoConverter.toDTO(address);
+            return addressDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())

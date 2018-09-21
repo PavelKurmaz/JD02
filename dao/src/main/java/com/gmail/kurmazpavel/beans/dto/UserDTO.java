@@ -1,29 +1,19 @@
 package com.gmail.kurmazpavel.beans.dto;
 
-import com.gmail.kurmazpavel.beans.Discount;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDTO {
-    private long id;
+    private Long id;
     private String login;
     private String password;
     private String email;
     private String phone;
-    private String carma;
-    private long rolesId;
-    private int disabled;
+    private boolean disabled;
+    private Long roleId;
     private DiscountDTO discount;
-
-    public UserDTO(long id, String login, String password, String email, String phone, String carma, long rolesId, int disabled) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.carma = carma;
-        this.rolesId = rolesId;
-        this.disabled = disabled;
-    }
-    public UserDTO() {}
+    private AddressDTO address;
+    private List<OrderDTO> orders = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -33,52 +23,10 @@ public class UserDTO {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", carma='" + carma + '\'' +
-                ", rolesId=" + rolesId +
                 '}';
     }
 
-    public long getRolesId() {
-        return rolesId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(int disabled) {
-        this.disabled = disabled;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setCarma(String carma) {
-        this.carma = carma;
-    }
-
-    public void setRolesId(long rolesId) {
-        this.rolesId = rolesId;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -86,20 +34,52 @@ public class UserDTO {
         return login;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPhone() {
         return phone;
     }
 
-    public String getCarma() {
-        return carma;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public DiscountDTO getDiscount() {
@@ -108,5 +88,21 @@ public class UserDTO {
 
     public void setDiscount(DiscountDTO discount) {
         this.discount = discount;
+    }
+
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO address) {
+        this.address = address;
+    }
+
+    public List<OrderDTO> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderDTO> orders) {
+        this.orders = orders;
     }
 }

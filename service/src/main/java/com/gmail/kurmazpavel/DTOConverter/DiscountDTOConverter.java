@@ -2,7 +2,6 @@ package com.gmail.kurmazpavel.DTOConverter;
 
 import com.gmail.kurmazpavel.beans.Discount;
 import com.gmail.kurmazpavel.beans.dto.DiscountDTO;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -17,7 +17,7 @@ public class OrderId implements Serializable{
         this.itemId = itemId;
     }
 
-    public OrderId(){}
+    public OrderId() {}
 
     public void setUserId(Long user_id) {
         this.userId = user_id;

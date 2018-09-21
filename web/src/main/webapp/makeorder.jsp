@@ -21,7 +21,7 @@
     <c:forEach items="${catalogitems}" var="item">
         <form class="list-${user.id}" action="do?command=makeorder" method=POST>
             <div class="row">
-                <input name="id" type="hidden" value="${item.ID}"/>
+                <input name="id" type="hidden" value="${item.id}"/>
                 <div class=col-md-2>
                     <p>${item.name}</p>
                 </div>

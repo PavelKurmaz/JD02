@@ -10,11 +10,11 @@ public class OrderDTOConverter implements DTOConverter<OrderDTO, Order> {
     @Override
     public OrderDTO toDTO(Order entity) {
         OrderDTO order = new OrderDTO();
-        order.setUserId(entity.getOrderId().getUserId());
-        order.setItemId(entity.getOrderId().getItemId());
         order.setCreated(entity.getCreated());
         order.setQuantity(entity.getQuantity());
         order.setBucketId(entity.getBucketId());
+        order.setUserId(entity.getOrderId().getUserId());
+        order.setItemId(entity.getOrderId().getItemId());
         return order;
     }
 

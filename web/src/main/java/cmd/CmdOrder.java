@@ -41,19 +41,20 @@ class CmdOrder extends Cmd {
             }
             if(req.getParameter("add") != null) {
                 BucketDTO bucketDTO = (BucketDTO) session.getAttribute("bucket");
-                long item_id = Util.getInteger(req, "id");
-                int amount = Util.getInteger(req, "amount");
+                long itemId = Util.getInteger(req, "id");
+                long amount = Util.getInteger(req, "amount");
                 OrderDTO orderDTO = new OrderDTO();
-                orderDTO.setItemId(item_id);
+                orderDTO.setItemId(itemId);
                 orderDTO.setUserId(user.getId());
                 orderDTO.setQuantity(amount);
+                orderDTO.setCreated(LocalDateTime.now());
                 orderService.create(orderDTO, bucketDTO.getId());
                 AuditDTO auditDTO = new AuditDTO();
-                auditDTO.setUser_id(user.getId());
-                auditDTO.setLocalDateTime(LocalDateTime.now());
-                CatalogDTO item = catalogService.read(item_id);
+                auditDTO.setUser(user);
+                auditDTO.setCreated(LocalDateTime.now());
+                CatalogDTO item = catalogService.read(itemId);
                 item.setAmount(item.getAmount() - amount);
-                auditDTO.setEvent_type("User " + user.getLogin() + " created an order: " + item.getName() + " " + amount + " pcs");
+                auditDTO.setEvent("User " + user.getLogin() + " created an order: " + item.getName() + " " + amount + " pcs");
                 auditService.create(auditDTO);
                 catalogService.update(item);
             }

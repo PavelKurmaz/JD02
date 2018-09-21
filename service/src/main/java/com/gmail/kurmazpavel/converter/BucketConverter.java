@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BucketConverter implements Converter<BucketDTO, Bucket> {
+    private OrderConverter orderConverter = new OrderConverter();
+
     @Override
     public Bucket toEntity(BucketDTO dto) {
         Bucket bucket = new Bucket();
@@ -13,6 +15,7 @@ public class BucketConverter implements Converter<BucketDTO, Bucket> {
         bucket.setStatus(dto.getStatus());
         bucket.setUserId(dto.getUserId());
         bucket.setCreated(dto.getCreated());
+        bucket.setOrders(orderConverter.toEntityList(dto.getOrders()));
         return bucket;
     }
 

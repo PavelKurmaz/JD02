@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionServiceImpl implements PermissionService {
@@ -28,22 +29,22 @@ public class PermissionServiceImpl implements PermissionService {
     private RoleDTOConverter roleDTOConverter = new RoleDTOConverter();
 
     @Override
-    public PermissionDTO read(Long entityID) {
+    public PermissionDTO read(Long entityId) {
         Session session = permissionDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Permission permission = permissionDao.read(entityID);
+            PermissionDTO permission = permissionDTOConverter.toDTO(permissionDao.read(entityId));
             transaction.commit();
-            return permissionDTOConverter.toDTO(permission);
+            return permission;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read permission type!", e);
         }
-        return null;
+        return new PermissionDTO();
     }
 
     @Override
@@ -55,16 +56,16 @@ public class PermissionServiceImpl implements PermissionService {
                 session.beginTransaction();
             Query query = session.createQuery("from Permission as P where P.name =:name");
             query.setParameter("name", name);
-            Permission permission = (Permission) query.getSingleResult();
+            PermissionDTO permission = permissionDTOConverter.toDTO((Permission) query.getSingleResult());
             transaction.commit();
-            return permissionDTOConverter.toDTO(permission);
+            return permission;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read permission type!", e);
         }
-        return null;
+        return new PermissionDTO();
     }
 
     @Override
@@ -78,37 +79,39 @@ public class PermissionServiceImpl implements PermissionService {
             Role role = roleDao.read(roleId);
             permission.getRoles().remove(role);
             permissionDao.update(permission);
+            PermissionDTO permissionDTO = permissionDTOConverter.toDTO(permission);
             transaction.commit();
-            return permissionDTOConverter.toDTO(permission);
+            return permissionDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to read permission type!", e);
+            logger.error("Failed to delete permission type!", e);
         }
-        return null;
+        return new PermissionDTO();
     }
 
     @Override
-    public PermissionDTO addRole(Long entityID, Long roleId) {
+    public PermissionDTO addRole(Long entityId, Long roleId) {
         Session session = permissionDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Permission permission = permissionDao.read(entityID);
+            Permission permission = permissionDao.read(entityId);
             Role role = roleDao.read(roleId);
             permission.getRoles().add(role);
             permissionDao.update(permission);
+            PermissionDTO permissionDTO = permissionDTOConverter.toDTO(permission);
             transaction.commit();
-            return permissionDTOConverter.toDTO(permission);
+            return permissionDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read permission type!", e);
         }
-        return null;
+        return new PermissionDTO();
     }
 
     @Override
@@ -118,16 +121,16 @@ public class PermissionServiceImpl implements PermissionService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<Permission> list = permissionDao.getAll();
+            List<PermissionDTO> list = permissionDTOConverter.toDTOList(permissionDao.getAll());
             transaction.commit();
-            return permissionDTOConverter.toDTOList(list);
+            return list;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list permissions!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -139,35 +142,37 @@ public class PermissionServiceImpl implements PermissionService {
                 session.beginTransaction();
             Query query = session.createQuery("select P.roles from Permission as P where P.name =:name");
             query.setParameter("name", name);
-            List<Role> roleList =  query.getResultList();
+            List<RoleDTO> roleList = roleDTOConverter.toDTOList(query.getResultList());
             transaction.commit();
-            return roleDTOConverter.toDTOList(roleList);
+            return roleList;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to read permission type!", e);
+            logger.error("Failed to read roles by permission!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
-    public void create(PermissionDTO permissionDTO) {
+    public PermissionDTO create(PermissionDTO permissionDTO) {
         Session session = permissionDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
             Permission permission = permissionConverter.toEntity(permissionDTO);
-            permission.setId(null);
             permissionDao.create(permission);
+            permissionDTO = permissionDTOConverter.toDTO(permission);
             transaction.commit();
+            return permissionDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to create permission type!", e);
         }
+        return new PermissionDTO();
     }
 
     @Override
@@ -179,8 +184,9 @@ public class PermissionServiceImpl implements PermissionService {
                 session.beginTransaction();
             Permission permission = permissionDao.read(permissionDTO.getId());
             permissionDao.update(permission);
+            permissionDTO = permissionDTOConverter.toDTO(permission);
             transaction.commit();
-            return permissionDTOConverter.toDTO(permission);
+            return permissionDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -199,8 +205,9 @@ public class PermissionServiceImpl implements PermissionService {
                 session.beginTransaction();
             Permission permission = permissionConverter.toEntity(permissionDTO);
             permissionDao.delete(permission);
+            permissionDTO = permissionDTOConverter.toDTO(permission);
             transaction.commit();
-            return permissionDTOConverter.toDTO(permission);
+            return permissionDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())

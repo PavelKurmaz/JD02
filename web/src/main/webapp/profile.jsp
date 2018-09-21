@@ -24,10 +24,6 @@
                     <td>Phone number</td>
                     <td>${user.phone}</td>
                   </tr>
-                   <tr>
-                    <td>User status</td>
-                    <td>${user.carma}</td>
-                  </tr>
                   <tr>
                     <td><b>User</b></td>
                     <td><b>Address</b></td>

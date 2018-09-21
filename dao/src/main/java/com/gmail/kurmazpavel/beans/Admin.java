@@ -21,28 +21,14 @@ public class Admin implements Serializable {
     private String email;
     @Column(name = "PHONE", nullable = false)
     private String phone;
-    @Column(name = "ROLES_ID", nullable = false)
-    private long roles_id;
+    @Column(name = "ROLE_ID")
+    private Long roleId;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<News> newsList = new ArrayList<>();
+    private List<News> news = new ArrayList<>();
 
-    public List<News> getNewsList() {
-        return newsList;
-    }
-
-    public Admin(long id, String login, String password, String email, String phone, long roles_id) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.roles_id = roles_id;
-    }
-    public Admin() {}
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -62,10 +48,6 @@ public class Admin implements Serializable {
         return phone;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setLogin(String login) {
         this.login = login;
     }
@@ -82,16 +64,24 @@ public class Admin implements Serializable {
         this.phone = phone;
     }
 
-    public long getRoles_id() {
-        return roles_id;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setRoles_id(long roles_id) {
-        this.roles_id = roles_id;
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public List<News> getNews() {
+        return news;
+    }
+
+    public void setNews(List<News> news) {
+        this.news = news;
     }
 
     @Override
@@ -102,7 +92,6 @@ public class Admin implements Serializable {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", roles_id=" + roles_id +
                 '}';
     }
 
@@ -111,8 +100,7 @@ public class Admin implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Admin)) return false;
         Admin admin = (Admin) o;
-        return roles_id == admin.roles_id &&
-                Objects.equals(id, admin.id) &&
+        return  Objects.equals(id, admin.id) &&
                 Objects.equals(login, admin.login) &&
                 Objects.equals(password, admin.password) &&
                 Objects.equals(email, admin.email) &&
@@ -121,6 +109,6 @@ public class Admin implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, email, phone, roles_id);
+        return Objects.hash(id, login, password, email, phone);
     }
 }

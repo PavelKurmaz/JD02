@@ -6,29 +6,19 @@ public class OrderDTO {
     private Long userId;
     private Long itemId;
     private LocalDateTime created;
-    private int quantity;
+    private Long quantity;
     private Long bucketId;
-
-    public OrderDTO() {}
-
-    public Long getBucketId() {
-        return bucketId;
-    }
-
-    public void setBucketId(Long bucketId) {
-        this.bucketId = bucketId;
-    }
 
     public Long getUserId() {
         return userId;
     }
 
-    public Long getItemId() {
-        return itemId;
-    }
-
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getItemId() {
+        return itemId;
     }
 
     public void setItemId(Long itemId) {
@@ -39,16 +29,24 @@ public class OrderDTO {
         return created;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public void setQuantity(int quantity) {
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public Long getBucketId() {
+        return bucketId;
+    }
+
+    public void setBucketId(Long bucketId) {
+        this.bucketId = bucketId;
     }
 
 }

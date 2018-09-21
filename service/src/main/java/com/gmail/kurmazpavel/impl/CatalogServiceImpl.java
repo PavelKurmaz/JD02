@@ -4,7 +4,6 @@ import com.gmail.kurmazpavel.CatalogService;
 import com.gmail.kurmazpavel.DTOConverter.CatalogDTOConverter;
 import com.gmail.kurmazpavel.DTOConverter.DiscountDTOConverter;
 import com.gmail.kurmazpavel.beans.Catalog;
-import com.gmail.kurmazpavel.beans.Discount;
 import com.gmail.kurmazpavel.beans.dto.CatalogDTO;
 import com.gmail.kurmazpavel.beans.dto.DiscountDTO;
 import com.gmail.kurmazpavel.converter.CatalogConverter;
@@ -14,8 +13,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import javax.persistence.Query;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogServiceImpl implements CatalogService {
@@ -32,16 +32,16 @@ public class CatalogServiceImpl implements CatalogService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Catalog catalog = dao.read(entityID);
+            CatalogDTO catalog = dtoConverter.toDTO(dao.read(entityID));
             transaction.commit();
-            return dtoConverter.toDTO(catalog);
+            return catalog;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read catalog type!", e);
         }
-        return null;
+        return new CatalogDTO();
     }
 
     @Override
@@ -52,10 +52,10 @@ public class CatalogServiceImpl implements CatalogService {
             if (!transaction.isActive())
                 session.beginTransaction();
             Catalog catalog = converter.toEntity(catalogDTO);
-            catalog.setId(null);
             dao.create(catalog);
+            catalogDTO = dtoConverter.toDTO(catalog);
             transaction.commit();
-            return dtoConverter.toDTO(catalog);
+            return catalogDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -72,13 +72,14 @@ public class CatalogServiceImpl implements CatalogService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Catalog catalog = dao.read(catalogDTO.getID());
+            Catalog catalog = dao.read(catalogDTO.getId());
             catalog.setAmount(catalogDTO.getAmount());
             catalog.setPrice(catalogDTO.getPrice());
             catalog.setName(catalogDTO.getName());
             dao.update(catalog);
+            catalogDTO = dtoConverter.toDTO(catalog);
             transaction.commit();
-            return dtoConverter.toDTO(catalog);
+            return catalogDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -95,10 +96,11 @@ public class CatalogServiceImpl implements CatalogService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Catalog catalog = dao.read(catalogDTO.getID());
+            Catalog catalog = dao.read(catalogDTO.getId());
             dao.delete(catalog);
+            catalogDTO = dtoConverter.toDTO(catalog);
             transaction.commit();
-            return dtoConverter.toDTO(catalog);
+            return catalogDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -115,20 +117,20 @@ public class CatalogServiceImpl implements CatalogService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<Catalog> list = dao.getAll();
+            List<CatalogDTO> list = dtoConverter.toDTOList(dao.getAll());
             transaction.commit();
-            return dtoConverter.toDTOList(list);
+            return list;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list catalogs!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
-    public Long count(Double min, Double max) {
+    public Long count(BigDecimal min, BigDecimal max) {
         Session session = dao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -142,13 +144,13 @@ public class CatalogServiceImpl implements CatalogService {
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to list catalogs!", e);
+            logger.error("Failed to count items!", e);
         }
         return null;
     }
 
     @Override
-    public List<CatalogDTO> getByPrice(Double min, Double max) {
+    public List<CatalogDTO> getByPrice(BigDecimal min, BigDecimal max) {
         Session session = dao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -157,17 +159,16 @@ public class CatalogServiceImpl implements CatalogService {
             Query query = session.createQuery("from Catalog as c where c.price <= :max AND c.price >= :min");
             query.setParameter("min", min);
             query.setParameter("max", max);
-            List<Catalog> list = query.getResultList();
-            List<CatalogDTO> finalList = dtoConverter.toDTOList(list);
+            List<CatalogDTO> list = dtoConverter.toDTOList(query.getResultList());
             transaction.commit();
-            return finalList;
+            return list;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to list catalogs!", e);
+            logger.error("Failed to list items!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -179,16 +180,15 @@ public class CatalogServiceImpl implements CatalogService {
                 session.beginTransaction();
             Query query = session.createQuery("select c.discounts from Catalog as c where c.id=:id");
             query.setParameter("id", id);
-            List<Discount> discounts = query.getResultList();
+            List<DiscountDTO> discounts = discountDtoConverter.toDTOList(query.getResultList());
             transaction.commit();
-            return discountDtoConverter.toDTOList(discounts);
+            return discounts;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to list catalogs!", e);
+            logger.error("Failed to list items!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
-
 }

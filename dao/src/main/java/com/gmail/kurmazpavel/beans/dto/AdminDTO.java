@@ -1,32 +1,16 @@
 package com.gmail.kurmazpavel.beans.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminDTO {
-    private long id;
+    private Long id;
     private String login;
     private String password;
     private String email;
     private String phone;
-    private long roles_id;
-
-    public void setRoles_id(long roles_id) {
-        this.roles_id = roles_id;
-    }
-
-    public long getRoles_id() {
-
-        return roles_id;
-    }
-
-    public AdminDTO(long id, String login, String password, String email, String phone, String carma, long roles_id) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-
-        this.roles_id = roles_id;
-    }
-    public AdminDTO() {}
+    private Long roleId;
+    private List<NewsDTO> news = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -36,12 +20,19 @@ public class AdminDTO {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", roles_id=" + roles_id +
                 '}';
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<NewsDTO> getNews() {
+        return news;
+    }
+
+    public void setNews(List<NewsDTO> news) {
+        this.news = news;
     }
 
     public void setLogin(String login) {
@@ -60,7 +51,7 @@ public class AdminDTO {
         this.phone = phone;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -78,5 +69,12 @@ public class AdminDTO {
 
     public String getPhone() {
         return phone;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 }

@@ -14,13 +14,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import javax.persistence.Query;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
-
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
     private OrderDao dao = new OrderDAOImpl(Order.class);
     private CatalogDao itemDao = new CatalogDAOImpl(Catalog.class);
@@ -36,15 +34,15 @@ public class OrderServiceImpl implements OrderService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Order order = dao.read(entityID);
+            OrderDTO orderDTO= dtoConverter.toDTO(dao.read(entityID));
             transaction.commit();
-            return dtoConverter.toDTO(order);
+            return orderDTO;
         } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read order type!", e);
         }
-        return null;
+        return new OrderDTO();
     }
 
     @Override
@@ -54,19 +52,14 @@ public class OrderServiceImpl implements OrderService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
+            Order order = converter.toEntity(orderDTO);
             Catalog item = itemDao.read(orderDTO.getItemId());
             User user = userDao.read(orderDTO.getUserId());
-
-            Order order = new Order(user, item);
-            order.setCreated(LocalDateTime.now());
-            order.setQuantity(orderDTO.getQuantity());
             Bucket bucket = bucketDao.read(bucketId);
             bucket.getOrders().add(order);
             bucketDao.update(bucket);
-
-            user.getItems().add(order);
-            item.getUsers().add(order);
-
+            user.getOrders().add(order);
+            item.getOrders().add(order);
             itemDao.update(item);
             userDao.update(user);
             transaction.commit();
@@ -75,33 +68,6 @@ public class OrderServiceImpl implements OrderService {
                 session.getTransaction().rollback();
             logger.error("Failed to create order type!", e);
         }
-    }
-
-    public OrderDTO simpleCreate(OrderDTO orderDTO) {
-        Session session = userDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Catalog item = itemDao.read(orderDTO.getItemId());
-            User user = userDao.read(orderDTO.getUserId());
-
-            Order order = new Order(user, item);
-            order.setCreated(LocalDateTime.now());
-            order.setQuantity(orderDTO.getQuantity());
-
-            user.getItems().add(order);
-            item.getUsers().add(order);
-
-            itemDao.update(item);
-            userDao.update(user);
-            transaction.commit();
-        } catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to create order type!", e);
-        }
-        return orderDTO;
     }
 
     @Override
@@ -111,15 +77,15 @@ public class OrderServiceImpl implements OrderService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<Order> list = dao.getAll();
+            List<OrderDTO> list = dtoConverter.toDTOList(dao.getAll());
             transaction.commit();
-            return dtoConverter.toDTOList(list);
+            return list;
         } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list orders!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public List<OrderDTO> getById(Long userId) {
@@ -128,16 +94,16 @@ public class OrderServiceImpl implements OrderService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Query query = session.createQuery("select U.items from User as U where U.id = :userId");
+            Query query = session.createQuery("select U.orders from User as U where U.id = :userId");
             query.setParameter("userId", userId);
-            List<Order> list = query.getResultList();
+            List<OrderDTO> list = dtoConverter.toDTOList(query.getResultList());
             transaction.commit();
-            return dtoConverter.toDTOList(list);
+            return list;
         } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list orders!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 }

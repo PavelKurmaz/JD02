@@ -24,39 +24,24 @@ public class User implements Serializable{
     private String email;
     @Column(name = "PHONE", nullable = false)
     private String phone;
-    @Column(name = "CARMA", nullable = false)
-    private String carma;
-    @Column(name = "ROLES_ID", nullable = false)
-    private long rolesId;
-    @Column(name = "disabled")
-    private int disabled;
+    @Column(name = "DISABLED")
+    private boolean disabled;
+    @Column(name = "ROLE_ID")
+    private Long roleId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
     private Discount discount;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private Address address;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> items = new ArrayList<>();
-
-    public User(long id, String login, String password, String email, String phone, String carma, long rolesId, int disabled) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.carma = carma;
-        this.rolesId = rolesId;
-        this.disabled = disabled;
-    }
-    public User() {}
+    private List<Order> orders = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -66,16 +51,27 @@ public class User implements Serializable{
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", carma='" + carma + '\'' +
-                ", rolesId=" + rolesId +
                 '}';
     }
-    public List<Comment> getCommentList() {
-        return commentList;
+
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public List<Order> getItems() {
-        return items;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public Address getAddress() {
@@ -84,14 +80,6 @@ public class User implements Serializable{
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public int getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(int disabled) {
-        this.disabled = disabled;
     }
 
     public void setId(Long id) {
@@ -114,14 +102,6 @@ public class User implements Serializable{
         this.phone = phone;
     }
 
-    public void setCarma(String carma) {
-        this.carma = carma;
-    }
-
-    public void setRoles_id(long rolesId) {
-        this.rolesId = rolesId;
-    }
-
     public Long getId() {
         return id;
     }
@@ -142,14 +122,6 @@ public class User implements Serializable{
         return phone;
     }
 
-    public String getCarma() {
-        return carma;
-    }
-
-    public long getRoles_id() {
-        return rolesId;
-    }
-
     public Discount getDiscount() {
         return discount;
     }
@@ -158,22 +130,32 @@ public class User implements Serializable{
         this.discount = discount;
     }
 
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return rolesId == user.rolesId &&
-                Objects.equals(id, user.id) &&
+        return  Objects.equals(id, user.id) &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(phone, user.phone) &&
-                Objects.equals(carma, user.carma);
+                Objects.equals(phone, user.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, email, phone, carma, rolesId);
+        return Objects.hash(id, login, password, email, phone);
     }
 }

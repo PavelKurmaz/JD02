@@ -8,7 +8,6 @@ import com.gmail.kurmazpavel.impl.AdminServiceImpl;
 import com.gmail.kurmazpavel.impl.RoleServiceImpl;
 import util.ActionResult;
 import util.Util;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,9 +29,7 @@ public class CmdAdmSignUp extends Cmd {
             admin.setLogin(login);
             admin.setPassword(password);
             admin.setPhone(phone);
-            RoleDTO roleDTO = roleService.readByRole(role);
-            admin.setRoles_id(roleDTO.getId());
-            service.create(admin);
+            service.create(admin, role);
             return new ActionResult(Actions.ADMLOGIN);
         }
         List<RoleDTO> roles = roleService.getAll();

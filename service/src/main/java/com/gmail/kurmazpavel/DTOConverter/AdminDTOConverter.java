@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AdminDTOConverter implements DTOConverter<AdminDTO, Admin> {
+    private NewsDTOConverter newsDTOConverter = new NewsDTOConverter();
 
     @Override
     public AdminDTO toDTO(Admin entity) {
@@ -15,7 +16,8 @@ public class AdminDTOConverter implements DTOConverter<AdminDTO, Admin> {
         adminDTO.setLogin(entity.getLogin());
         adminDTO.setPassword(entity.getPassword());
         adminDTO.setPhone(entity.getPhone());
-        adminDTO.setRoles_id(entity.getRoles_id());
+        adminDTO.setRoleId(entity.getRoleId());
+        adminDTO.setNews(newsDTOConverter.toDTOList(entity.getNews()));
         return adminDTO;
     }
 

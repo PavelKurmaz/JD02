@@ -1,6 +1,5 @@
 package com.gmail.kurmazpavel.beans;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,21 +16,12 @@ public class Comment implements Serializable {
     private String content;
     @Column(name = "created")
     private LocalDateTime created;
-    @Column(name = "user_id")
-    private long user_id;
     @Column(name = "news_id")
-    private long news_id;
+    private Long newsId;
 
-    public Comment(Long id, String content, LocalDateTime created, long user_id, long news_id) {
-        this.id = id;
-        this.content = content;
-        this.created = created;
-        this.user_id = user_id;
-        this.news_id = news_id;
-    }
-
-    public Comment() {
-    }
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -57,37 +47,35 @@ public class Comment implements Serializable {
         this.created = created;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public long getNews_id() {
-        return news_id;
+    public Long getNewsId() {
+        return newsId;
     }
 
-    public void setNews_id(long news_id) {
-        this.news_id = news_id;
+    public void setNewsId(Long newsId) {
+        this.newsId = newsId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Comment)) return false;
-        Comment that = (Comment )o;
-        return user_id == that.user_id &&
-                news_id == that.news_id &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(content, that.content) &&
-                Objects.equals(created, that.created);
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(id, comment.id) &&
+                Objects.equals(content, comment.content) &&
+                Objects.equals(created, comment.created) &&
+                Objects.equals(newsId, comment.newsId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, created, user_id, news_id);
+        return Objects.hash(id, content, created, newsId);
     }
-
 }

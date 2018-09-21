@@ -1,7 +1,5 @@
 package com.gmail.kurmazpavel.beans;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,18 +25,6 @@ public class Address implements Serializable {
     @Column(name = "ZIP")
     private String zip;
 
-    public Address(long id, String country, String city, String street, String building, String apt, String zip) {
-        this.id = id;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.building = building;
-        this.apt = apt;
-        this.zip = zip;
-    }
-
-    public Address() {}
-
     @Override
     public String toString() {
         return "Address{" +
@@ -53,10 +39,6 @@ public class Address implements Serializable {
     }
 
     public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setId(long id) {
         this.id = id;
     }
 
@@ -84,7 +66,7 @@ public class Address implements Serializable {
         this.zip = zip;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

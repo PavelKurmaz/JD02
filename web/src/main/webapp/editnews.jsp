@@ -2,7 +2,7 @@
 <html>
 <%@ include file="include/head.htm" %>
 <body>
-<%@ include file="include/menu.htm" %>
+<%@ include file="include/adminka.htm" %>
 <!------ Include the above in your HEAD tag ---------->
 <div class="container">
     <table class="table">
@@ -14,7 +14,7 @@
                 <div class=col-lg-2>
                     <p>Title</p>
                 </div>
-                <div class=col-lg-6>
+                <div class=col-lg-4>
                     <p>Text</p>
                 </div>
                 <div class=col-lg-2>
@@ -25,7 +25,7 @@
         <tbody>
         <div class="news">
             <c:forEach items="${news}" var="item">
-                <form class="list_news" action="do?command=readnews" method=POST>
+                <form class="list_news" action="do?command=editnews" method=POST>
                     <div class="row">
                         <input name="newsId" type="hidden" value="${item.id}"/>
                         <div class=col-lg-1>
@@ -34,14 +34,17 @@
                         <div class=col-lg-2>
                             <p>${item.title}</p>
                         </div>
-                        <div class=col-lg-6>
+                        <div class=col-lg-4>
                             <p>${item.content}</p>
                         </div>
                         <div class=col-lg-2>
                             <p>${item.created}</p>
                         </div>
-                        <button id="comments" value="comments" name="comments" class="btn btn-success col-lg-1">
-                            Comments
+                        <button id="edit" value="edit" name="edit" class="btn btn-success col-lg-1">
+                            Edit
+                        </button>
+                        <button id="delete" value="delete" name="delete" class="btn btn-danger col-lg-1">
+                            Delete
                         </button>
                     </div>
                 </form>
@@ -49,6 +52,16 @@
         </div>
         </tbody>
     </table>
+    <form class="form-horizontal" method="post" action="do?command=editnews">
+        <fieldset>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="add">Make some news</label>
+                <div class="col-md-4">
+                    <button id="add" name="add" class="btn btn-primary">Add News</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
     <form class="form-horizontal" method="post" action="do?command=profile">
         <fieldset>
             <div class="form-group">

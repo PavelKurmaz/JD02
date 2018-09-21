@@ -1,17 +1,14 @@
 package com.gmail.kurmazpavel.beans.dto;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoleDTO {
-    private long id;
+    private Long id;
     private String role;
-
-    public RoleDTO() {}
-
-    public RoleDTO(long id, String role) {
-        this.id = id;
-        this.role = role;
-    }
+    private List<UserDTO> users = new ArrayList<>();
+    private List<AdminDTO> admins = new ArrayList<>();
+    private List<PermissionDTO> permissions = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -21,7 +18,7 @@ public class RoleDTO {
                 '}';
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -29,7 +26,7 @@ public class RoleDTO {
         this.role = role;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -37,17 +34,28 @@ public class RoleDTO {
         return role;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RoleDTO roleDTO = (RoleDTO) o;
-        return id == roleDTO.id &&
-                Objects.equals(role, roleDTO.role);
+    public List<UserDTO> getUsers() {
+        return users;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, role);
+    public void setUsers(List<UserDTO> users) {
+        this.users = users;
     }
+
+    public List<AdminDTO> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(List<AdminDTO> admins) {
+        this.admins = admins;
+    }
+
+    public List<PermissionDTO> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<PermissionDTO> permissions) {
+        this.permissions = permissions;
+    }
+
 }

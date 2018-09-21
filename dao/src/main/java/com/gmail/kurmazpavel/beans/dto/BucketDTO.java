@@ -1,13 +1,15 @@
 package com.gmail.kurmazpavel.beans.dto;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BucketDTO {
     private Long id;
     private String status;
     private Long userId;
     private LocalDateTime created;
+    private List<OrderDTO> orders= new ArrayList<>();
 
     public Long getUserId() {
         return userId;
@@ -41,17 +43,12 @@ public class BucketDTO {
         this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BucketDTO bucketDTO = (BucketDTO) o;
-        return Objects.equals(id, bucketDTO.id) &&
-                Objects.equals(status, bucketDTO.status);
+    public List<OrderDTO> getOrders() {
+        return orders;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, status);
+    public void setOrders(List<OrderDTO> orders) {
+        this.orders = orders;
     }
+
 }

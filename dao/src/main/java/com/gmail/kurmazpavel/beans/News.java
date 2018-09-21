@@ -3,6 +3,8 @@ package com.gmail.kurmazpavel.beans;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,17 +21,17 @@ public class News implements Serializable {
     @Column (name = "created")
     private LocalDateTime created;
     @Column (name = "user_id")
-    private Long user_id;
+    private Long userId;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "news_id")
+    private List<Comment> comments = new ArrayList<>();
 
-    public News(Long id, String title, String content, LocalDateTime created, Long user_id) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.created = created;
-        this.user_id = user_id;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public News() {
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public Long getId() {
@@ -48,8 +50,8 @@ public class News implements Serializable {
         return created;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
     public void setId(Long id) {
@@ -68,8 +70,8 @@ public class News implements Serializable {
         this.created = created;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -81,11 +83,11 @@ public class News implements Serializable {
                 Objects.equals(title, news.title) &&
                 Objects.equals(content, news.content) &&
                 Objects.equals(created, news.created) &&
-                Objects.equals(user_id, news.user_id);
+                Objects.equals(userId, news.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, content, created, user_id);
+        return Objects.hash(id, title, content, created, userId);
     }
 }

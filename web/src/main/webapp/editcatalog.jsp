@@ -10,9 +10,9 @@
         <div class=col-md-2>Цена</div>
     </div>
         <c:forEach items="${items}" var="item">
-            <form class="update-item-${item.ID}" action="do?command=EditCatalog" method=POST>
+            <form class="update-item-${item.id}" action="do?command=EditCatalog" method=POST>
                 <div class="row">
-                    <input name="id" type="hidden" value="${item.ID}"/>
+                    <input name="id" type="hidden" value="${item.id}"/>
                     <div class=col-md-2>
                         <input id="name" class="form-control input-md" name="name"
                         value="${item.name}"/>

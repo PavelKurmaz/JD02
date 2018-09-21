@@ -11,21 +11,21 @@
              <th scope="col">#</th>
              <th scope="col">Event</th>
              <th scope="col">Date</th>
-             <th scope="col">User ID</th>
+             <th scope="col">User</th>
            </tr>
          </thead>
          <tbody>
          <c:forEach items="${audit}" var="item">
            <tr>
-             <th scope="row">${item.ID}</th>
-             <td>${item.event_type}</td>
-             <td>${item.localDateTime}</td>
-             <td>${item.user_id}</td>
+             <th scope="row">${item.id}</th>
+             <td>${item.event}</td>
+             <td>${item.created}</td>
+             <td>${item.user.login}</td>
            </tr>
           </c:forEach>
          </tbody>
        </table>
-       <form class="form-horizontal" method="post" action="do?command=auditusers">
+       <form class="form-horizontal" method="post" action="do?command=profile">
            <fieldset>
            <div class="form-group">
              <label class="col-md-4 control-label" for="return"></label>

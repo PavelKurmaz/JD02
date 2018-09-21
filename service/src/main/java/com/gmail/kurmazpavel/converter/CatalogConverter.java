@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CatalogConverter implements Converter<CatalogDTO, Catalog> {
+    private OrderConverter orderConverter = new OrderConverter();
+
     @Override
     public Catalog toEntity(CatalogDTO dto) {
         Catalog catalog = new Catalog();
-        catalog.setId(dto.getID());
+        catalog.setId(dto.getId());
         catalog.setAmount(dto.getAmount());
         catalog.setName(dto.getName());
         catalog.setPrice(dto.getPrice());
+        catalog.setOrders(orderConverter.toEntityList(dto.getOrders()));
         return catalog;
     }
 

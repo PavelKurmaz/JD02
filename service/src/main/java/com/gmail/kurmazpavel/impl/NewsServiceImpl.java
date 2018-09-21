@@ -1,11 +1,11 @@
 package com.gmail.kurmazpavel.impl;
 
+import com.gmail.kurmazpavel.DTOConverter.CommentDTOConverter;
 import com.gmail.kurmazpavel.DTOConverter.NewsDTOConverter;
 import com.gmail.kurmazpavel.NewsService;
-import com.gmail.kurmazpavel.beans.Address;
 import com.gmail.kurmazpavel.beans.Admin;
-import com.gmail.kurmazpavel.beans.Audit;
 import com.gmail.kurmazpavel.beans.News;
+import com.gmail.kurmazpavel.beans.dto.CommentDTO;
 import com.gmail.kurmazpavel.beans.dto.NewsDTO;
 import com.gmail.kurmazpavel.converter.NewsConverter;
 import com.gmail.kurmazpavel.genericDAO.AdminDao;
@@ -16,8 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import java.time.LocalDateTime;
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsServiceImpl implements NewsService {
@@ -26,6 +26,7 @@ public class NewsServiceImpl implements NewsService {
     private AdminDao adminDao = new AdminDAOImpl(Admin.class);
     private NewsConverter newsConverter = new NewsConverter();
     private NewsDTOConverter newsDtoConverter = new NewsDTOConverter();
+    private CommentDTOConverter commentDTOConverter = new CommentDTOConverter();
 
     @Override
     public NewsDTO read(Long entityID) {
@@ -34,16 +35,16 @@ public class NewsServiceImpl implements NewsService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            News news = dao.read(entityID);
+            NewsDTO news = newsDtoConverter.toDTO(dao.read(entityID));
             transaction.commit();
-            return newsDtoConverter.toDTO(news);
+            return news;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read news type!", e);
         }
-        return null;
+        return new NewsDTO();
     }
 
     @Override
@@ -54,12 +55,12 @@ public class NewsServiceImpl implements NewsService {
             if (!transaction.isActive())
                 session.beginTransaction();
             News news = newsConverter.toEntity(newsDTO);
-            news.setId(null);
-            Admin admin = adminDao.read(newsDTO.getUser_id());
-            admin.getNewsList().add(news);
+            Admin admin = adminDao.read(newsDTO.getUserId());
+            admin.getNews().add(news);
             adminDao.update(admin);
+            newsDTO = newsDtoConverter.toDTO(news);
             transaction.commit();
-            return newsDtoConverter.toDTO(news);
+            return newsDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -77,10 +78,12 @@ public class NewsServiceImpl implements NewsService {
             if (!transaction.isActive())
                 session.beginTransaction();
             News news = dao.read(newsDTO.getId());
-            // some update 
+            news.setContent(newsDTO.getContent());
+            news.setTitle(newsDTO.getTitle());
             dao.update(news);
+            newsDTO = newsDtoConverter.toDTO(news);
             transaction.commit();
-            return newsDtoConverter.toDTO(news);
+            return newsDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -99,8 +102,9 @@ public class NewsServiceImpl implements NewsService {
                 session.beginTransaction();
             News news = newsConverter.toEntity(newsDTO);
             dao.delete(news);
+            newsDTO = newsDtoConverter.toDTO(news);
             transaction.commit();
-            return newsDtoConverter.toDTO(news);
+            return newsDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -117,15 +121,36 @@ public class NewsServiceImpl implements NewsService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<News> list = dao.getAll();
+            List<NewsDTO> list = newsDtoConverter.toDTOList(dao.getAll());
             transaction.commit();
-            return newsDtoConverter.toDTOList(list);
+            return list;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to list newss!", e);
+            logger.error("Failed to list news!", e);
         }
-        return null;
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<CommentDTO> getComments(Long id) {
+        Session session = dao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Query query = session.createQuery("select n.comments from News as n where n.id=:id");
+            query.setParameter("id", id);
+            List<CommentDTO> comments = commentDTOConverter.toDTOList(query.getResultList());
+            transaction.commit();
+            return comments;
+        }
+        catch (Exception e) {
+            if (session.getTransaction().isActive())
+                session.getTransaction().rollback();
+            logger.error("Failed to list comments!", e);
+        }
+        return new ArrayList<>();
     }
 }

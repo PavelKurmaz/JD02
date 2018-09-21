@@ -11,7 +11,7 @@ public interface PermissionService {
     PermissionDTO readByName(String name);
     PermissionDTO deleteRole(Long entityID, Long roleId);
     PermissionDTO addRole(Long entityID, Long roleId);
-    void create(PermissionDTO permissionDTO);
+    PermissionDTO create(PermissionDTO permissionDTO);
     PermissionDTO update(PermissionDTO permissionDTO);
     PermissionDTO delete(PermissionDTO permissionDTO);
     List<PermissionDTO> getAll();

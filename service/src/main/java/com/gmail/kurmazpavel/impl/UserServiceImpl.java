@@ -1,16 +1,11 @@
 package com.gmail.kurmazpavel.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.DiscountDTOConverter;
 import com.gmail.kurmazpavel.DTOConverter.UserDTOConverter;
 import com.gmail.kurmazpavel.UserService;
-import com.gmail.kurmazpavel.beans.Address;
-import com.gmail.kurmazpavel.beans.Permission;
 import com.gmail.kurmazpavel.beans.Role;
 import com.gmail.kurmazpavel.beans.User;
-import com.gmail.kurmazpavel.beans.dto.DiscountDTO;
 import com.gmail.kurmazpavel.beans.dto.UserDTO;
 import com.gmail.kurmazpavel.converter.UserConverter;
-import com.gmail.kurmazpavel.genericDAO.DiscountDao;
 import com.gmail.kurmazpavel.genericDAO.RolesDao;
 import com.gmail.kurmazpavel.genericDAO.UserDao;
 import com.gmail.kurmazpavel.genericDAO.impl.RoleDAOImpl;
@@ -20,14 +15,15 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     private UserDao dao = new UserDAOImpl(User.class);
+    private RolesDao rolesDao = new RoleDAOImpl(Role.class);
     private UserConverter userConverter = new UserConverter();
     private UserDTOConverter userDtoConverter = new UserDTOConverter();
-    private DiscountDTOConverter discountDtoConverter = new DiscountDTOConverter();
 
     @Override
     public UserDTO read(Long entityID) {
@@ -37,35 +33,16 @@ public class UserServiceImpl implements UserService {
             if (!transaction.isActive())
                 session.beginTransaction();
             User user = dao.read(entityID);
+            UserDTO userDTO = userDtoConverter.toDTO(user);
             transaction.commit();
-            return userDtoConverter.toDTO(user);
+            return userDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read user type!", e);
         }
-        return null;
-    }
-
-    @Override
-    public DiscountDTO getDiscount(UserDTO userDTO) {
-        Session session = dao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            User user = dao.read(userDTO.getId());
-            DiscountDTO discountDTO = discountDtoConverter.toDTO(user.getDiscount());
-            transaction.commit();
-            return discountDTO;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to read user type!", e);
-        }
-        return null;
+        return new UserDTO();
     }
 
     @Override
@@ -75,13 +52,15 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Address address = new Address();
+            Query query = session.createQuery("from Role as r where role.role = :role");
+            query.setParameter("role", "User");
+            Role role = (Role) query.getSingleResult();
             User user = userConverter.toEntity(userDTO);
-            user.setAddress(address);
-            user.setId(null);
-            dao.create(user);
+            role.getUsers().add(user);
+            rolesDao.update(role);
+            userDTO = userDtoConverter.toDTO(user);
             transaction.commit();
-            return  userDtoConverter.toDTO(user);
+            return userDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -98,15 +77,11 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            User user = dao.read(userDTO.getId());
-            user.setPassword(userDTO.getPassword());
-            user.setLogin(userDTO.getLogin());
-            user.setCarma(userDTO.getCarma());
-            user.setRoles_id(userDTO.getRolesId());
-            user.setDisabled(userDTO.getDisabled());
+            User user = userConverter.toEntity(userDTO);
             dao.update(user);
+            userDTO = userDtoConverter.toDTO(user);
             transaction.commit();
-            return userDtoConverter.toDTO(user);
+            return userDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -123,10 +98,11 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            User user = userConverter.toEntity(userDTO);
+            User user = dao.read(userDTO.getId());
             dao.delete(user);
+            userDTO = userDtoConverter.toDTO(user);
             transaction.commit();
-            return userDtoConverter.toDTO(user);
+            return userDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -143,16 +119,16 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<User> list = dao.getAll();
+            List<UserDTO> users = userDtoConverter.toDTOList(dao.getAll());
             transaction.commit();
-            return userDtoConverter.toDTOList(list);
+            return users;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list users!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -162,13 +138,11 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Query query = session.createQuery("from User as U where U.login = :login");
+            Query query = session.createQuery("from User as u where u.login = :login");
             query.setParameter("login", login);
-            User user = (User) query.getSingleResult();
+            UserDTO userDTO = userDtoConverter.toDTO((User) query.getSingleResult());
             transaction.commit();
-            if (user != null)
-                return userDtoConverter.toDTO(user);
-            return null;
+            return userDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -187,9 +161,9 @@ public class UserServiceImpl implements UserService {
                 session.beginTransaction();
             Query query = session.createQuery("from User as U where U.email = :email");
             query.setParameter("email", email);
-            User user = (User) query.getSingleResult();
+            UserDTO userDTO = userDtoConverter.toDTO((User) query.getSingleResult());
             transaction.commit();
-            return userDtoConverter.toDTO(user);
+            return userDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())

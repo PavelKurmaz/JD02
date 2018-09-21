@@ -2,7 +2,7 @@
 <html>
 <%@ include file="include/head.htm" %>
 <body>
-<%@ include file="include/menu.htm" %>
+<%@ include file="include/adminka.htm" %>
 
 <form class="form-horizontal" method="post" action="do?command=createrole">
     <fieldset>

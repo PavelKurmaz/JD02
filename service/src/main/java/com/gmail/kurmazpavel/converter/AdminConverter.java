@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AdminConverter implements Converter<AdminDTO, Admin> {
+    private NewsConverter newsConverter = new NewsConverter();
+
     @Override
     public Admin toEntity(AdminDTO dto) {
         Admin admin = new Admin();
@@ -14,7 +16,8 @@ public class AdminConverter implements Converter<AdminDTO, Admin> {
         admin.setLogin(dto.getLogin());
         admin.setPassword(dto.getPassword());
         admin.setPhone(dto.getPhone());
-        admin.setRoles_id(dto.getRoles_id());
+        admin.setNews(newsConverter.toEntityList(dto.getNews()));
+        admin.setRoleId(dto.getRoleId());
         return admin;
     }
 

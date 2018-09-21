@@ -17,29 +17,34 @@ public class Role implements Serializable {
     private String role;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "roles_id")
-    private List<User> userList = new ArrayList<>();
+    @JoinColumn(name = "ROLE_ID")
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "roles_id")
-    private List<Admin> adminList = new ArrayList<>();
+    @JoinColumn(name = "ROLE_ID")
+    private List<Admin> admins = new ArrayList<>();
 
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private List<Permission> permissions = new ArrayList<>();
 
-    public Role () {}
-
-    public Role(long id, String role) {
-        this.id = id;
-        this.role = role;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
-    public List<Admin> getAdminList() {
-        return adminList;
+    public List<Admin> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(List<Admin> admins) {
+        this.admins = admins;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     public List<Permission> getPermissions() {

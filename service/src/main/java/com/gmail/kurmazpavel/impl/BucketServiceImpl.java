@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BucketServiceImpl implements BucketService {
@@ -27,9 +28,9 @@ public class BucketServiceImpl implements BucketService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Bucket bucket = dao.read(entityID);
+            BucketDTO bucket = dtoConverter.toDTO(dao.read(entityID));
             transaction.commit();
-            return dtoConverter.toDTO(bucket);
+            return bucket;
         } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
@@ -47,8 +48,9 @@ public class BucketServiceImpl implements BucketService {
                 session.beginTransaction();
             Bucket bucket = converter.toEntity(bucketDTO);
             dao.create(bucket);
+            bucketDTO = dtoConverter.toDTO(bucket);
             transaction.commit();
-            return dtoConverter.toDTO(bucket);
+            return bucketDTO;
         } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
@@ -67,13 +69,13 @@ public class BucketServiceImpl implements BucketService {
             Bucket bucket = dao.read(bucketDTO.getId());
             bucket.setStatus(bucketDTO.getStatus());
             dao.update(bucket);
+            bucketDTO = dtoConverter.toDTO(bucket);
             transaction.commit();
-            return dtoConverter.toDTO(bucket);
-        }
-        catch (Exception e) {
+            return bucketDTO;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to update news type!", e);
+            logger.error("Failed to update bucket type!", e);
         }
         return bucketDTO;
     }
@@ -87,13 +89,13 @@ public class BucketServiceImpl implements BucketService {
                 session.beginTransaction();
             Bucket bucket = dao.read(bucketDTO.getId());
             dao.delete(bucket);
+            bucketDTO = dtoConverter.toDTO(bucket);
             transaction.commit();
-            return dtoConverter.toDTO(bucket);
-        }
-        catch (Exception e) {
+            return bucketDTO;
+        } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
-            logger.error("Failed to update bucket type!", e);
+            logger.error("Failed to delete bucket type!", e);
         }
         return bucketDTO;
     }
@@ -105,14 +107,14 @@ public class BucketServiceImpl implements BucketService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<Bucket> list = dao.getAll();
+            List<BucketDTO> list = dtoConverter.toDTOList(dao.getAll());
             transaction.commit();
-            return dtoConverter.toDTOList(list);
+            return list;
         } catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list buckets!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 }

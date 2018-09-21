@@ -20,7 +20,7 @@ public class Order implements Serializable {
     @Column(name = "CREATED", nullable = false)
     private LocalDateTime created;
     @Column(name = "QUANTITY", nullable = false)
-    private int quantity;
+    private Long quantity;
     @Column(name = "BUCKET_ID")
     private Long bucketId;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,22 +29,6 @@ public class Order implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("Item_Id")
     private Catalog item;
-
-    public Order (User user, Catalog item) {
-        this.user = user;
-        this.item = item;
-        this.orderId = new OrderId(user.getId(), item.getId());
-    }
-
-    public Order (User user, Catalog item, int quantity, LocalDateTime localDateTime) {
-        this.user = user;
-        this.quantity = quantity;
-        this.created = localDateTime;
-        this.item = item;
-        this.orderId = new OrderId(user.getId(), item.getId());
-    }
-
-    public Order () {}
 
     public Long getBucketId() {
         return bucketId;
@@ -82,7 +66,7 @@ public class Order implements Serializable {
         this.created = created;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
@@ -90,7 +74,7 @@ public class Order implements Serializable {
         return created;
     }
 
-    public int getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
@@ -99,7 +83,7 @@ public class Order implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return quantity == order.quantity &&
+        return Objects.equals(quantity, order.quantity) &&
                 Objects.equals(orderId, order.orderId) &&
                 Objects.equals(created, order.created);
     }

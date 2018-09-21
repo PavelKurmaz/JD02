@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 @Entity
 @Table(name="permission")
 public class Permission implements Serializable{
@@ -27,6 +28,9 @@ public class Permission implements Serializable{
         return roles;
     }
 
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;

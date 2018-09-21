@@ -1,20 +1,20 @@
 package com.gmail.kurmazpavel.converter;
 
-
 import com.gmail.kurmazpavel.beans.Audit;
 import com.gmail.kurmazpavel.beans.dto.AuditDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AuditConverter implements Converter<AuditDTO, Audit> {
+    private UserConverter userConverter = new UserConverter();
 
     @Override
     public Audit toEntity(AuditDTO dto) {
         Audit audit = new Audit();
-        audit.setId(dto.getID());
-        audit.setEvent_type(dto.getEvent_type());
-        audit.setCreated(dto.getLocalDateTime());
-        audit.setUser_id(dto.getUser_id());
+        audit.setUser(userConverter.toEntity(dto.getUser()));
+        audit.setId(dto.getId());
+        audit.setCreated(dto.getCreated());
+        audit.setEvent(dto.getEvent());
         return audit;
     }
 

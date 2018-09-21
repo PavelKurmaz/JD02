@@ -11,6 +11,21 @@ public enum Actions {
             cmd = new CmdAuditUsers();
         }
     },
+    ADDCOMMENT {
+        {
+            cmd = new CmdAddComment();
+        }
+    },
+    ADDNEWS {
+        {
+            cmd = new CmdAddNews();
+        }
+    },
+    READNEWS {
+        {
+            cmd = new CmdReadNews();
+        }
+    },
     EDITNEWS {
         {
             cmd = new CmdEditNews();
@@ -69,11 +84,6 @@ public enum Actions {
     PROFILE{
         {
             cmd = new CmdProfile();
-        }
-    },
-    RESET{
-        {
-            cmd = new CmdReset();
         }
     },
     VIEWCATALOG {

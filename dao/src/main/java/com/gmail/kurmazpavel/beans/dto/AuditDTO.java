@@ -3,42 +3,44 @@ package com.gmail.kurmazpavel.beans.dto;
 import java.time.LocalDateTime;
 
 public class AuditDTO {
-    private long ID;
-    private long user_id;
-    private String event_type;
-    private LocalDateTime localDateTime;
+    private Long id;
+    private String event;
+    private LocalDateTime created;
+    private UserDTO user;
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public Long getId() {
+        return id;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public String getEvent() {
+        return event;
     }
 
-    public void setEvent_type(String event_type) {
-        this.event_type = event_type;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
-    public long getID() {  return ID;  }
-
-    public String getEvent_type() {
-        return event_type;
+    public void setEvent(String event) {
+        this.event = event;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated (LocalDateTime created) {
+        this.created = created;
     }
 
     public String toString() {
-        return "ID: " + ID + ", Event: " + event_type + ", Date&Time: " + localDateTime;
+        return "id: " + id + ", Event: " + event + ", Date&Time: " + created;
     }
 }

@@ -1,60 +1,62 @@
 package com.gmail.kurmazpavel.beans.dto;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CatalogDTO {
-    private long ID;
-    private long amount;
+    private Long id;
+    private Long amount;
     private String name;
-    private double price;
+    private BigDecimal price;
+    private List<DiscountDTO> discounts = new ArrayList<>();
+    private List<OrderDTO> orders = new ArrayList<>();
 
-
-    public CatalogDTO(long ID, int amount, String name, double price) {
-        this.ID = ID;
-        this.name = name;
-        this.price = price;
-        this.amount = amount;
+    public Long getId() {
+        return id;
     }
 
-    public CatalogDTO() {}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public long getID() {
-        return ID;
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
     public String getName() {
         return name;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setAmount(long amount) {
-        this.amount = amount;
-    }
-
-    public long getAmount() {
-        return amount;
-    }
-
-    public void setID(long ID) {
-        this.ID = ID;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setPrice(double price) {
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        return "Catalog{" +
-                "ID=" + ID +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", amount=" + amount +
-                '}';
+    public List<DiscountDTO> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(List<DiscountDTO> discounts) {
+        this.discounts = discounts;
+    }
+
+    public List<OrderDTO> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderDTO> orders) {
+        this.orders = orders;
     }
 }

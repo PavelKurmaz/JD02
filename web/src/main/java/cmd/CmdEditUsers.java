@@ -23,19 +23,19 @@ class CmdEditUsers extends Cmd {
         HttpSession session = req.getSession();
         Object object = session.getAttribute("admin");
         AdminDTO admin = (AdminDTO) object;
-        if (!Util.checkPermission(admin.getRoles_id(), "Edit Users")) {
+        if (!Util.checkPermission(admin.getRoleId(), "Edit Users")) {
             req.setAttribute("errmessage", "You have no permission");
-            return new ActionResult(Actions.ERROR);
+            return new ActionResult("error");
         }
         if (Util.isPost(req)) {
-            int id = Util.getInteger(req, "id");
+            long id = Util.getInteger(req, "id");
             String login = Util.getString(req, "login");
             String password = req.getParameter("password");
-            String carma = Util.getString(req, "carma");
-            String role = Util.getString(req, "role");
-            RoleDTO userNewRole = roleService.readByRole(role);
-            int isDisabled = (Util.getString(req, "disabled").equalsIgnoreCase("disabled")? 1: 0);
-            UserDTO user = new UserDTO(id, login, password, null, null, carma, userNewRole.getId(), isDisabled);
+            boolean disabled = (Util.getString(req, "disabled").equalsIgnoreCase("disabled")? true: false);
+            UserDTO user = service.read(id);
+            user.setLogin(login);
+            user.setPassword(password);
+            user.setDisabled(disabled);
             if (req.getParameter("Update") != null) {
                 service.update(user);
             } else if (req.getParameter("Delete") != null) {

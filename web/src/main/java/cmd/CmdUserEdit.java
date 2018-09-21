@@ -41,14 +41,14 @@ class CmdUserEdit extends Cmd {
                 user.setPhone(phone);
                 service.update(user);
                 AuditDTO auditDTO = new AuditDTO();
-                auditDTO.setUser_id(user.getId());
-                auditDTO.setLocalDateTime(LocalDateTime.now());
-                auditDTO.setEvent_type("User " + user.getLogin() + " updated its data");
+                auditDTO.setUser(user);
+                auditDTO.setCreated(LocalDateTime.now());
+                auditDTO.setEvent("User " + user.getLogin() + " updated its data");
                 auditService.create(auditDTO);
                 return null;
             }
             else if (req.getParameter("AddUpdate") != null) {
-                AddressDTO address = (AddressDTO) session.getAttribute("address");
+                AddressDTO address = user.getAddress();
                 String country = Util.getString(req, "country");
                 String city = Util.getString(req, "city");
                 String street = Util.getString(req, "street");
@@ -63,10 +63,11 @@ class CmdUserEdit extends Cmd {
                 address.setZip(zip);
                 addressService.update(address);
                 AuditDTO auditDTO = new AuditDTO();
-                auditDTO.setUser_id(user.getId());
-                auditDTO.setLocalDateTime(LocalDateTime.now());
-                auditDTO.setEvent_type("User" + user.getLogin() + " updated address");
+                auditDTO.setUser(user);
+                auditDTO.setCreated(LocalDateTime.now());
+                auditDTO.setEvent("User" + user.getLogin() + " updated address");
                 auditService.create(auditDTO);
+                session.setAttribute("address", address);
                 return null;
             }
         }

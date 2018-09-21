@@ -1,13 +1,12 @@
 package com.gmail.kurmazpavel.converter;
 
-
 import com.gmail.kurmazpavel.beans.News;
 import com.gmail.kurmazpavel.beans.dto.NewsDTO;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class NewsConverter implements Converter<NewsDTO, News>{
+    private CommentConverter commentConverter = new CommentConverter();
 
     @Override
     public News toEntity(NewsDTO dto) {
@@ -16,7 +15,8 @@ public class NewsConverter implements Converter<NewsDTO, News>{
         news.setContent(dto.getContent());
         news.setTitle(dto.getTitle());
         news.setCreated(dto.getCreated());
-        news.setUser_id(dto.getUser_id());
+        news.setUserId(dto.getUserId());
+        news.setComments(commentConverter.toEntityList(dto.getComments()));
         return news;
     }
 

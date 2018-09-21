@@ -33,6 +33,11 @@ public class GenericDAOImpl<T extends  Serializable> implements GenericDAO<T> {
     }
 
     @Override
+    public void save(T entity) {
+        getCurrentSession().save(entity);
+    }
+
+    @Override
     public void update(T entity) {
         getCurrentSession().merge(entity);
     }

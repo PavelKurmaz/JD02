@@ -1,25 +1,13 @@
 package com.gmail.kurmazpavel.beans.dto;
 
 public class AddressDTO {
-    private long id;
+    private Long id;
     private String country;
     private String city;
     private String street;
     private String building;
     private String apt;
     private String zip;
-
-    public AddressDTO(long id, String country, String city, String street, String building, String apt, String zip) {
-        this.id = id;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.building = building;
-        this.apt = apt;
-        this.zip = zip;
-    }
-
-    public AddressDTO() {}
 
     @Override
     public String toString() {
@@ -34,7 +22,7 @@ public class AddressDTO {
                 '}';
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -62,7 +50,7 @@ public class AddressDTO {
         this.zip = zip;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

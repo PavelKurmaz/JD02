@@ -9,13 +9,13 @@ import com.gmail.kurmazpavel.converter.AuditConverter;
 import com.gmail.kurmazpavel.genericDAO.AuditDao;
 import com.gmail.kurmazpavel.genericDAO.UserDao;
 import com.gmail.kurmazpavel.genericDAO.impl.AuditDAOImpl;
-import com.gmail.kurmazpavel.genericDAO.impl.GenericDAOImpl;
 import com.gmail.kurmazpavel.genericDAO.impl.UserDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AuditServiceImpl implements AuditService {
@@ -32,11 +32,10 @@ public class AuditServiceImpl implements AuditService {
             if (!transaction.isActive())
                 session.beginTransaction();
             Audit audit = converter.toEntity(auditDTO);
-            User user = userDao.read(auditDTO.getUser_id());
-            audit.setUser(user);
-            dao.create(audit);
+            dao.save(audit);
+            auditDTO = dtoconverter.toDTO(audit);
             transaction.commit();
-            return dtoconverter.toDTO(audit);
+            return auditDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -49,6 +48,12 @@ public class AuditServiceImpl implements AuditService {
     public void update (AuditDTO auditDTO){
         Session session = userDao.getCurrentSession();
         try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive())
+                session.beginTransaction();
+            Audit audit = converter.toEntity(auditDTO);
+            dao.update(audit);
+            transaction.commit();
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -63,15 +68,15 @@ public class AuditServiceImpl implements AuditService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<Audit> list = dao.getAll();
+            List<AuditDTO> audits = dtoconverter.toDTOList(dao.getAll());
             transaction.commit();
-            return dtoconverter.toDTOList(list);
+            return audits;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list audit!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 }

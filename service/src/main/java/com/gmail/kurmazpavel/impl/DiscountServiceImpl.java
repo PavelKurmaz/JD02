@@ -39,16 +39,16 @@ public class DiscountServiceImpl implements DiscountService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            Discount discount = dao.read(entityID);
+            DiscountDTO discount = discountDtoConverter.toDTO(dao.read(entityID));
             transaction.commit();
-            return discountDtoConverter.toDTO(discount);
+            return discount;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read discount type!", e);
         }
-        return null;
+        return new DiscountDTO();
     }
 
     @Override
@@ -60,17 +60,16 @@ public class DiscountServiceImpl implements DiscountService {
                 session.beginTransaction();
             Query query = session.createQuery("from Discount as d where d.name=:name");
             query.setParameter("name", name);
-            Discount discount = (Discount) query.getSingleResult();
-            DiscountDTO discountDTO = discountDtoConverter.toDTO(discount);
+            DiscountDTO discount = discountDtoConverter.toDTO((Discount) query.getSingleResult());
             transaction.commit();
-            return discountDTO;
+            return discount;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to read discount type!", e);
         }
-        return null;
+        return new DiscountDTO();
     }
 
     @Override
@@ -81,10 +80,10 @@ public class DiscountServiceImpl implements DiscountService {
             if (!transaction.isActive())
                 session.beginTransaction();
             Discount discount = discountConverter.toEntity(discountDTO);
-            discount.setId(null);
             dao.create(discount);
+            discountDTO = discountDtoConverter.toDTO(discount);
             transaction.commit();
-            return discountDtoConverter.toDTO(discount);
+            return discountDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -95,7 +94,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public void update(long discountId, long userId) {
+    public void update(Long discountId, Long userId) {
         Session session = dao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -124,8 +123,9 @@ public class DiscountServiceImpl implements DiscountService {
                 session.beginTransaction();
             Discount discount = discountConverter.toEntity(discountDTO);
             dao.delete(discount);
+            discountDTO = discountDtoConverter.toDTO(discount);
             transaction.commit();
-            return discountDtoConverter.toDTO(discount);
+            return discountDTO;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
@@ -142,16 +142,16 @@ public class DiscountServiceImpl implements DiscountService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
-            List<Discount> list = dao.getAll();
+            List<DiscountDTO> list = discountDtoConverter.toDTOList(dao.getAll());
             transaction.commit();
-            return discountDtoConverter.toDTOList(list);
+            return list;
         }
         catch (Exception e) {
             if (session.getTransaction().isActive())
                 session.getTransaction().rollback();
             logger.error("Failed to list discounts!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -164,22 +164,15 @@ public class DiscountServiceImpl implements DiscountService {
             if (discount != 0) {
                 Query query = session.createQuery("select d.discountItems from Discount as d where d.percent = :percent");
                 query.setParameter("percent", discount);
-                List<Catalog> itemsList = query.getResultList();
-                List<CatalogDTO> items = catalogDtoConverter.toDTOList(itemsList);
+                List<CatalogDTO> items = discountDtoConverter.toDTOList(query.getResultList());
                 transaction.commit();
                 return items;
             }
             else {
-                Query query = session.createQuery("from Catalog");
-                List<Catalog> all = query.getResultList();
-                List<Catalog> items = new ArrayList<>();
-                for (Catalog item: all) {
-                    if (item.getDiscounts().isEmpty())
-                            items.add(item);
-                }
-                List<CatalogDTO> result = catalogDtoConverter.toDTOList(items);
+                Query query = session.createQuery("from Catalog as c where c.discounts is empty");
+                List<CatalogDTO> items = catalogDtoConverter.toDTOList(query.getResultList());
                 transaction.commit();
-                return result;
+                return items;
             }
         }
         catch (Exception e) {
@@ -187,7 +180,7 @@ public class DiscountServiceImpl implements DiscountService {
                 session.getTransaction().rollback();
             logger.error("Failed to list items!", e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
 
@@ -209,5 +202,4 @@ public class DiscountServiceImpl implements DiscountService {
             logger.error("Failed to apply discounts!", e);
         }
     }
-
 }
