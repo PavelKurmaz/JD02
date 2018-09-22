@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.DTOConverter;
 
-import com.gmail.kurmazpavel.beans.News;
-import com.gmail.kurmazpavel.beans.dto.NewsDTO;
+import com.gmail.kurmazpavel.News;
+import com.gmail.kurmazpavel.dto.NewsDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class NewsDTOConverter implements DTOConverter<NewsDTO, News> {
     private CommentDTOConverter commentDTOConverter = new CommentDTOConverter();
 

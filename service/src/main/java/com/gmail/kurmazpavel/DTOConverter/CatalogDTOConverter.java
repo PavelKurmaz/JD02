@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.DTOConverter;
 
-import com.gmail.kurmazpavel.beans.Catalog;
-import com.gmail.kurmazpavel.beans.dto.CatalogDTO;
+import com.gmail.kurmazpavel.Catalog;
+import com.gmail.kurmazpavel.dto.CatalogDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class CatalogDTOConverter implements DTOConverter<CatalogDTO, Catalog> {
     private DiscountDTOConverter discountDTOConverter = new DiscountDTOConverter();
     private OrderDTOConverter orderDTOConverter = new OrderDTOConverter();

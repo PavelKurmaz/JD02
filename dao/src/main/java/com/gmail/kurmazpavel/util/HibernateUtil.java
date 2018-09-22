@@ -1,6 +1,6 @@
 package com.gmail.kurmazpavel.util;
 
-import com.gmail.kurmazpavel.beans.*;
+import com.gmail.kurmazpavel.*;
 import com.gmail.kurmazpavel.config.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

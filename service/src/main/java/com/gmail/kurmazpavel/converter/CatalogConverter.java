@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.converter;
 
-import com.gmail.kurmazpavel.beans.Catalog;
-import com.gmail.kurmazpavel.beans.dto.CatalogDTO;
+import com.gmail.kurmazpavel.Catalog;
+import com.gmail.kurmazpavel.dto.CatalogDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class CatalogConverter implements Converter<CatalogDTO, Catalog> {
     private OrderConverter orderConverter = new OrderConverter();
 

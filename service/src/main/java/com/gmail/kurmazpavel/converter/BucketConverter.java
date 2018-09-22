@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.converter;
 
-import com.gmail.kurmazpavel.beans.Bucket;
-import com.gmail.kurmazpavel.beans.dto.BucketDTO;
+import com.gmail.kurmazpavel.Bucket;
+import com.gmail.kurmazpavel.dto.BucketDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class BucketConverter implements Converter<BucketDTO, Bucket> {
     private OrderConverter orderConverter = new OrderConverter();
 

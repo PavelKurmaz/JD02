@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.DTOConverter;
 
-import com.gmail.kurmazpavel.beans.Role;
-import com.gmail.kurmazpavel.beans.dto.RoleDTO;
+import com.gmail.kurmazpavel.Role;
+import com.gmail.kurmazpavel.dto.RoleDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class RoleDTOConverter implements DTOConverter<RoleDTO, Role> {
     private UserDTOConverter userDTOConverter = new UserDTOConverter();
     private AdminDTOConverter adminDTOConverter = new AdminDTOConverter();

@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.DTOConverter;
 
-import com.gmail.kurmazpavel.beans.Audit;
-import com.gmail.kurmazpavel.beans.dto.AuditDTO;
+import com.gmail.kurmazpavel.Audit;
+import com.gmail.kurmazpavel.dto.AuditDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class AuditDTOConverter implements DTOConverter<AuditDTO, Audit> {
     private UserDTOConverter userDTOConverter = new UserDTOConverter();
 

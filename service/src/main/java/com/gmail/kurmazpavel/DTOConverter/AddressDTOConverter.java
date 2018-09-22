@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.DTOConverter;
 
-import com.gmail.kurmazpavel.beans.Address;
-import com.gmail.kurmazpavel.beans.dto.AddressDTO;
+import com.gmail.kurmazpavel.Address;
+import com.gmail.kurmazpavel.dto.AddressDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class AddressDTOConverter implements DTOConverter<AddressDTO, Address> {
 
     @Override

@@ -1,10 +1,12 @@
 package com.gmail.kurmazpavel.converter;
 
-import com.gmail.kurmazpavel.beans.Admin;
-import com.gmail.kurmazpavel.beans.dto.AdminDTO;
+import com.gmail.kurmazpavel.Admin;
+import com.gmail.kurmazpavel.dto.AdminDTO;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class AdminConverter implements Converter<AdminDTO, Admin> {
     private NewsConverter newsConverter = new NewsConverter();
 

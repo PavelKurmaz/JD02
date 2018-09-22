@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
 <ehcache>
-    <cache name="com.gmail.kurmazpavel.beans.User"
+    <cache name="com.gmail.kurmazpavel.User"
            maxElementsInMemory="50"
            timeToIdleSeconds="0"
            timeToLiveSeconds="0"
