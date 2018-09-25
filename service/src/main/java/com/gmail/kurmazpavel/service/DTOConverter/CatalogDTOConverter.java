@@ -1,15 +1,25 @@
-package com.gmail.kurmazpavel.DTOConverter;
+package com.gmail.kurmazpavel.service.DTOConverter;
 
 import com.gmail.kurmazpavel.Catalog;
+import com.gmail.kurmazpavel.Discount;
+import com.gmail.kurmazpavel.Order;
 import com.gmail.kurmazpavel.dto.CatalogDTO;
+import com.gmail.kurmazpavel.dto.DiscountDTO;
+import com.gmail.kurmazpavel.dto.OrderDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("catalogDTOConverter")
 public class CatalogDTOConverter implements DTOConverter<CatalogDTO, Catalog> {
-    private DiscountDTOConverter discountDTOConverter = new DiscountDTOConverter();
-    private OrderDTOConverter orderDTOConverter = new OrderDTOConverter();
+    @Autowired
+    @Qualifier("discountDTOConverter")
+    private DTOConverter<DiscountDTO, Discount> discountDTOConverter;
+    @Autowired
+    @Qualifier("orderDTOConverter")
+    private DTOConverter<OrderDTO, Order> orderDTOConverter;
 
     @Override
     public CatalogDTO toDTO(Catalog entity) {

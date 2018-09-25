@@ -1,4 +1,4 @@
-package com.gmail.kurmazpavel.converter;
+package com.gmail.kurmazpavel.service.converter;
 
 import java.util.List;
 

@@ -1,34 +1,41 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.CommentDTOConverter;
-import com.gmail.kurmazpavel.DTOConverter.NewsDTOConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.service.NewsService;
 import com.gmail.kurmazpavel.Admin;
 import com.gmail.kurmazpavel.News;
 import com.gmail.kurmazpavel.dto.CommentDTO;
 import com.gmail.kurmazpavel.dto.NewsDTO;
-import com.gmail.kurmazpavel.converter.NewsConverter;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import com.gmail.kurmazpavel.dao.AdminDao;
 import com.gmail.kurmazpavel.dao.NewsDao;
-import com.gmail.kurmazpavel.dao.impl.AdminDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.NewsDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class NewsServiceImpl implements NewsService {
     private static final Logger logger = LogManager.getLogger(NewsServiceImpl.class);
-    private NewsDao dao = new NewsDAOImpl();
-    private AdminDao adminDao = new AdminDAOImpl();
-    private NewsConverter newsConverter = new NewsConverter();
-    private NewsDTOConverter newsDtoConverter = new NewsDTOConverter();
-    private CommentDTOConverter commentDTOConverter = new CommentDTOConverter();
+    @Autowired
+    private NewsDao dao;
+    @Autowired
+    private AdminDao adminDao;
+    @Autowired
+    @Qualifier("newsConverter")
+    private Converter<NewsDTO, News> newsConverter;
+    @Autowired
+    @Qualifier("newsDTOConverter")
+    private DTOConverter<NewsDTO, News> newsDtoConverter;
+    @Autowired
+    @Qualifier("commentDTOConverter")
+    private DTOConverter commentDTOConverter;
 
     @Override
     public NewsDTO read(Long entityID) {

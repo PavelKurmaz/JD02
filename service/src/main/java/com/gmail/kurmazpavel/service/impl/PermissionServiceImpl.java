@@ -1,21 +1,20 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.PermissionDTOConverter;
-import com.gmail.kurmazpavel.DTOConverter.RoleDTOConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.service.PermissionService;
 import com.gmail.kurmazpavel.Permission;
 import com.gmail.kurmazpavel.Role;
 import com.gmail.kurmazpavel.dto.PermissionDTO;
 import com.gmail.kurmazpavel.dto.RoleDTO;
-import com.gmail.kurmazpavel.converter.PermissionConverter;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import com.gmail.kurmazpavel.dao.PermissionDao;
 import com.gmail.kurmazpavel.dao.RolesDao;
-import com.gmail.kurmazpavel.dao.impl.PermissionDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.RoleDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
@@ -24,11 +23,19 @@ import java.util.List;
 @Service
 public class PermissionServiceImpl implements PermissionService {
     private static final Logger logger = LogManager.getLogger(PermissionServiceImpl.class);
-    private PermissionDao permissionDao = new PermissionDAOImpl();
-    private RolesDao roleDao = new RoleDAOImpl();
-    private PermissionConverter permissionConverter = new PermissionConverter();
-    private PermissionDTOConverter permissionDTOConverter = new PermissionDTOConverter();
-    private RoleDTOConverter roleDTOConverter = new RoleDTOConverter();
+    @Autowired
+    private PermissionDao permissionDao;
+    @Autowired
+    private RolesDao roleDao;
+    @Autowired
+    @Qualifier("permissionConverter")
+    private Converter<PermissionDTO, Permission> permissionConverter;
+    @Autowired
+    @Qualifier("permissionDTOConverter")
+    private DTOConverter<PermissionDTO, Permission> permissionDTOConverter;
+    @Autowired
+    @Qualifier("roleDTOConverter")
+    private DTOConverter<RoleDTO, Role> roleDTOConverter;
 
     @Override
     public PermissionDTO read(Long entityId) {

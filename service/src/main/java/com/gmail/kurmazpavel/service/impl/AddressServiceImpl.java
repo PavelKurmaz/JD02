@@ -1,24 +1,30 @@
 package com.gmail.kurmazpavel.service.impl;
 
 import com.gmail.kurmazpavel.service.AddressService;
-import com.gmail.kurmazpavel.DTOConverter.AddressDTOConverter;
 import com.gmail.kurmazpavel.Address;
 import com.gmail.kurmazpavel.dto.AddressDTO;
-import com.gmail.kurmazpavel.converter.AddressConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.dao.AddressDao;
-import com.gmail.kurmazpavel.dao.impl.AddressDAOImpl;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AddressServiceImpl implements AddressService {
     private static final Logger logger = LogManager.getLogger(AddressServiceImpl.class);
-    private AddressDao dao = new AddressDAOImpl();
-    private AddressConverter converter = new AddressConverter();
-    private AddressDTOConverter dtoConverter = new AddressDTOConverter();
+    @Autowired
+    private AddressDao dao;
+    @Autowired
+    @Qualifier("addressConverter")
+    private Converter<AddressDTO, Address> converter;
+    @Autowired
+    @Qualifier("addressDTOConverter")
+    private DTOConverter<AddressDTO, Address> dtoConverter;
 
     @Override
     public AddressDTO read(Long entityID) {

@@ -1,14 +1,20 @@
-package com.gmail.kurmazpavel.DTOConverter;
+package com.gmail.kurmazpavel.service.DTOConverter;
 
 import com.gmail.kurmazpavel.Admin;
+import com.gmail.kurmazpavel.News;
 import com.gmail.kurmazpavel.dto.AdminDTO;
+import com.gmail.kurmazpavel.dto.NewsDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("adminDTOConverter")
 public class AdminDTOConverter implements DTOConverter<AdminDTO, Admin> {
-    private NewsDTOConverter newsDTOConverter = new NewsDTOConverter();
+    @Autowired
+    @Qualifier("newsDTOConverter")
+    private DTOConverter<NewsDTO, News> newsDTOConverter;
 
     @Override
     public AdminDTO toDTO(Admin entity) {

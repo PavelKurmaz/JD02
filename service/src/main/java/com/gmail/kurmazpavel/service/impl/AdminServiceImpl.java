@@ -1,31 +1,37 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.AdminDTOConverter;
 import com.gmail.kurmazpavel.service.AdminService;
 import com.gmail.kurmazpavel.Admin;
 import com.gmail.kurmazpavel.Role;
 import com.gmail.kurmazpavel.dto.AdminDTO;
-import com.gmail.kurmazpavel.converter.AdminConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.dao.AdminDao;
 import com.gmail.kurmazpavel.dao.RolesDao;
-import com.gmail.kurmazpavel.dao.impl.AdminDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.RoleDAOImpl;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class AdminServiceImpl implements AdminService {
     private static final Logger logger = LogManager.getLogger(AdminServiceImpl.class);
-    private AdminDao dao = new AdminDAOImpl();
-    private RolesDao rolesDao = new RoleDAOImpl();
-    private AdminConverter converter = new AdminConverter();
-    private AdminDTOConverter dtoConverter = new AdminDTOConverter();
+    @Autowired
+    private AdminDao dao;
+    @Autowired
+    private RolesDao rolesDao;
+    @Autowired
+    @Qualifier("adminConverter")
+    private Converter<AdminDTO, Admin> converter;
+    @Autowired
+    @Qualifier("adminDTOConverter")
+    private DTOConverter<AdminDTO, Admin> dtoConverter;
 
     @Override
     public AdminDTO read(Long entityID) {

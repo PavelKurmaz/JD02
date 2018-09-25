@@ -1,16 +1,30 @@
-package com.gmail.kurmazpavel.converter;
+package com.gmail.kurmazpavel.service.converter;
 
+import com.gmail.kurmazpavel.Admin;
+import com.gmail.kurmazpavel.Permission;
 import com.gmail.kurmazpavel.Role;
+import com.gmail.kurmazpavel.User;
+import com.gmail.kurmazpavel.dto.AdminDTO;
+import com.gmail.kurmazpavel.dto.PermissionDTO;
 import com.gmail.kurmazpavel.dto.RoleDTO;
+import com.gmail.kurmazpavel.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("roleConverter")
 public class RoleConverter implements Converter<RoleDTO, Role> {
-    private UserConverter userConverter = new UserConverter();
-    private AdminConverter adminConverter = new AdminConverter();
-    private PermissionConverter permissionConverter = new PermissionConverter();
+    @Autowired
+    @Qualifier("userConverter")
+    private Converter<UserDTO, User> userConverter;
+    @Autowired
+    @Qualifier("adminConverter")
+    private Converter<AdminDTO, Admin> adminConverter;
+    @Autowired
+    @Qualifier("permissionConverter")
+    private Converter<PermissionDTO, Permission> permissionConverter;
 
     @Override
     public Role toEntity(RoleDTO dto) {

@@ -1,4 +1,4 @@
-package com.gmail.kurmazpavel.DTOConverter;
+package com.gmail.kurmazpavel.service.DTOConverter;
 
 import java.util.List;
 

@@ -1,31 +1,39 @@
 package com.gmail.kurmazpavel.service.impl;
 
+import com.gmail.kurmazpavel.Discount;
 import com.gmail.kurmazpavel.service.CatalogService;
-import com.gmail.kurmazpavel.DTOConverter.CatalogDTOConverter;
-import com.gmail.kurmazpavel.DTOConverter.DiscountDTOConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.Catalog;
 import com.gmail.kurmazpavel.dto.CatalogDTO;
 import com.gmail.kurmazpavel.dto.DiscountDTO;
-import com.gmail.kurmazpavel.converter.CatalogConverter;
 import com.gmail.kurmazpavel.dao.CatalogDao;
-import com.gmail.kurmazpavel.dao.impl.CatalogDAOImpl;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class CatalogServiceImpl implements CatalogService {
     private static final Logger logger = LogManager.getLogger(CatalogServiceImpl.class);
-    private CatalogDao dao = new CatalogDAOImpl();
-    private CatalogConverter converter = new CatalogConverter();
-    private CatalogDTOConverter dtoConverter = new CatalogDTOConverter();
-    private DiscountDTOConverter discountDtoConverter = new DiscountDTOConverter();
+    @Autowired
+    private CatalogDao dao;
+    @Autowired
+    @Qualifier("catalogConverter")
+    private Converter<CatalogDTO, Catalog> converter;
+    @Autowired
+    @Qualifier("catalogDTOConverter")
+    private DTOConverter<CatalogDTO, Catalog> dtoConverter;
+    @Autowired
+    @Qualifier("discountDTOConverter")
+    private DTOConverter<DiscountDTO, Discount> discountDtoConverter;
 
     @Override
     public CatalogDTO read(Long entityID) {

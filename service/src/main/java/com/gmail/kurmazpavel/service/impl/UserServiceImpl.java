@@ -1,19 +1,19 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.UserDTOConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.service.UserService;
 import com.gmail.kurmazpavel.Role;
 import com.gmail.kurmazpavel.User;
 import com.gmail.kurmazpavel.dto.UserDTO;
-import com.gmail.kurmazpavel.converter.UserConverter;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import com.gmail.kurmazpavel.dao.RolesDao;
 import com.gmail.kurmazpavel.dao.UserDao;
-import com.gmail.kurmazpavel.dao.impl.RoleDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.UserDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
@@ -22,10 +22,16 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
-    private UserDao dao = new UserDAOImpl();
-    private RolesDao rolesDao = new RoleDAOImpl();
-    private UserConverter userConverter = new UserConverter();
-    private UserDTOConverter userDtoConverter = new UserDTOConverter();
+    @Autowired
+    private UserDao dao;
+    @Autowired
+    private RolesDao rolesDao;
+    @Autowired
+    @Qualifier("userConverter")
+    private Converter<UserDTO, User> userConverter;
+    @Autowired
+    @Qualifier("userDTOConverter")
+    private DTOConverter<UserDTO, User> userDtoConverter;
 
     @Override
     public UserDTO read(Long entityID) {

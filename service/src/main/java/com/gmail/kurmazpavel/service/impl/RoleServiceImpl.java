@@ -1,18 +1,18 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.PermissionDTOConverter;
-import com.gmail.kurmazpavel.DTOConverter.RoleDTOConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.service.RoleService;
 import com.gmail.kurmazpavel.Role;
 import com.gmail.kurmazpavel.dto.PermissionDTO;
 import com.gmail.kurmazpavel.dto.RoleDTO;
-import com.gmail.kurmazpavel.converter.RoleConverter;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import com.gmail.kurmazpavel.dao.RolesDao;
-import com.gmail.kurmazpavel.dao.impl.RoleDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
@@ -21,10 +21,17 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
     private static final Logger logger = LogManager.getLogger(RoleServiceImpl.class);
-    private RolesDao rolesDao = new RoleDAOImpl();
-    private RoleConverter roleConverter = new RoleConverter();
-    private RoleDTOConverter roleDTOConverter = new RoleDTOConverter();
-    private PermissionDTOConverter permissionDTOConverter = new PermissionDTOConverter();
+    @Autowired
+    private RolesDao rolesDao;
+    @Autowired
+    @Qualifier("roleConverter")
+    private Converter<RoleDTO, Role> roleConverter;
+    @Autowired
+    @Qualifier("roleDTOConverter")
+    private DTOConverter<RoleDTO, Role> roleDTOConverter;
+    @Autowired
+    @Qualifier("permissionDTOConverter")
+    private DTOConverter<PermissionDTO, com.gmail.kurmazpavel.Permission> permissionDTOConverter;
 
     @Override
     public RoleDTO read(Long entityID) {

@@ -1,12 +1,12 @@
-package com.gmail.kurmazpavel.converter;
+package com.gmail.kurmazpavel.service.converter;
 
 import com.gmail.kurmazpavel.Discount;
 import com.gmail.kurmazpavel.dto.DiscountDTO;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("discountConverter")
 public class DiscountConverter implements Converter<DiscountDTO, Discount>{
 
     @Override

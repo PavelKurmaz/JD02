@@ -1,16 +1,30 @@
-package com.gmail.kurmazpavel.converter;
+package com.gmail.kurmazpavel.service.converter;
 
+import com.gmail.kurmazpavel.Address;
+import com.gmail.kurmazpavel.Discount;
+import com.gmail.kurmazpavel.Order;
 import com.gmail.kurmazpavel.User;
+import com.gmail.kurmazpavel.dto.AddressDTO;
+import com.gmail.kurmazpavel.dto.DiscountDTO;
+import com.gmail.kurmazpavel.dto.OrderDTO;
 import com.gmail.kurmazpavel.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("userConverter")
 public class UserConverter implements Converter<UserDTO, User> {
-    private AddressConverter addressConverter = new AddressConverter();
-    private DiscountConverter discountConverter = new DiscountConverter();
-    private OrderConverter orderConverter = new OrderConverter();
+    @Autowired
+    @Qualifier("addressConverter")
+    private Converter<AddressDTO, Address> addressConverter;
+    @Autowired
+    @Qualifier("discountConverter")
+    private Converter<DiscountDTO, Discount> discountConverter;
+    @Autowired
+    @Qualifier("orderConverter")
+    private Converter<OrderDTO, Order> orderConverter;
 
     @Override
     public User toEntity(UserDTO dto) {

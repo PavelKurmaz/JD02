@@ -1,12 +1,12 @@
-package com.gmail.kurmazpavel.DTOConverter;
+package com.gmail.kurmazpavel.service.DTOConverter;
 
 import com.gmail.kurmazpavel.Order;
 import com.gmail.kurmazpavel.dto.OrderDTO;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("orderDTOConverter")
 public class OrderDTOConverter implements DTOConverter<OrderDTO, Order> {
 
     @Override

@@ -1,22 +1,20 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.CommentDTOConverter;
 import com.gmail.kurmazpavel.service.CommentService;
 import com.gmail.kurmazpavel.Comment;
 import com.gmail.kurmazpavel.News;
 import com.gmail.kurmazpavel.User;
 import com.gmail.kurmazpavel.dto.CommentDTO;
-import com.gmail.kurmazpavel.converter.CommentConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.dao.CommentDao;
 import com.gmail.kurmazpavel.dao.NewsDao;
-import com.gmail.kurmazpavel.dao.UserDao;
-import com.gmail.kurmazpavel.dao.impl.CommentDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.NewsDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.UserDAOImpl;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,10 +22,16 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
     private static final Logger logger = LogManager.getLogger(CommentServiceImpl.class);
-    private CommentDao dao = new CommentDAOImpl();
-    private NewsDao newsDao = new NewsDAOImpl();
-    private CommentConverter commentConverter = new CommentConverter();
-    private CommentDTOConverter commentDtoConverter = new CommentDTOConverter();
+    @Autowired
+    private CommentDao dao;
+    @Autowired
+    private NewsDao newsDao;
+    @Autowired
+    @Qualifier("commentConverter")
+    private Converter<CommentDTO, Comment> commentConverter;
+    @Autowired
+    @Qualifier("commentDTOConverter")
+    private DTOConverter<CommentDTO, Comment> commentDtoConverter;
 
     @Override
     public CommentDTO read(Long entityID) {

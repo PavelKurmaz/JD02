@@ -1,24 +1,22 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.CatalogDTOConverter;
-import com.gmail.kurmazpavel.DTOConverter.DiscountDTOConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.service.DiscountService;
 import com.gmail.kurmazpavel.Catalog;
 import com.gmail.kurmazpavel.Discount;
 import com.gmail.kurmazpavel.User;
 import com.gmail.kurmazpavel.dto.CatalogDTO;
 import com.gmail.kurmazpavel.dto.DiscountDTO;
-import com.gmail.kurmazpavel.converter.DiscountConverter;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import com.gmail.kurmazpavel.dao.CatalogDao;
 import com.gmail.kurmazpavel.dao.DiscountDao;
 import com.gmail.kurmazpavel.dao.UserDao;
-import com.gmail.kurmazpavel.dao.impl.CatalogDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.DiscountDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.UserDAOImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
@@ -27,12 +25,21 @@ import java.util.List;
 @Service
 public class DiscountServiceImpl implements DiscountService {
     private static final Logger logger = LogManager.getLogger(DiscountServiceImpl.class);
-    private DiscountDao dao = new DiscountDAOImpl();
-    private CatalogDao catalogDao = new CatalogDAOImpl();
-    private DiscountConverter discountConverter = new DiscountConverter();
-    private DiscountDTOConverter discountDtoConverter = new DiscountDTOConverter();
-    private CatalogDTOConverter catalogDtoConverter = new CatalogDTOConverter();
-    private UserDao userDao = new UserDAOImpl();
+    @Autowired
+    private DiscountDao dao;
+    @Autowired
+    private CatalogDao catalogDao;
+    @Autowired
+    @Qualifier("discountConverter")
+    private Converter<DiscountDTO, Discount> discountConverter;
+    @Autowired
+    @Qualifier("discountDTOConverter")
+    private DTOConverter<DiscountDTO, Discount> discountDtoConverter;
+    @Autowired
+    @Qualifier("catalogDTOConverter")
+    private DTOConverter<CatalogDTO, Catalog> catalogDtoConverter;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public DiscountDTO read(Long entityID) {

@@ -1,14 +1,20 @@
-package com.gmail.kurmazpavel.DTOConverter;
+package com.gmail.kurmazpavel.service.DTOConverter;
 
 import com.gmail.kurmazpavel.Comment;
+import com.gmail.kurmazpavel.User;
 import com.gmail.kurmazpavel.dto.CommentDTO;
+import com.gmail.kurmazpavel.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("commentDTOConverter")
 public class CommentDTOConverter implements DTOConverter<CommentDTO, Comment> {
-    private UserDTOConverter userDTOConverter = new UserDTOConverter();
+    @Autowired
+    @Qualifier("userDTOConverter")
+    private DTOConverter<UserDTO, User> userDTOConverter;
 
     @Override
     public CommentDTO toDTO(Comment entity) {

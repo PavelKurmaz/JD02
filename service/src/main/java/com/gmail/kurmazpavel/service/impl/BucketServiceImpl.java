@@ -1,27 +1,32 @@
 package com.gmail.kurmazpavel.service.impl;
 
-import com.gmail.kurmazpavel.DTOConverter.BucketDTOConverter;
 import com.gmail.kurmazpavel.service.BucketService;
 import com.gmail.kurmazpavel.Bucket;
 import com.gmail.kurmazpavel.dto.BucketDTO;
-import com.gmail.kurmazpavel.converter.BucketConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.dao.BucketDao;
-import com.gmail.kurmazpavel.dao.impl.BucketDAOImpl;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BucketServiceImpl implements BucketService {
-
     private static final Logger logger = LogManager.getLogger(BucketServiceImpl.class);
-    private BucketDao dao = new BucketDAOImpl();
-    private BucketConverter converter = new BucketConverter();
-    private BucketDTOConverter dtoConverter = new BucketDTOConverter();
+    @Autowired
+    private BucketDao dao;
+    @Autowired
+    @Qualifier("bucketConverter")
+    private Converter<BucketDTO, Bucket> converter;
+    @Autowired
+    @Qualifier("bucketDTOConverter")
+    private DTOConverter<BucketDTO, Bucket> dtoConverter;
 
     @Override
     public BucketDTO read(Long entityID) {

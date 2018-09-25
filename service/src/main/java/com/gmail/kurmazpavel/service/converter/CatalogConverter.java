@@ -1,14 +1,20 @@
-package com.gmail.kurmazpavel.converter;
+package com.gmail.kurmazpavel.service.converter;
 
 import com.gmail.kurmazpavel.Catalog;
+import com.gmail.kurmazpavel.Order;
 import com.gmail.kurmazpavel.dto.CatalogDTO;
+import com.gmail.kurmazpavel.dto.OrderDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("catalogConverter")
 public class CatalogConverter implements Converter<CatalogDTO, Catalog> {
-    private OrderConverter orderConverter = new OrderConverter();
+    @Autowired
+    @Qualifier("orderConverter")
+    private Converter<OrderDTO, Order> orderConverter;
 
     @Override
     public Catalog toEntity(CatalogDTO dto) {

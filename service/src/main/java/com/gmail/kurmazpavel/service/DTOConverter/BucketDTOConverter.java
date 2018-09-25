@@ -1,14 +1,20 @@
-package com.gmail.kurmazpavel.DTOConverter;
+package com.gmail.kurmazpavel.service.DTOConverter;
 
 import com.gmail.kurmazpavel.Bucket;
+import com.gmail.kurmazpavel.Order;
 import com.gmail.kurmazpavel.dto.BucketDTO;
+import com.gmail.kurmazpavel.dto.OrderDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+@Component("bucketDTOConverter")
 public class BucketDTOConverter implements DTOConverter<BucketDTO, Bucket> {
-    private OrderDTOConverter orderDTOConverter = new OrderDTOConverter();
+    @Autowired
+    @Qualifier("orderDTOConverter")
+    private DTOConverter<OrderDTO, Order> orderDTOConverter;
 
     @Override
     public BucketDTO toDTO(Bucket entity) {

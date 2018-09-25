@@ -1,30 +1,35 @@
 package com.gmail.kurmazpavel.service.impl;
 
 import com.gmail.kurmazpavel.service.AuditService;
-import com.gmail.kurmazpavel.DTOConverter.AuditDTOConverter;
 import com.gmail.kurmazpavel.Audit;
-import com.gmail.kurmazpavel.User;
 import com.gmail.kurmazpavel.dto.AuditDTO;
-import com.gmail.kurmazpavel.converter.AuditConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.dao.AuditDao;
 import com.gmail.kurmazpavel.dao.UserDao;
-import com.gmail.kurmazpavel.dao.impl.AuditDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.UserDAOImpl;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class AuditServiceImpl implements AuditService {
     private static final Logger logger = LogManager.getLogger(AuditServiceImpl.class);
-    private AuditDao dao = new AuditDAOImpl();
-    private UserDao userDao = new UserDAOImpl();
-    private AuditConverter converter = new AuditConverter();
-    private AuditDTOConverter dtoconverter = new AuditDTOConverter();
+    @Autowired
+    private AuditDao dao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    @Qualifier("auditConverter")
+    private Converter<AuditDTO, Audit> converter;
+    @Autowired
+    @Qualifier("auditDTOConverter")
+    private DTOConverter<AuditDTO, Audit> dtoconverter;
 
     public AuditDTO create(AuditDTO auditDTO){
         Session session = dao.getCurrentSession();

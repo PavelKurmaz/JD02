@@ -1,14 +1,20 @@
-package com.gmail.kurmazpavel.converter;
+package com.gmail.kurmazpavel.service.converter;
 
 import com.gmail.kurmazpavel.Comment;
+import com.gmail.kurmazpavel.User;
 import com.gmail.kurmazpavel.dto.CommentDTO;
+import com.gmail.kurmazpavel.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("commentConverter")
 public class CommentConverter implements Converter<CommentDTO, Comment>{
-    private UserConverter userConverter = new UserConverter();
+    @Autowired
+    @Qualifier("userConverter")
+    private Converter<UserDTO, User> userConverter;
 
     @Override
     public Comment toEntity(CommentDTO dto) {

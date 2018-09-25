@@ -2,7 +2,7 @@ package com.gmail.kurmazpavel.service.impl;
 
 import com.gmail.kurmazpavel.Bucket;
 import com.gmail.kurmazpavel.Catalog;
-import com.gmail.kurmazpavel.DTOConverter.OrderDTOConverter;
+import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.Order;
 import com.gmail.kurmazpavel.User;
 import com.gmail.kurmazpavel.dao.BucketDao;
@@ -11,29 +11,35 @@ import com.gmail.kurmazpavel.dao.OrderDao;
 import com.gmail.kurmazpavel.dao.UserDao;
 import com.gmail.kurmazpavel.service.OrderService;
 import com.gmail.kurmazpavel.dto.OrderDTO;
-import com.gmail.kurmazpavel.converter.OrderConverter;
-import com.gmail.kurmazpavel.dao.impl.BucketDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.CatalogDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.OrderDAOImpl;
-import com.gmail.kurmazpavel.dao.impl.UserDAOImpl;
+import com.gmail.kurmazpavel.service.converter.Converter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
-    private OrderDao dao = new OrderDAOImpl();
-    private CatalogDao itemDao = new CatalogDAOImpl();
-    private UserDao userDao = new UserDAOImpl();
-    private BucketDao bucketDao = new BucketDAOImpl();
-    private OrderConverter converter = new OrderConverter();
-    private OrderDTOConverter dtoConverter = new OrderDTOConverter();
+    @Autowired
+    private OrderDao dao;
+    @Autowired
+    private CatalogDao itemDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private BucketDao bucketDao;
+    @Autowired
+    @Qualifier("orderConverter")
+    private Converter<OrderDTO, Order> converter;
+    @Autowired
+    @Qualifier("orderDTOConverter")
+    private DTOConverter<OrderDTO, Order> dtoConverter;
 
     @Override
     public OrderDTO read(Long entityID) {

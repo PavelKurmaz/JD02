@@ -1,12 +1,12 @@
-package com.gmail.kurmazpavel.DTOConverter;
+package com.gmail.kurmazpavel.service.DTOConverter;
 
 import com.gmail.kurmazpavel.Permission;
 import com.gmail.kurmazpavel.dto.PermissionDTO;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+@Component("permissionDTOConverter")
 public class PermissionDTOConverter implements DTOConverter<PermissionDTO, Permission> {
 
     @Override
