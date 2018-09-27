@@ -1,26 +1,21 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
+<%@ include file="/resources/include/register.htm" %>
 <body>
-<%@ include file="include/adminka.htm" %>
-
-<form class="form-horizontal" method="post" action="do?command=createrole">
-    <fieldset>
-        <div class="form-group" align="center">
-            <div class="heading">
-                <h3 class="title" align="center">Create Role</h3>
+<div class="container">
+    <form:form class="form-horizontal" method="post" action="/role/create" modelAttribute="role">
+        <fieldset>
+            <div class="form-group" align="center">
+                <form:label path="role">Rolename</form:label>
+                <form:input path="role" class="form-control" placeholder="Role"/>
             </div>
-            <div class=col-lg-4>
-                <input id="name" class="form-control input-md" name="name"
-                       value="Enter Role name"/>
-            </div>
-
             <div class="col-lg-4">
                 <p></p>
-                <button id="create" name="create" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Create</button>
             </div>
-        </div>
-    </fieldset>
-</form>
+        </fieldset>
+    </form:form>
+</div>
 </body>
 </html>

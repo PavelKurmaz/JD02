@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
 <body>
-<%@ include file="include/adminka.htm" %>
+<%@ include file="/resources/include/adminka.htm" %>
     <div class="container">
         <div class="col-md-6 col-lg-6 col-md-offset-2 col-lg-offset-2 toppad" >
           <div class="panel panel-info">
@@ -28,7 +28,7 @@
               </table>
             </div>
           </div>
-            <form class="form-horizontal" method="post" action="do?command=profile">
+            <form class="form-horizontal" method="post" action="/index">
             <fieldset>
                 <div class="form-group">
                 <label class="col-md-2 control-label" for="logout">Log Out</label>

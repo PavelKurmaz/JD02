@@ -1,5 +1,7 @@
 package com.gmail.kurmazpavel.service.impl;
 
+import com.gmail.kurmazpavel.Address;
+import com.gmail.kurmazpavel.dto.AddressDTO;
 import com.gmail.kurmazpavel.service.DTOConverter.DTOConverter;
 import com.gmail.kurmazpavel.service.UserService;
 import com.gmail.kurmazpavel.Role;
@@ -60,10 +62,12 @@ public class UserServiceImpl implements UserService {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive())
                 session.beginTransaction();
+            userDTO.setAddress(new AddressDTO());
             Query query = session.createQuery("from Role as r where role.role = :role");
             query.setParameter("role", "User");
             Role role = (Role) query.getSingleResult();
             User user = userConverter.toEntity(userDTO);
+            user.setDisabled(false);
             role.getUsers().add(user);
             rolesDao.update(role);
             userDTO = userDtoConverter.toDTO(user);

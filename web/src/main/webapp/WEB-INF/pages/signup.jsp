@@ -1,60 +1,41 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
 <body>
+<%@ include file="/resources/include/registerUser.htm" %>
 <div class="container">
-    <%@ include file="include/menu.htm" %>
-    <form class="form-horizontal" method="post" action="do?command=signup">
-    <fieldset>
-
-    <!-- Form Name -->
-    <legend>Registration</legend>
-
-    <!-- Text input-->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="login">Login</label>
-      <div class="col-md-4">
-      <input id="login" name="login" type="text" placeholder="enter login here" class="form-control input-md">
-      <span class="help-block">${help_login}</span>
-      </div>
-    </div>
-
-    <!-- Password input-->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="password">Password</label>
-      <div class="col-md-4">
-        <input id="password" name="password" type="password" placeholder="enter password here" class="form-control input-md">
-        <span class="help-block">${help_password}</span>
-      </div>
-    </div>
-
-    <!-- Text input-->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="E-mail">E-mail</label>
-      <div class="col-md-4">
-      <input id="E-mail" name="E-mail" type="text" placeholder="enter e-mail here" class="form-control input-md">
-      </div>
-    </div>
-
-    <!-- Text input-->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="phone">Phone Number</label>
-      <div class="col-md-4">
-      <input id="phone" name="phone" type="text" placeholder="enter phone number here" class="form-control input-md">
-      <span class="help-block">+375.....</span>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="Submit"></label>
-      <div class="col-md-4">
-        <button id="Submit" name="Submit" class="btn btn-primary">Sign Up</button>
-      </div>
-    </div>
-
-    </fieldset>
-    </form>
+    <form:form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/user/create" modelAttribute="user">
+        <form:errors path="*" cssClass="errorBlock" element="div"/>
+        <fieldset>
+            <!-- Form Name -->
+            <legend>Registration</legend>
+            <!-- Text input-->
+            <div class="col-lg-4">
+                <form:label path="login">Login</form:label>
+                <form:input path="login" class="form-control" placeholder="Login"/>
+            </div>
+            <!-- Password input-->
+            <div class="col-lg-4">
+                <form:label path="password">Password</form:label>
+                <form:input path="password" class="form-control" placeholder="Password"/>
+            </div>
+            <div class="col-lg-4">
+                <form:label path="email">E-mail</form:label>
+                <form:input path="email" class="form-control" placeholder="somename@mail.ru"/>
+            </div>
+            <div class="col-lg-4">
+                <form:label path="phone">Phone number</form:label>
+                <form:input path="phone" class="form-control" placeholder="+375..."/>
+            </div>
+            <!-- Button -->
+            <div class="form-group">
+                <div class="col-lg-4">
+                    <p></p>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+            </div>
+        </fieldset>
+    </form:form>
 </div>
 </body>
 </html>

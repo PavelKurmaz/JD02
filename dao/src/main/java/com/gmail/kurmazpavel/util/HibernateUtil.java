@@ -20,7 +20,7 @@ public class HibernateUtil {
     private final Logger logger = LogManager.getLogger(HibernateUtil.class);
     private StandardServiceRegistry registry;
     private SessionFactory sessionFactory;
-    private DatabaseProperties databaseProperties;
+    private final DatabaseProperties databaseProperties;
 
     @Autowired
     public HibernateUtil(DatabaseProperties databaseProperties) {

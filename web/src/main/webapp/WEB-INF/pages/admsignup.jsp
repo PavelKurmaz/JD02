@@ -1,57 +1,36 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
+<%@ include file="/resources/include/register.htm" %>
 <body>
 <div class="container">
-    <%@ include file="include/menu.htm" %>
-    <form class="form-horizontal" method="post" action="do?command=admsignup">
+
+    <form:form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/create" modelAttribute="admin">
+        <form:errors path="*" cssClass="errorBlock" element="div"/>
         <fieldset>
 
-            <!-- Form Name -->
             <legend>Admin Registration</legend>
 
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="login">Login</label>
-                <div class="col-md-4">
-                    <input id="login" name="login" type="text" placeholder="enter login here"
-                           class="form-control input-md">
-                    <span class="help-block">${help_login}</span>
-                </div>
+            <div class="col-lg-4">
+                <form:label path="login">Login</form:label>
+                <form:input path="login" class="form-control" placeholder="Login"/>
+            </div>
+            <div class="col-lg-4">
+                <form:label path="password">Password</form:label>
+                <form:input path="password" class="form-control" placeholder="Password"/>
+            </div>
+            <div class="col-lg-4">
+                <form:label path="email">E-mail</form:label>
+                <form:input path="email" class="form-control" placeholder="E-mail"/>
+            </div>
+            <div class="col-lg-4">
+                <form:label path="phone">Phone</form:label>
+                <form:input path="phone" class="form-control" placeholder="Phone"/>
             </div>
 
-            <!-- Password input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="password">Password</label>
-                <div class="col-md-4">
-                    <input id="password" name="password" type="password" placeholder="enter password here"
-                           class="form-control input-md">
-                    <span class="help-block">${help_password}</span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="login">E-mail</label>
-                <div class="col-md-4">
-                    <input id="email" name="email" type="text" placeholder="enter email here"
-                           class="form-control input-md">
-                    <span class="help-block">${help_email}</span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="login">Phone</label>
-                <div class="col-md-4">
-                    <input id="phone" name="phone" type="text" placeholder="enter phone here"
-                           class="form-control input-md">
-                    <span class="help-block">${help_phone}</span>
-                </div>
-            </div>
-
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="select">Select Role Type</label>
-                <div class="col-md-4">
+            <div class="col-lg-4">
+                <label class="col-lg-4 control-label" for="select">Select Role Type</label>
+                <div class="col-lg-4">
                     <select id="select" name="select" class="form-control">
                         <c:forEach items="${roles}" var="item">
                             <option value=${item.role}>${item.role}</option>
@@ -62,13 +41,12 @@
 
             <!-- Button -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="Submit"></label>
-                <div class="col-md-4">
-                    <button id="Submit" name="Submit" class="btn btn-primary">Sign Up</button>
+                <div class="col-lg-4">
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
                 </div>
             </div>
         </fieldset>
-    </form>
+    </form:form>
 </div>
 </body>
 </html>

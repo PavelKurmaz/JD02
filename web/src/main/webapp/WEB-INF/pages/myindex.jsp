@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
 <body>
 <h1 align = "center" color = "blue">Welcome to AlcoMarket!<span class="badge badge-secondary">Under Construction</span></h1>
 <div class="container">
-    <img src="img/1.jpg" class="img-fluid" alt="Responsive image">
+    <img src="/resources/img/1.jpg" class="img-fluid" alt="Responsive image">
     <p></p>
-    <form class="form-horizontal"  method="post" action="do?command=index">
+    <form class="form-horizontal"  method="get" action=/index>
     <fieldset>
     <!-- Button -->
     <div class="form-group">

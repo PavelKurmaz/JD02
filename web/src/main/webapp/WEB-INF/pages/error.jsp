@@ -1,19 +1,20 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <title>Error Page</title>
+</head>
 <body>
+<h2>Application Error</h2>
 
-<hr>
-ERROR:<br> ${errmessage}
-<hr>
-STACK:<br> ${stack}
-<hr>
-<form class="form-horizontal" method="post" action="do?command=index">
-    <label class="col-lg-2 control-label" for="return">Oops!</label>
-    <div class="col-lg-2">
-        <button id="return" name="return" class="btn btn-secondary">Return</button>
-    </div>
-</form>
+<h3>Debug Info:</h3>
+Requested URL=${url}<br>
+<strong>Exception Stacktrace</strong>
+<c:forEach items="${exception.stackTrace}" var="item">
+    ${item}
+</c:forEach>
+
 </body>
 </html>
 

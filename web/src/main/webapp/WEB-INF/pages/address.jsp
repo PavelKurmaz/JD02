@@ -1,75 +1,53 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
 <body>
 <div class="container">
-    <%@ include file="include/menu.htm" %>
-    <form class="form-horizontal" method="post" action="do?command=address">
+    <%@ include file="/resources/include/registerUser.htm" %>
+    <form:form class="form-horizontal" method="post" action="/user/address/${address.id}" modelAttribute="address">
         <fieldset>
 
             <!-- Form Name -->
             <legend>Enter Address</legend>
 
-            ${user_id}
-
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="country">Country</label>
-                <div class="col-md-4">
-                    <input id="country" name="country" type="text" placeholder="" class="form-control input-md">
-                </div>
+            <div class="col-lg-4">
+                <form:label path="country">Country</form:label>
+                <form:input path="country" class="form-control" placeholder="Country"/>
             </div>
 
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="city">City</label>
-                <div class="col-md-4">
-                    <input id="city" name="city" type="text" placeholder="" class="form-control input-md">
-                </div>
+            <div class="col-lg-4">
+                <form:label path="city">City</form:label>
+                <form:input path="city" class="form-control" placeholder="City"/>
             </div>
 
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="street">Street</label>
-                <div class="col-md-4">
-                    <input id="street" name="street" type="text" placeholder="" class="form-control input-md">
-                </div>
+            <div class="col-lg-4">
+                <form:label path="street">Street</form:label>
+                <form:input path="street" class="form-control" placeholder="Street"/>
             </div>
 
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="building">Building</label>
-                <div class="col-md-4">
-                    <input id="building" name="building" type="text" placeholder="" class="form-control input-md">
-                </div>
+            <div class="col-lg-4">
+                <form:label path="building">Building</form:label>
+                <form:input path="building" class="form-control" placeholder="Building"/>
             </div>
 
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="apt">Apartment</label>
-                <div class="col-md-4">
-                    <input id="apt" name="apt" type="text" placeholder="" class="form-control input-md">
-
-                </div>
+            <div class="col-lg-4">
+                <form:label path="apt">Apartment</form:label>
+                <form:input path="apt" class="form-control" placeholder="Apartment"/>
             </div>
 
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="zip">ZIP</label>
-                <div class="col-md-4">
-                    <input id="zip" name="zip" type="text" placeholder="" class="form-control input-md">
-                </div>
+            <div class="col-lg-4">
+                <form:label path="zip">ZIP code</form:label>
+                <form:input path="zip" class="form-control" placeholder="ZIP"/>
             </div>
-
             <!-- Button -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="singlebutton">Submit</label>
-                <div class="col-md-4">
-                    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Press</button>
+                <div class="col-lg-4">
+                    <p></p>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
                 </div>
             </div>
         </fieldset>
-    </form>
+    </form:form>
 </div>
 </body>
 </html>
