@@ -10,6 +10,7 @@ public class DatabaseProperties {
 
     @Autowired
     private Environment environment;
+
     private String databaseDriverName;
     private String databaseUrl;
     private String databaseUsername;
@@ -18,6 +19,12 @@ public class DatabaseProperties {
     private String hibernateHbm2dll;
     private String hibernateCacheSecondLevel;
     private String hibernateCacheRegionFactoryClass;
+    private String dataSourceClass;
+    private Integer poolMaxSize;
+    private String cachePreparedStatements;
+    private String cachePreparedStatementsSize;
+    private String cachePreparedStatementsSqlLimit;
+    private String useServerPreparedStatements;
 
     @PostConstruct
     public void initialize() {
@@ -29,6 +36,12 @@ public class DatabaseProperties {
         this.hibernateHbm2dll = environment.getProperty("hibernate.hbm2ddl.auto");
         this.hibernateCacheSecondLevel = environment.getProperty("hibernate.cache.use_second_level_cache");
         this.hibernateCacheRegionFactoryClass = environment.getProperty("hibernate.cache.region.factory_class");
+        this.dataSourceClass = environment.getProperty("pool.data.source.class");
+        this.poolMaxSize = Integer.parseInt(environment.getProperty("pool.max.size"));
+        this.cachePreparedStatements = environment.getProperty("pool.cache.prepared.statements");
+        this.cachePreparedStatementsSize = environment.getProperty("pool.cache.prepared.statements.size");
+        this.cachePreparedStatementsSqlLimit = environment.getProperty("pool.cache.prepared.statements.sql.limit");
+        this.useServerPreparedStatements = environment.getProperty("pool.use.server.prepared.statements");
     }
 
 
@@ -62,5 +75,29 @@ public class DatabaseProperties {
 
     public String getHibernateCacheRegionFactoryClass() {
         return hibernateCacheRegionFactoryClass;
+    }
+
+    public String getDataSourceclass() {
+        return dataSourceClass;
+    }
+
+    public Integer getPoolMaxSize() {
+        return poolMaxSize;
+    }
+
+    public String getCachePreparedStatements() {
+        return cachePreparedStatements;
+    }
+
+    public String getCachePreparedStatementsSize() {
+        return cachePreparedStatementsSize;
+    }
+
+    public String getCachePreparedStatementsSqlLimit() {
+        return cachePreparedStatementsSqlLimit;
+    }
+
+    public String getUseServerPreparedStatements() {
+        return useServerPreparedStatements;
     }
 }

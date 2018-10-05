@@ -1,5 +1,6 @@
 package com.gmail.kurmazpavel.controller;
 
+import com.gmail.kurmazpavel.config.PageProperties;
 import com.gmail.kurmazpavel.dto.RoleDTO;
 import com.gmail.kurmazpavel.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private PageProperties pageProperties;
 
     @GetMapping(value = "/create")
     public String create(ModelMap modelMap) {
         modelMap.addAttribute("role", new RoleDTO());
-        return "createrole";
+        return pageProperties.getCreateRolePagePath();
     }
 
     @PostMapping(value = "/create")
@@ -28,6 +31,6 @@ public class RoleController {
                          BindingResult result,
                          ModelMap modelMap) {
         roleService.create(role);
-        return "admlogin";
+        return pageProperties.getAdminProfilePath();
     }
 }

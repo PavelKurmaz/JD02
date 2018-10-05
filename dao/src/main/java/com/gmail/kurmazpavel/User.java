@@ -1,6 +1,7 @@
 package com.gmail.kurmazpavel;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cache;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name="users")
 @Cacheable
-@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,10 @@ public class User implements Serializable{
     private boolean disabled;
     @Column(name = "ROLE_ID")
     private Long roleId;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<News> news = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
@@ -52,6 +57,14 @@ public class User implements Serializable{
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public List<News> getNews() {
+        return news;
+    }
+
+    public void setNews(List<News> news) {
+        this.news = news;
     }
 
     public Long getRoleId() {
@@ -141,6 +154,7 @@ public class User implements Serializable{
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
 
     @Override
     public boolean equals(Object o) {

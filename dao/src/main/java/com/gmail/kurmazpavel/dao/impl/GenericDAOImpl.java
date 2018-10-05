@@ -1,8 +1,8 @@
 package com.gmail.kurmazpavel.dao.impl;
 
 import com.gmail.kurmazpavel.dao.GenericDAO;
-import com.gmail.kurmazpavel.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class GenericDAOImpl<T extends  Serializable> implements GenericDAO<T> {
     private Class<T> aClass;
     @Autowired
-    private HibernateUtil hibernateUtil;
+    private SessionFactory sessionFactory;
 
     GenericDAOImpl(Class<T> aClass){
         this.aClass = aClass;
@@ -48,6 +48,6 @@ public abstract class GenericDAOImpl<T extends  Serializable> implements Generic
 
     @Override
     public Session getCurrentSession() {
-        return hibernateUtil.getSessionFactory().getCurrentSession();
+        return sessionFactory.getCurrentSession();
     }
 }

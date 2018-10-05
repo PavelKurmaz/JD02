@@ -7,7 +7,6 @@ public class RoleDTO {
     private Long id;
     private String role;
     private List<UserDTO> users = new ArrayList<>();
-    private List<AdminDTO> admins = new ArrayList<>();
     private List<PermissionDTO> permissions = new ArrayList<>();
 
     @Override
@@ -40,14 +39,6 @@ public class RoleDTO {
 
     public void setUsers(List<UserDTO> users) {
         this.users = users;
-    }
-
-    public List<AdminDTO> getAdmins() {
-        return admins;
-    }
-
-    public void setAdmins(List<AdminDTO> admins) {
-        this.admins = admins;
     }
 
     public List<PermissionDTO> getPermissions() {

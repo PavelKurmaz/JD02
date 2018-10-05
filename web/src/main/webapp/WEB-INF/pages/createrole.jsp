@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <%@ include file="/resources/include/head.htm" %>
-<%@ include file="/resources/include/register.htm" %>
+<%@ include file="/resources/include/adminka.htm" %>
 <body>
 <div class="container">
     <form:form class="form-horizontal" method="post" action="/role/create" modelAttribute="role">

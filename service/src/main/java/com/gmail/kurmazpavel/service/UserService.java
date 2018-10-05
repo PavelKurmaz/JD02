@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface UserService {
     UserDTO read(Long entityID);
-    UserDTO create(UserDTO userDTO);
+    UserDTO create(UserDTO userDTO, String role);
     UserDTO update(UserDTO userDTO);
     UserDTO delete (UserDTO userDTO);
     List<UserDTO> getAll();

@@ -4,7 +4,7 @@
 <body>
 <%@ include file="/resources/include/registerUser.htm" %>
 <div class="container">
-    <form class="form-horizontal" method="post" action="/user/login">
+    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/user/login">
         <fieldset>
 
             <!-- Form Name -->
@@ -29,7 +29,7 @@
                     <span class="help-block">${help_password}</span>
                 </div>
             </div>
-
+            <p>${error}</p>
             <!-- Button -->
             <div class="form-group">
                 <div class="col-lg-4">

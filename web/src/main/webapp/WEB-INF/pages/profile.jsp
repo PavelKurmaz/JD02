@@ -56,7 +56,7 @@
                 </table>
             </div>
         </div>
-        <form class="form-horizontal" method="get" action="/index">
+        <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/user/login">
             <fieldset>
                 <div class="form-group">
                     <div class="col-lg-4">

@@ -20,9 +20,6 @@ public class RoleDTOConverter implements DTOConverter<RoleDTO, Role> {
     @Qualifier("userDTOConverter")
     private DTOConverter<UserDTO, User> userDTOConverter;
     @Autowired
-    @Qualifier("adminDTOConverter")
-    private DTOConverter<AdminDTO, Admin> adminDTOConverter;
-    @Autowired
     @Qualifier("permissionDTOConverter")
     private DTOConverter<PermissionDTO, Permission> permissionDTOConverter;
 
@@ -31,7 +28,6 @@ public class RoleDTOConverter implements DTOConverter<RoleDTO, Role> {
         RoleDTO role = new RoleDTO();
         role.setId(entity.getId());
         role.setRole(entity.getRole());
-        role.setAdmins(adminDTOConverter.toDTOList(entity.getAdmins()));
         role.setUsers(userDTOConverter.toDTOList(entity.getUsers()));
         role.setPermissions(permissionDTOConverter.toDTOList(entity.getPermissions()));
         return role;

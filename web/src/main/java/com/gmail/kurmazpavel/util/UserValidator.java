@@ -16,13 +16,13 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        ValidationUtils.rejectIfEmpty(errors, "login", "Wrong login");
-        ValidationUtils.rejectIfEmpty(errors, "password", "Wrong password");
+        ValidationUtils.rejectIfEmpty(errors, "login", "user.login.empty");
+        ValidationUtils.rejectIfEmpty(errors, "password", "user.password.empty");
         UserDTO user = (UserDTO) o;
         Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
                 Pattern.CASE_INSENSITIVE);
         if (!(pattern.matcher(user.getEmail()).matches())){
-            errors.rejectValue("email", "invalid email");
+            errors.rejectValue("email", "user.email.invalid");
         }
     }
 }

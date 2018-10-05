@@ -13,8 +13,10 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class AddressServiceImpl implements AddressService {
     private static final Logger logger = LogManager.getLogger(AddressServiceImpl.class);
     @Autowired
@@ -28,40 +30,14 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDTO read(Long entityID) {
-        Session session = dao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            AddressDTO addressDTO = dtoConverter.toDTO(dao.read(entityID));
-            transaction.commit();
-            return addressDTO;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to read address!", e);
-        }
-        return null;
+        return dtoConverter.toDTO(dao.read(entityID));
     }
 
     @Override
     public AddressDTO update(AddressDTO addressDTO) {
-        Session session = dao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Address address = converter.toEntity(addressDTO);
-            dao.update(address);
-            transaction.commit();
-            return dtoConverter.toDTO(address);
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to update address!", e);
-        }
-        return addressDTO;
+        Address address = converter.toEntity(addressDTO);
+        dao.update(address);
+        return dtoConverter.toDTO(address);
     }
+
 }

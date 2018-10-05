@@ -1,0 +1,390 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="Katrin (generated)" id="1538725647154-1">
+        <createTable tableName="address">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="APT" type="VARCHAR(255)"/>
+            <column name="BUILDING" type="VARCHAR(255)"/>
+            <column name="CITY" type="VARCHAR(255)"/>
+            <column name="COUNTRY" type="VARCHAR(255)"/>
+            <column name="STREET" type="VARCHAR(255)"/>
+            <column name="ZIP" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-2">
+        <createTable tableName="admins">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOGIN" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHONE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-3">
+        <createTable tableName="audit">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="CREATED" type="datetime"/>
+            <column name="EVENT_TYPE" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-4">
+        <createTable tableName="bucket">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="datetime"/>
+            <column name="Status" type="VARCHAR(255)"/>
+            <column name="User_Id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-5">
+        <createTable tableName="catalog">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="AMOUNTLEFT" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRICE" type="DECIMAL(19, 2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-6">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="content" type="VARCHAR(255)"/>
+            <column name="created" type="datetime"/>
+            <column name="news_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-7">
+        <createTable tableName="discount">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="last" type="datetime"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="percent" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-8">
+        <createTable tableName="item_discount">
+            <column name="Discount_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Item_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-9">
+        <createTable tableName="news">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="content" type="VARCHAR(255)"/>
+            <column name="created" type="datetime"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-10">
+        <createTable tableName="orders">
+            <column name="Item_Id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="User_Id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="BUCKET_ID" type="BIGINT"/>
+            <column name="CREATED" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUANTITY" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-11">
+        <createTable tableName="permission">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-12">
+        <createTable tableName="role_permission">
+            <column name="permission_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-13">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-14">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="DISABLED" type="BIT(1)"/>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOGIN" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHONE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE_ID" type="BIGINT"/>
+            <column name="discount_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-15">
+        <insert tableName="address">
+            <column name="ID" valueNumeric="1"/>
+            <column name="APT" value="1"/>
+            <column name="BUILDING" value="52"/>
+            <column name="CITY" value="Kolodischi"/>
+            <column name="COUNTRY" value="Belarus"/>
+            <column name="STREET" value="Mikhailov kut"/>
+            <column name="ZIP" value="220053"/>
+        </insert>
+        <insert tableName="address">
+            <column name="ID" valueNumeric="2"/>
+            <column name="APT" value="2"/>
+            <column name="BUILDING" value="52"/>
+            <column name="CITY" value="Kolodischi"/>
+            <column name="COUNTRY" value="Belarus"/>
+            <column name="STREET" value="Mikhailov kut"/>
+            <column name="ZIP" value="220053"/>
+        </insert>
+        <insert tableName="address">
+            <column name="ID" valueNumeric="3"/>
+            <column name="APT" value="3"/>
+            <column name="BUILDING" value="52"/>
+            <column name="CITY" value="Kolodischi"/>
+            <column name="COUNTRY" value="Belarus"/>
+            <column name="STREET" value="Mikhailov kut"/>
+            <column name="ZIP" value="220053"/>
+        </insert>
+        <insert tableName="address">
+            <column name="ID" valueNumeric="4"/>
+            <column name="APT" value="1"/>
+            <column name="BUILDING" value="52"/>
+            <column name="CITY" value="Kolodischi"/>
+            <column name="COUNTRY" value="Belarus"/>
+            <column name="STREET" value="Mikhailov kut"/>
+            <column name="ZIP" value="220053"/>
+        </insert>
+        <insert tableName="address">
+            <column name="ID" valueNumeric="5"/>
+            <column name="APT" value="2"/>
+            <column name="BUILDING" value="52"/>
+            <column name="CITY" value="Kolodischi"/>
+            <column name="COUNTRY" value="Belarus"/>
+            <column name="STREET" value="Mikhailov kut"/>
+            <column name="ZIP" value="220053"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-16">
+        <insert tableName="permission">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="View Users"/>
+        </insert>
+        <insert tableName="permission">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Create Orders"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-17">
+        <insert tableName="role_permission">
+            <column name="permission_id" valueNumeric="1"/>
+            <column name="role_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="role_permission">
+            <column name="permission_id" valueNumeric="2"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-18">
+        <insert tableName="roles">
+            <column name="ID" valueNumeric="1"/>
+            <column name="Role" value="Security"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="ID" valueNumeric="2"/>
+            <column name="Role" value="User"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-19">
+        <insert tableName="users">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DISABLED" valueBoolean="false"/>
+            <column name="EMAIL" value="test1@test.by"/>
+            <column name="LOGIN" value="Admin1"/>
+            <column name="PASSWORD" value="$2a$10$/qbkzR1WP89RWwchnv.iL.14ntQ.EeJK/pUCv4Yx040iN52qI1e.S"/>
+            <column name="PHONE" value="+375255555555"/>
+            <column name="ROLE_ID" valueNumeric="1"/>
+            <column name="discount_id"/>
+        </insert>
+        <insert tableName="users">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DISABLED" valueBoolean="false"/>
+            <column name="EMAIL" value="pavel-110211@mail.ru"/>
+            <column name="LOGIN" value="Pavleg"/>
+            <column name="PASSWORD" value="$2a$10$tzJ9qodd/eEJphPhUp1n9.xIiBWwZmtGOG7Moeid9maE1dPbv/CGi"/>
+            <column name="PHONE" value="+375443333333"/>
+            <column name="ROLE_ID" valueNumeric="2"/>
+            <column name="discount_id"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-20">
+        <createIndex indexName="FK1097atw1pylexvfs71xysxjxo" tableName="item_discount">
+            <column name="Discount_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-21">
+        <createIndex indexName="FK24gtgulum9as6xugiq1j0rlsw" tableName="item_discount">
+            <column name="Item_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-22">
+        <createIndex indexName="FK4ep0yw062d64pcb53mq0i9of5" tableName="users">
+            <column name="discount_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-23">
+        <createIndex indexName="FK8v3d3r6ca9fcvmeoabtfpu5kg" tableName="admins">
+            <column name="ROLE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-24">
+        <createIndex indexName="FKf8yllw1ecvwqy3ehyxawqa1qp" tableName="role_permission">
+            <column name="permission_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-25">
+        <createIndex indexName="FKmoa6oneousdfi1vnrvrl38cvt" tableName="orders">
+            <column name="User_Id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-26">
+        <createIndex indexName="FKmu4o8i2pttvmn2qtt0ullo4sv" tableName="users">
+            <column name="ROLE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-27">
+        <createIndex indexName="FKn2jr87wh10l0fmmox82athugs" tableName="audit">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-28">
+        <createIndex indexName="FKnxm8x9npdhuwxv2x2wxsghm17" tableName="comment">
+            <column name="news_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-29">
+        <createIndex indexName="FKqm52p1v3o13hy268he0wcngr5" tableName="comment">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-30">
+        <createIndex indexName="FKsoge19sr2ed17aa0ty0r3xngp" tableName="news">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-31">
+        <createIndex indexName="FKtfgq8q9blrp0pt1pvggyli3v9" tableName="role_permission">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-32">
+        <createIndex indexName="FKtrmg5mde5pun26qid6d12rv3k" tableName="orders">
+            <column name="BUCKET_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-33">
+        <addForeignKeyConstraint baseColumnNames="Discount_id" baseTableName="item_discount" constraintName="FK1097atw1pylexvfs71xysxjxo" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="discount" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-34">
+        <addForeignKeyConstraint baseColumnNames="Item_id" baseTableName="item_discount" constraintName="FK24gtgulum9as6xugiq1j0rlsw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="catalog" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-35">
+        <addForeignKeyConstraint baseColumnNames="discount_id" baseTableName="users" constraintName="FK4ep0yw062d64pcb53mq0i9of5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="discount" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-36">
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="admins" constraintName="FK8v3d3r6ca9fcvmeoabtfpu5kg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-37">
+        <addForeignKeyConstraint baseColumnNames="Item_Id" baseTableName="orders" constraintName="FK9fs13tr210tao3e2jlxb5gscw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="catalog" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-38">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="role_permission" constraintName="FKf8yllw1ecvwqy3ehyxawqa1qp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="permission" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-39">
+        <addForeignKeyConstraint baseColumnNames="User_Id" baseTableName="orders" constraintName="FKmoa6oneousdfi1vnrvrl38cvt" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-40">
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="users" constraintName="FKmu4o8i2pttvmn2qtt0ullo4sv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-41">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="audit" constraintName="FKn2jr87wh10l0fmmox82athugs" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-42">
+        <addForeignKeyConstraint baseColumnNames="news_id" baseTableName="comment" constraintName="FKnxm8x9npdhuwxv2x2wxsghm17" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="news" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-43">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="comment" constraintName="FKqm52p1v3o13hy268he0wcngr5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-44">
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="users" constraintName="FKr822dcf3gyok7wi2ae40poxw4" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="address" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-45">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="news" constraintName="FKsoge19sr2ed17aa0ty0r3xngp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="admins" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-46">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_permission" constraintName="FKtfgq8q9blrp0pt1pvggyli3v9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="Katrin (generated)" id="1538725647154-47">
+        <addForeignKeyConstraint baseColumnNames="BUCKET_ID" baseTableName="orders" constraintName="FKtrmg5mde5pun26qid6d12rv3k" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="bucket" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -4,7 +4,7 @@
 <body>
 <div class="container">
     <%@ include file="/resources/include/registerUser.htm" %>
-    <form:form class="form-horizontal" method="post" action="/user/address/${address.id}" modelAttribute="address">
+    <form:form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/user/address/${address.id}" modelAttribute="address">
         <fieldset>
 
             <!-- Form Name -->

@@ -16,11 +16,14 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
+@Transactional
 public class PermissionServiceImpl implements PermissionService {
     private static final Logger logger = LogManager.getLogger(PermissionServiceImpl.class);
     @Autowired
@@ -39,190 +42,75 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public PermissionDTO read(Long entityId) {
-        Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            PermissionDTO permission = permissionDTOConverter.toDTO(permissionDao.read(entityId));
-            transaction.commit();
-            return permission;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to read permission type!", e);
-        }
-        return new PermissionDTO();
+        return permissionDTOConverter.toDTO(permissionDao.read(entityId));
     }
 
     @Override
     public PermissionDTO readByName(String name) {
         Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Query query = session.createQuery("from Permission as P where P.name =:name");
-            query.setParameter("name", name);
-            PermissionDTO permission = permissionDTOConverter.toDTO((Permission) query.getSingleResult());
-            transaction.commit();
-            return permission;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to read permission type!", e);
-        }
-        return new PermissionDTO();
+        Query query = session.createQuery("from Permission as P where P.name =:name");
+        query.setParameter("name", name);
+        return permissionDTOConverter.toDTO((Permission) query.getSingleResult());
+
     }
 
     @Override
     public PermissionDTO deleteRole(Long entityID, Long roleId) {
-        Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Permission permission = permissionDao.read(entityID);
-            Role role = roleDao.read(roleId);
-            permission.getRoles().remove(role);
-            permissionDao.update(permission);
-            PermissionDTO permissionDTO = permissionDTOConverter.toDTO(permission);
-            transaction.commit();
-            return permissionDTO;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to delete permission type!", e);
-        }
-        return new PermissionDTO();
+        Permission permission = permissionDao.read(entityID);
+        Role role = roleDao.read(roleId);
+        permission.getRoles().remove(role);
+        permissionDao.update(permission);
+        return permissionDTOConverter.toDTO(permission);
     }
 
     @Override
     public PermissionDTO addRole(Long entityId, Long roleId) {
-        Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Permission permission = permissionDao.read(entityId);
-            Role role = roleDao.read(roleId);
-            permission.getRoles().add(role);
-            permissionDao.update(permission);
-            PermissionDTO permissionDTO = permissionDTOConverter.toDTO(permission);
-            transaction.commit();
-            return permissionDTO;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to read permission type!", e);
-        }
-        return new PermissionDTO();
+        Permission permission = permissionDao.read(entityId);
+        Role role = roleDao.read(roleId);
+        permission.getRoles().add(role);
+        permissionDao.update(permission);
+        return permissionDTOConverter.toDTO(permission);
     }
 
     @Override
     public List<PermissionDTO> getAll() {
-        Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            List<PermissionDTO> list = permissionDTOConverter.toDTOList(permissionDao.getAll());
-            transaction.commit();
+        List<PermissionDTO> list = permissionDTOConverter.toDTOList(permissionDao.getAll());
+        if (list != null)
             return list;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to list permissions!", e);
-        }
-        return new ArrayList<>();
+        else
+            return new ArrayList<>();
     }
 
     @Override
     public List<RoleDTO> getRolesByName(String name) {
         Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Query query = session.createQuery("select P.roles from Permission as P where P.name =:name");
-            query.setParameter("name", name);
-            List<RoleDTO> roleList = roleDTOConverter.toDTOList(query.getResultList());
-            transaction.commit();
+        Query query = session.createQuery("select P.roles from Permission as P where P.name =:name");
+        query.setParameter("name", name);
+        List<RoleDTO> roleList = roleDTOConverter.toDTOList(query.getResultList());
+        if (roleList != null)
             return roleList;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to read roles by permission!", e);
-        }
-        return new ArrayList<>();
+        else
+            return new ArrayList<>();
     }
 
     @Override
     public PermissionDTO create(PermissionDTO permissionDTO) {
-        Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Permission permission = permissionConverter.toEntity(permissionDTO);
-            permissionDao.create(permission);
-            permissionDTO = permissionDTOConverter.toDTO(permission);
-            transaction.commit();
-            return permissionDTO;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to create permission type!", e);
-        }
-        return new PermissionDTO();
+        Permission permission = permissionConverter.toEntity(permissionDTO);
+        permissionDao.create(permission);
+        return permissionDTOConverter.toDTO(permission);
     }
 
     @Override
     public PermissionDTO update(PermissionDTO permissionDTO) {
-        Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Permission permission = permissionDao.read(permissionDTO.getId());
-            permissionDao.update(permission);
-            permissionDTO = permissionDTOConverter.toDTO(permission);
-            transaction.commit();
-            return permissionDTO;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to update permission type!", e);
-        }
-        return permissionDTO;
+        Permission permission = permissionDao.read(permissionDTO.getId());
+        permissionDao.update(permission);
+        return permissionDTOConverter.toDTO(permission);
     }
 
     @Override
     public PermissionDTO delete(PermissionDTO permissionDTO) {
-        Session session = permissionDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive())
-                session.beginTransaction();
-            Permission permission = permissionConverter.toEntity(permissionDTO);
-            permissionDao.delete(permission);
-            permissionDTO = permissionDTOConverter.toDTO(permission);
-            transaction.commit();
-            return permissionDTO;
-        }
-        catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            logger.error("Failed to delete user type!", e);
-        }
-        return permissionDTO;
+        Permission permission = permissionConverter.toEntity(permissionDTO);
+        permissionDao.delete(permission);
+        return permissionDTOConverter.toDTO(permission);
     }
 }

@@ -1,13 +1,7 @@
 package com.gmail.kurmazpavel.service.converter;
 
-import com.gmail.kurmazpavel.Address;
-import com.gmail.kurmazpavel.Discount;
-import com.gmail.kurmazpavel.Order;
-import com.gmail.kurmazpavel.User;
-import com.gmail.kurmazpavel.dto.AddressDTO;
-import com.gmail.kurmazpavel.dto.DiscountDTO;
-import com.gmail.kurmazpavel.dto.OrderDTO;
-import com.gmail.kurmazpavel.dto.UserDTO;
+import com.gmail.kurmazpavel.*;
+import com.gmail.kurmazpavel.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -25,6 +19,9 @@ public class UserConverter implements Converter<UserDTO, User> {
     @Autowired
     @Qualifier("orderConverter")
     private Converter<OrderDTO, Order> orderConverter;
+    @Autowired
+    @Qualifier("newsConverter")
+    private Converter<NewsDTO, News> newsConverter;
 
     @Override
     public User toEntity(UserDTO dto) {
@@ -37,6 +34,7 @@ public class UserConverter implements Converter<UserDTO, User> {
         user.setDisabled(dto.isDisabled());
         user.setAddress(addressConverter.toEntity(dto.getAddress()));
         user.setRoleId(dto.getRoleId());
+        user.setNews(newsConverter.toEntityList(dto.getNews()));
         if (dto.getDiscount() != null)
             user.setDiscount(discountConverter.toEntity(dto.getDiscount()));
         user.setOrders(orderConverter.toEntityList(dto.getOrders()));

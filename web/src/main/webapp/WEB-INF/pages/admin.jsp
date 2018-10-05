@@ -28,7 +28,7 @@
               </table>
             </div>
           </div>
-            <form class="form-horizontal" method="post" action="/index">
+            <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/index">
             <fieldset>
                 <div class="form-group">
                 <label class="col-md-2 control-label" for="logout">Log Out</label>

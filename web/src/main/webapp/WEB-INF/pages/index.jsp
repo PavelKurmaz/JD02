@@ -3,7 +3,7 @@
 <%@ include file="/resources/include/head.htm" %>
 <body>
 <div class="container">
-    <form class="form-horizontal" method="post" action=/index>
+    <form class="form-horizontal" method="post" action=${pageContext.request.contextPath}/index>
         <fieldset>
 
             <!-- Form Name -->

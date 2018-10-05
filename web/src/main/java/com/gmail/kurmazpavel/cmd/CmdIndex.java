@@ -19,8 +19,6 @@ class CmdIndex extends Cmd {
                 String select = Util.getString(req, "select");
                 if (select.equalsIgnoreCase("user"))
                     return new ActionResult(Actions.LOGIN);
-                else
-                    return new ActionResult(Actions.ADMLOGIN);
             }
         }
         List<RoleDTO> roles = roleService.getAll();

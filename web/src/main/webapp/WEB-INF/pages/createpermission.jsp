@@ -1,24 +1,22 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
-<%@ include file="include/head.htm" %>
+<%@ include file="/resources/include/head.htm" %>
 <body>
-<%@ include file="include/adminka.htm" %>
+<%@ include file="/resources/include/adminka.htm" %>
 
-<form class="form-horizontal" method="post" action="do?command=createpermission">
+<form:form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/permission/create"
+           modelAttribute="permission">
+    <form:errors path="*" cssClass="errorBlock" element="div"/>
     <fieldset>
-        <div class="form-group">
-            <div class="heading">
-                <h3 class="title" align="center">Create Permission</h3>
-            </div>
-            <div class=col-lg-4>
-                <input id="name" class="form-control input-md" name="name"
-                       value="Enter permission name"/>
-            </div>
-        </div>
         <div class="col-lg-4">
-            <button id="create" name="create" class="btn btn-primary">Create</button>
+            <form:label path="name">Permission Name</form:label>
+            <form:input path="name" class="form-control" placeholder="Permission Name"/>
+        </div>
+        <p></p>
+        <div class="col-lg-4">
+            <button type="submit" class="btn btn-primary">Create</button>
         </div>
     </fieldset>
-</form>
+</form:form>
 </body>
 </html>

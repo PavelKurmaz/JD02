@@ -27,6 +27,17 @@
                 <form:label path="phone">Phone number</form:label>
                 <form:input path="phone" class="form-control" placeholder="+375..."/>
             </div>
+
+            <div class="col-lg-6">
+                <label class="col-lg-6 control-label" for="select">Select Role Type</label>
+                <div class="col-lg-6">
+                    <select id="select" name="select" class="form-control">
+                        <c:forEach items="${roles}" var="item">
+                            <option value=${item.role}>${item.role}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
             <!-- Button -->
             <div class="form-group">
                 <div class="col-lg-4">

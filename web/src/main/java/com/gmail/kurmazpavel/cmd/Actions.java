@@ -56,21 +56,6 @@ public enum Actions {
             cmd = new CmdPermissions();
         }
     },
-    ADMLOGIN{
-        {
-            cmd = new CmdAdminLogin();
-        }
-    },
-    SIGNUP{
-        {
-            cmd = new CmdSignUp();
-        }
-    },
-    ADMSIGNUP{
-        {
-            cmd = new CmdAdmSignUp();
-        }
-    },
     ADDRESS{
         {
             cmd = new CmdAddress();

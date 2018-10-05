@@ -20,10 +20,6 @@ public class Role implements Serializable {
     @JoinColumn(name = "ROLE_ID")
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ROLE_ID")
-    private List<Admin> admins = new ArrayList<>();
-
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private List<Permission> permissions = new ArrayList<>();
 
@@ -33,14 +29,6 @@ public class Role implements Serializable {
 
     public void setUsers(List<User> users) {
         this.users = users;
-    }
-
-    public List<Admin> getAdmins() {
-        return admins;
-    }
-
-    public void setAdmins(List<Admin> admins) {
-        this.admins = admins;
     }
 
     public void setPermissions(List<Permission> permissions) {

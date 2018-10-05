@@ -14,6 +14,7 @@ public class UserDTO {
     private DiscountDTO discount;
     private AddressDTO address;
     private List<OrderDTO> orders = new ArrayList<>();
+    private List<NewsDTO> news = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -104,5 +105,13 @@ public class UserDTO {
 
     public void setOrders(List<OrderDTO> orders) {
         this.orders = orders;
+    }
+
+    public List<NewsDTO> getNews() {
+        return news;
+    }
+
+    public void setNews(List<NewsDTO> news) {
+        this.news = news;
     }
 }
